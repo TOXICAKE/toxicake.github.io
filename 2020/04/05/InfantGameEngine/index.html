@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>在命令行上玩出花:InfantGameEngine | N0P3</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="命令行上的游戏">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在命令行上玩出花:InfantGameEngine">
+<meta property="og:url" content="https://cdn.n0p3.cn/2020/04/05/InfantGameEngine/index.html">
+<meta property="og:site_name" content="N0P3">
+<meta property="og:description" content="命令行上的游戏">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/InfantGameEngine/%E6%9C%AA%E5%91%BD%E5%90%8D%E4%BD%9C%E5%93%81.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/InfantGameEngine/%E6%9C%AA%E5%91%BD%E5%90%8D%E4%BD%9C%E5%93%81%202.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/InfantGameEngine/%E6%9C%AA%E5%91%BD%E5%90%8D%E4%BD%9C%E5%93%81%203.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/InfantGameEngine/%E6%9C%AA%E5%91%BD%E5%90%8D%E4%BD%9C%E5%93%81%204.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/InfantGameEngine/%E6%9C%AA%E5%91%BD%E5%90%8D%E4%BD%9C%E5%93%81%205.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/InfantGameEngine/%E6%9C%AA%E5%91%BD%E5%90%8D%E4%BD%9C%E5%93%81%206.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/InfantGameEngine/%E6%BC%94%E8%8D%89%E7%BA%B8.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/InfantGameEngine/%E6%88%AA%E5%B1%8F2020-04-07%20%E4%B8%8A%E5%8D%8811.10.55.png">
+<meta property="article:published_time" content="2020-04-05T06:49:12.000Z">
+<meta property="article:modified_time" content="2023-03-02T07:15:05.580Z">
+<meta property="article:author" content="N0P3">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="Windows">
+<meta property="article:tag" content="命令行">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/InfantGameEngine/%E6%9C%AA%E5%91%BD%E5%90%8D%E4%BD%9C%E5%93%81.png">
+  
+    <link rel="alternate" href="/atom.xml" title="N0P3" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">N0P3</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://cdn.n0p3.cn"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-InfantGameEngine" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/04/05/InfantGameEngine/" class="article-date">
+  <time datetime="2020-04-05T06:49:12.000Z" itemprop="datePublished">2020-04-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      在命令行上玩出花:InfantGameEngine
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>InfantGameEngine，婴儿级游戏引擎，虽然它只能显示简单的游戏画面。但它可以支持你写非常复杂的游戏逻辑。</p>
+<p>&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
+<p>Tip：源码已经放在github上了，建议参照源码阅读～</p>
+<p>项目地址：<a target="_blank" rel="noopener" href="https://github.com/TOXICAKE/InfantGameEngine.git">https://github.com/TOXICAKE/InfantGameEngine.git</a></p>
+<p>觉得有趣的话记得给一颗星XD</p>
+<h1 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h1><h2 id="储存字符"><a href="#储存字符" class="headerlink" title="储存字符"></a>储存字符</h2><p>显示在屏幕上的每一个字符都具有多个属性，所以可以用结构体来记录每一个字符。这样就引出了**实体(Entity)**这个概念，每一个字符都是Entity类的实例，称作一个实体，然后用链式结构关联每一个实体。这样只需要遍历就可以取到所有的实体，以及它们其中的数据。</p>
+<h2 id="刷新机制"><a href="#刷新机制" class="headerlink" title="刷新机制"></a>刷新机制</h2><p>每帧都刷新显示所有字符是不可能的，所以应该采用局部刷新的方法。假如一个实体向右移动一格，那么就是在右侧输出这个实体的字符，并在原来的位置上输出被遮挡的字符。<img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/InfantGameEngine/%E6%9C%AA%E5%91%BD%E5%90%8D%E4%BD%9C%E5%93%81.png" alt="局部刷新机制"></p>
+<h2 id="碰撞机制"><a href="#碰撞机制" class="headerlink" title="碰撞机制"></a>碰撞机制</h2><p>实体应该具有一个参数**碰撞(Collision)**，两个有碰撞实体彼此不能穿过，两个实体间如果有至少一方是无碰撞的则它们彼此可以穿过。这就是基本的碰撞机制。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/InfantGameEngine/%E6%9C%AA%E5%91%BD%E5%90%8D%E4%BD%9C%E5%93%81%202.png" alt="简单演示一下碰撞机制"></p>
+<h2 id="实体组"><a href="#实体组" class="headerlink" title="实体组"></a>实体组</h2><p>显然，我们不能总是让开发者以实体为单位去开发游戏，例如马里奥是32*32像素的，程序移动马里奥是以整个马里奥为单位去移动的，我们也应该向开发者提供以组为单位的开发方式。我选用了二级链表来实现，即实体组之间连接，每个节点又是新的实体链的头节点。<img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/InfantGameEngine/%E6%9C%AA%E5%91%BD%E5%90%8D%E4%BD%9C%E5%93%81%203.png" alt="实体组的数据结构"></p>
+<h1 id="交付"><a href="#交付" class="headerlink" title="交付"></a>交付</h1><p>为了使游戏显示效果尽可能的好，刷新应该在移动后进行，所以刷新应该交付给各个会产生实体位置移动的函数。</p>
+<p>碰撞检查也是发生在移动过程中的，也应该交付给各个会产生实体位置移动的函数。</p>
+<p>实体移动到新位置时，应该要把新位置上的实体保存下来（如果有）。但除了在移动时要保存，在创建新实体时也要保存。</p>
+<h1 id="基本功能"><a href="#基本功能" class="headerlink" title="基本功能"></a>基本功能</h1><h2 id="实体移动-En-Move"><a href="#实体移动-En-Move" class="headerlink" title="实体移动 En_Move"></a>实体移动 En_Move</h2><p>实体的移动是引擎最基本的功能，包括的内容很多，但是逻辑并不复杂。接受的参数应该是实体的编号（id），运动方向（direction)，距离(distance)。</p>
+<p>首先是检查对应方向上的可移动距离。如果移动的实体本身的碰撞属性是off，则不需要考虑与其他实体的碰撞问题，只用检查移动完是否在画布内即可。如果碰撞属性是on，则循环检查时就要同时考虑检查位置上的实体碰撞属性，如果同为on，则可移动距离就是到这个实体的距离。</p>
+<p>计算出可移动距离，如果比distance大，则可以移动distance那么远，否则的话移动到最大可移动距离停下。<img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/InfantGameEngine/%E6%9C%AA%E5%91%BD%E5%90%8D%E4%BD%9C%E5%93%81%204.png" alt="实体移动演示"></p>
+<h2 id="构成实体组-AddEnToGr"><a href="#构成实体组-AddEnToGr" class="headerlink" title="构成实体组 AddEnToGr"></a>构成实体组 AddEnToGr</h2><p>实例化一个实体组对象后，使用这个函数将一个实体加入到组中去，代码也很简单，就是普通的在实体链后面加一个节点而已。</p>
+<h2 id="实体组移动-Gr-Move"><a href="#实体组移动-Gr-Move" class="headerlink" title="实体组移动 Gr_Move"></a>实体组移动 Gr_Move</h2><p>实体组的移动其实就是对每个实体进行实体移动而已，但实际上的代码逻辑要稍微复杂一点。</p>
+<p>首先循环计算每一个组内实体的可移动距离，再求出其中的最小值。这个最小值就是这个实体组实际上可以移动的距离。<img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/InfantGameEngine/%E6%9C%AA%E5%91%BD%E5%90%8D%E4%BD%9C%E5%93%81%205.png" alt="实体组移动演示"></p>
+<p>但是，如果之间调用之前写好的实体移动函数则会出现刷新显示上的问题。</p>
+<p>因为是顺序结构，所以实体组中的实体也是按序移动，顺序与每条AddEnToGr执行顺序一致，这样就导致如果显示位置在前（沿移动方向）的实体移动顺序排在后面，就会遮挡先前移动好的实体。如下图所示，按ABC顺序添加进组中的三个实体，向右移动一格，最后画面上只会剩下C。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/InfantGameEngine/%E6%9C%AA%E5%91%BD%E5%90%8D%E4%BD%9C%E5%93%81%206.png" alt="bug"></p>
+<p>解决办法就是等所有实体移动完后再刷新遮挡的实体，最后刷新移动后的实体。</p>
+<h2 id="实体组旋转-Gr-Spin"><a href="#实体组旋转-Gr-Spin" class="headerlink" title="实体组旋转 Gr_Spin"></a>实体组旋转 Gr_Spin</h2><p>旋转也应该是引擎提供的功能。开发者提供旋转中心和旋转方向，就可以直接以组为单位旋转。可以简单的分为几步来实现，计算所有实体旋转后应该在的位置，然后检查移动路径上是否有阻碍，如果有，则不能旋转。确定旋转后位置的算法，（我用象棋棋盘找到的，并不复杂）。在算法上，第一步是确定实体所在的象限，再在象限内判断实体在45度线的那半边。还有特殊的实体恰好在分界线上的情况。下图是我的演草纸，动手画图找到规律就可以了。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/InfantGameEngine/%E6%BC%94%E8%8D%89%E7%BA%B8.png" alt="演草纸"></p>
+<p>这部分代码比较费神，实际上最后的代码应该可以优化，但是我已经没有心情去做了。</p>
+<h1 id="API的设置"><a href="#API的设置" class="headerlink" title="API的设置"></a>API的设置</h1><p>我在开发好基本功能后就去写了小demo来测试，最后写了“七巧板”来做最终的测试，中间的api也是越加越多，除了实体的信息要有api来提供以外，总的实体数目，组的个数还有组内实体总数也都需要提供。还要可以多种方式查询，比如获得实体可以通过实体编号，也可以通过组和组内实体编号，还可以通过画布的坐标。</p>
+<h1 id="实际使用"><a href="#实际使用" class="headerlink" title="实际使用"></a>实际使用</h1><p>它的实际使用效果很不错，因为我们在开发时提供的功能比较完善，没有过多的限制，并且是直接的api调用编程，比较灵活。</p>
+<p>开发过程中最重要的是实体的管理，如果实体没有管理好，整个代码看起来就会相当糟糕。</p>
+<p>实体就是“实际”存在的意思，他具体是什么由程序员的代码来决定。例如你可以在实体类中增加一个变量Key，程序员在设计游戏时就可以给key赋值，例如1代表构成主角的实体，2代表按钮，3代表门。</p>
+<p>测试程序和测试源码都可以在github上找到。</p>
+<p>&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
+<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>你大概不会真的动手去写一个，也可能会觉得它没什么用。我们是直接接触框架的一代，这些东西除了作为上学时的作业，几乎毫无用处，我们上面在讨论的东西，也是之前<strong>雅达利</strong>思考过的东西，他们当时的开发环境还要更为恶劣一些。</p>
+<p>命令行也可以做出很有趣的游戏，画面并不是游戏的唯一要素。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/InfantGameEngine/%E6%88%AA%E5%B1%8F2020-04-07%20%E4%B8%8A%E5%8D%8811.10.55.png" alt="大灾变：劫后余生"></p>
+<p>当然还有著名的生命游戏。</p>
+<p>谢谢你花时间阅读这篇博客。：）</p>
+<p>在评论区留个脚印吧～</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://cdn.n0p3.cn/2020/04/05/InfantGameEngine/" data-id="cleqs4p6r000ah4d70hq5auth" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4%E8%A1%8C/" rel="tag">命令行</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/04/08/BJDCTF2nd/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          BJDCTF2nd
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/02/25/i%E6%98%A5%E7%A7%8B-%E6%96%B0%E6%98%A5%E6%88%98%E7%96%AB/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">i春秋 新春战疫WriteUp</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CTF/" rel="tag">CTF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MacOS/" rel="tag">MacOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PWN/" rel="tag">PWN</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WEB/" rel="tag">WEB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/develop/" rel="tag">develop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/heap/" rel="tag">heap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tool/" rel="tag">tool</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8F%82%E5%8A%A0%E7%9A%84%E6%AF%94%E8%B5%9B/" rel="tag">参加的比赛</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4%E8%A1%8C/" rel="tag">命令行</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%BD%A2/" rel="tag">图形</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/C/" style="font-size: 12.5px;">C++</a> <a href="/tags/CTF/" style="font-size: 20px;">CTF</a> <a href="/tags/MacOS/" style="font-size: 10px;">MacOS</a> <a href="/tags/PWN/" style="font-size: 17.5px;">PWN</a> <a href="/tags/WEB/" style="font-size: 10px;">WEB</a> <a href="/tags/Windows/" style="font-size: 12.5px;">Windows</a> <a href="/tags/develop/" style="font-size: 10px;">develop</a> <a href="/tags/heap/" style="font-size: 10px;">heap</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/tool/" style="font-size: 10px;">tool</a> <a href="/tags/%E5%8F%82%E5%8A%A0%E7%9A%84%E6%AF%94%E8%B5%9B/" style="font-size: 15px;">参加的比赛</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E8%A1%8C/" style="font-size: 10px;">命令行</a> <a href="/tags/%E5%9B%BE%E5%BD%A2/" style="font-size: 10px;">图形</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/03/02/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/16/N0Shell/">N0Shell</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/22/FlagSubmitter/">FlagSubmitter</a>
+          </li>
+        
+          <li>
+            <a href="/2020/10/28/BuuWeb1/">BuuWeb1</a>
+          </li>
+        
+          <li>
+            <a href="/2020/10/18/Off-by-one/">Asis_ctf_2016_b00ks</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2023 N0P3<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

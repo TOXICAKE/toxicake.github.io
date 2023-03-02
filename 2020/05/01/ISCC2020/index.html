@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>ISCC2020 | N0P3</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="未知的风险-1题目有描述  看题目，只有简单的一行  hello guest，题目描述说只允许user进入，也就是我们要伪造身份。 抓包  这token格式一看就是jwt（T0ki师傅说的） 要伪造身份，我们就要构造新的jwt，然而，虽然使用的是HS256，但是翻遍网站也找不到key。于是想到，可能服务器使用的是低版本的jwt，需要我们把加密格式改为none。  用jwt_tool来修改jwt,并">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ISCC2020">
+<meta property="og:url" content="https://cdn.n0p3.cn/2020/05/01/ISCC2020/index.html">
+<meta property="og:site_name" content="N0P3">
+<meta property="og:description" content="未知的风险-1题目有描述  看题目，只有简单的一行  hello guest，题目描述说只允许user进入，也就是我们要伪造身份。 抓包  这token格式一看就是jwt（T0ki师傅说的） 要伪造身份，我们就要构造新的jwt，然而，虽然使用的是HS256，但是翻遍网站也找不到key。于是想到，可能服务器使用的是低版本的jwt，需要我们把加密格式改为none。  用jwt_tool来修改jwt,并">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/ISCC2020/%E6%88%AA%E5%B1%8F2020-05-01%20%E4%B8%8B%E5%8D%885.34.20.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/ISCC2020/%E6%89%B9%E6%B3%A8%202020-05-01%20170423.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/ISCC2020/%E6%88%AA%E5%B1%8F2020-05-01%20%E4%B8%8B%E5%8D%885.39.10.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/ISCC2020/%E6%89%B9%E6%B3%A8%202020-05-01%20164709.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/ISCC2020/QQ%E5%9B%BE%E7%89%8720200501164622.jpg">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/ISCC2020/%E6%89%B9%E6%B3%A8%202020-05-01%20163522.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/ISCC2020/%E6%89%B9%E6%B3%A8%202020-05-01%20170635.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/ISCC2020/QQ%E5%9B%BE%E7%89%8720200501164551.png">
+<meta property="og:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/ISCC2020/%E6%89%B9%E6%B3%A8%202020-05-01%20170256.png">
+<meta property="article:published_time" content="2020-05-01T09:25:16.000Z">
+<meta property="article:modified_time" content="2023-03-02T07:15:05.562Z">
+<meta property="article:author" content="N0P3">
+<meta property="article:tag" content="CTF">
+<meta property="article:tag" content="参加的比赛">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/ISCC2020/%E6%88%AA%E5%B1%8F2020-05-01%20%E4%B8%8B%E5%8D%885.34.20.png">
+  
+    <link rel="alternate" href="/atom.xml" title="N0P3" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">N0P3</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://cdn.n0p3.cn"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-ISCC2020" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/05/01/ISCC2020/" class="article-date">
+  <time datetime="2020-05-01T09:25:16.000Z" itemprop="datePublished">2020-05-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      ISCC2020
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="未知的风险-1"><a href="#未知的风险-1" class="headerlink" title="未知的风险-1"></a>未知的风险-1</h1><p>题目有描述</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/ISCC2020/%E6%88%AA%E5%B1%8F2020-05-01%20%E4%B8%8B%E5%8D%885.34.20.png" alt="描述"></p>
+<p>看题目，只有简单的一行</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/ISCC2020/%E6%89%B9%E6%B3%A8%202020-05-01%20170423.png" alt="题目"></p>
+<p>hello guest，题目描述说只允许user进入，也就是我们要伪造身份。</p>
+<p>抓包</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/ISCC2020/%E6%88%AA%E5%B1%8F2020-05-01%20%E4%B8%8B%E5%8D%885.39.10.png" alt="bp1"></p>
+<p>这token格式一看就是jwt<em>（T0ki师傅说的）</em></p>
+<p>要伪造身份，我们就要构造新的jwt，然而，虽然使用的是HS256，但是翻遍网站也找不到key。于是想到，可能服务器使用的是低版本的jwt，需要我们把加密格式改为none。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/ISCC2020/%E6%89%B9%E6%B3%A8%202020-05-01%20164709.png" alt="jwt_tool"></p>
+<p>用jwt_tool来修改jwt,并发包。</p>
+<p>成功来到一个登陆页面，对应题目描述中的一把锁。阅读页面的js代码可知，数据会以xml实体post到一个doLogin.php页面，返回的code决定了登陆是否成功。于是我尝试修改了返回包，使code为1。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/ISCC2020/QQ%E5%9B%BE%E7%89%8720200501164622.jpg" alt="login"></p>
+<p>虽然登陆成功但是什么也没有。</p>
+<p>再看题目描述，”他猜测密码格式flag{*}”,也就是说，用户密码才是flag。随即想到可能存在xxe漏洞，利用这个漏洞读取doLogin.php的源码，逆向分析验证代码获得flag。</p>
+<p>payload：</p>
+<p>​	<code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</code><br><code>&lt;!DOCTYPE N0P3 [&lt;!ENTITY xxe SYSTEM &quot;php://filter/read=convert.base64-encode/resource=flag.php&quot;</code><br><code>&gt; ]&gt;</code><br><code>&lt;user&gt;</code><br>  <code>&lt;username&gt;&amp;xxe;&lt;/username&gt;</code><br>  <code>&lt;password&gt;admin&lt;/password&gt;</code><br><code>&lt;/user&gt;</code></p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/ISCC2020/%E6%89%B9%E6%B3%A8%202020-05-01%20163522.png" alt="xxe"></p>
+<p>读取成功。分析一下源码</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/ISCC2020/%E6%89%B9%E6%B3%A8%202020-05-01%20170635.png" alt="code"></p>
+<p>发现include了一个flag.php，直接利用xxe去读</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/ISCC2020/QQ%E5%9B%BE%E7%89%8720200501164551.png" alt="flag1"></p>
+<p>读到了，解码</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/ISCC2020/%E6%89%B9%E6%B3%A8%202020-05-01%20170256.png" alt="flag"></p>
+<p>连源码都不用审，直接就能get flag。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://cdn.n0p3.cn/2020/05/01/ISCC2020/" data-id="cleqs4p6s000ch4d721x67kzm" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CTF/" rel="tag">CTF</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%8F%82%E5%8A%A0%E7%9A%84%E6%AF%94%E8%B5%9B/" rel="tag">参加的比赛</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/07/17/BuuCtf1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          「BuuCTF」Part I
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/05/01/iscc2021/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">ISCC2021</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CTF/" rel="tag">CTF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MacOS/" rel="tag">MacOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PWN/" rel="tag">PWN</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WEB/" rel="tag">WEB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/develop/" rel="tag">develop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/heap/" rel="tag">heap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tool/" rel="tag">tool</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8F%82%E5%8A%A0%E7%9A%84%E6%AF%94%E8%B5%9B/" rel="tag">参加的比赛</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4%E8%A1%8C/" rel="tag">命令行</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%BD%A2/" rel="tag">图形</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/C/" style="font-size: 12.5px;">C++</a> <a href="/tags/CTF/" style="font-size: 20px;">CTF</a> <a href="/tags/MacOS/" style="font-size: 10px;">MacOS</a> <a href="/tags/PWN/" style="font-size: 17.5px;">PWN</a> <a href="/tags/WEB/" style="font-size: 10px;">WEB</a> <a href="/tags/Windows/" style="font-size: 12.5px;">Windows</a> <a href="/tags/develop/" style="font-size: 10px;">develop</a> <a href="/tags/heap/" style="font-size: 10px;">heap</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/tool/" style="font-size: 10px;">tool</a> <a href="/tags/%E5%8F%82%E5%8A%A0%E7%9A%84%E6%AF%94%E8%B5%9B/" style="font-size: 15px;">参加的比赛</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E8%A1%8C/" style="font-size: 10px;">命令行</a> <a href="/tags/%E5%9B%BE%E5%BD%A2/" style="font-size: 10px;">图形</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/03/02/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/16/N0Shell/">N0Shell</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/22/FlagSubmitter/">FlagSubmitter</a>
+          </li>
+        
+          <li>
+            <a href="/2020/10/28/BuuWeb1/">BuuWeb1</a>
+          </li>
+        
+          <li>
+            <a href="/2020/10/18/Off-by-one/">Asis_ctf_2016_b00ks</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2023 N0P3<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
