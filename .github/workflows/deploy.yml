@@ -40,6 +40,9 @@ jobs:
         echo "Files in current directory:"
         ls -la
       
+    - name: Clean Hexo cache
+      run: hexo clean
+
     - name: Generate static files
       run: npm run build
       
@@ -50,9 +53,6 @@ jobs:
         echo "CNAME file content:"
         cat public/CNAME || echo "No CNAME file found"
       
-    - name: Clean Hexo cache
-      run: hexo clean
-
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
       with:
