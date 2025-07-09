@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="专注于网络安全、CTF竞赛、技术研究的个人博客">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="N0P3">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="在MacOS 10.15 上配置基本的Pwn环境"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="专注于网络安全、CTF竞赛、技术研究的个人博客" />
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="N0P3&#39;s Blog"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+    
+        <meta name="twitter:card" content="summary" />
+    
+    
+    
+
+    <!-- Title -->
+    
+    <title>在MacOS 10.15 上配置基本的Pwn环境 - N0P3&#39;s Blog</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    <!-- Google Analytics -->
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+
+<div class="bg-gradient"></div>
+<div class="bg-pattern"></div>
+
+<!-- Menu -->
+<!--Menu Links and Overlay-->
+<div class="menu-bg">
+    <div class="menu-container">
+        <ul>
+            
+            <li class="menu-item">
+                <a href="/">
+                    Home
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/archives">
+                    Archives
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/about.html">
+                    About
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/tags">
+                    Tags
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/categories">
+                    Categories
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/contact.html">
+                    Contact
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+<!--Hamburger Icon-->
+<nav>
+    <a href="#menu"></a>
+</nav>
+
+<div class="container">
+
+    <!-- Main Content -->
+    <div class="row">
+    <div class="col-sm-12">
+
+        <!--Title and Logo-->
+        <header>
+    <div class="logo">
+        <a href="/"><i class="logo-icon fa fa-cube" aria-hidden="true"></i></a>
+        
+    </div>
+</header>
+
+        <section class="main">
+            
+<div class="post">
+
+    <div class="post-header">
+        <h1 class="title">
+            <a href="/2020/04/22/MacOSPwn/">
+                在MacOS 10.15 上配置基本的Pwn环境
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2020-04-22</span>
+            
+            
+            
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- Gallery -->
+        
+
+        <!-- Post Content -->
+        <p><em>Mac Pwn实在是不够香，还是虚拟机好用！</em></p>
+<p><em>Catalina给我造成了相当多的麻烦，于是便记录一下过程</em></p>
+<h1 id="安装Pwntools"><a href="#安装Pwntools" class="headerlink" title="安装Pwntools"></a>安装Pwntools</h1><p>首先，<strong>不要使用pip！</strong></p>
+<p>网上安装pwntools的教程中最多的就是pip安装，官网上的安装介绍也是pip安装。但是我们使用MacOS的homebrew来安装。</p>
+<p>如果你没有安装homebrew，执行下面的自动脚本</p>
+<p><code>/bin/zsh -c &quot;$(curl -fsSL https://gitee.com/cunkai/HomebrewCN/raw/master/Homebrew.sh)&quot;</code></p>
+<p>直接在终端输入回车根据提示执行即可。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/MacOSPwn/%E6%88%AA%E5%B1%8F2020-04-22%20%E4%B8%8B%E5%8D%884.15.59.png" alt="homebrew"></p>
+<p>homebrew就安装好了。</p>
+<p>执行<code>brew install pwntools</code> 安装pwntools</p>
+<p>再执行<code>brew install https://raw.githubusercontent.com/Gallopsled/pwntools-binutils/master/osx/binutils-amd64.rb</code>  安装二进制工具binutils</p>
+<p>安装binutils时你可能会遇到443报错，这是由于众所周知的原因导致raw.githubusercontent.com的DNS解析被污染了。</p>
+<p>Step 1:  访问这个网站<a target="_blank" rel="noopener" href="https://www.ipaddress.com/%E5%8E%BB%E6%9F%A5%E8%AF%A2raw.githubusercontent.com">https://www.ipaddress.com/去查询raw.githubusercontent.com</a></p>
+<p>的真实ip地址。</p>
+<p>Step 2: 添加到&#x2F;etc&#x2F;hosts中</p>
+<p>完成之后应该就可以下载了。</p>
+<p>然后要把pwntools包加入到python环境里</p>
+<p>在&#x2F;Library&#x2F;Python&#x2F;2.7&#x2F;site-packages中新建一个.pth文件然后写入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/Cellar/pwntools/4.0.1_1/libexec/lib/python3.8/site-packages </span><br></pre></td></tr></table></figure>
+
+<p><em>这一行需要自己看情况写，pwntools版本和python版本可能会不同</em></p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/MacOSPwn/%E6%88%AA%E5%B1%8F2020-04-22%20%E4%B8%8B%E5%8D%888.45.40.png" alt="path">然后就可以测试基本功能了。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/MacOSPwn/%E6%88%AA%E5%B1%8F2020-04-22%20%E4%B8%8B%E5%8D%884.54.32.png" alt="checksec"></p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/MacOSPwn/%E6%88%AA%E5%B1%8F2020-04-22%20%E4%B8%8B%E5%8D%888.53.28.png" alt="pwntools"></p>
+<p>测试都OK</p>
+<h1 id="IDA"><a href="#IDA" class="headerlink" title="IDA"></a>IDA</h1><p>ida在Major版本上很好安装，但是网上现有的所有的安装包都无法在Catalina上安装。解决办法大致是 安装Major虚拟机，再安装旧版ida，打补丁拷贝目录到Catalina。实际操作起来有很多问题且很麻烦，于是我直接打包好了Catalina可用的dmg。</p>
+<p><a target="_blank" rel="noopener" href="https://n0p3.oss-cn-beijing.aliyuncs.com/source/Ida%20for%20MacOS10.15.dmg">Ida for Catalina</a></p>
+<p>密码 <em><strong>n0p3.top</strong></em>，记得不要更新。</p>
+
+    </div>
+
+    
+
+    
+        <div class="post-tags">
+            <i class="fa fa-tags" aria-hidden="true"></i>
+            <a href="/tags/CTF/">#CTF</a> <a href="/tags/PWN/">#PWN</a> <a href="/tags/MacOS/">#MacOS</a>
+        </div>
+    
+
+    <!-- Comments -->
+    
+
+</div>
+        </section>
+
+    </div>
+</div>
+
+
+</div>
+
+<!-- Footer -->
+<div class="push"></div>
+
+<footer class="footer-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 footer-about">
+                <h2>About</h2>
+                <p>
+                    This theme was developed by <a target="_blank" rel="noopener" href="https://github.com/klugjo">Jonathan Klughertz</a>. The source code is available on Github. Create Websites. Make Magic.
+                </p>
+            </div>
+            
+    <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 recent-posts">
+        <h2>Recent Posts</h2>
+        <ul>
+            
+            <li>
+                <a class="footer-post" href="/2020/10/28/BuuWeb1/">BuuWeb1</a>
+            </li>
+            
+            <li>
+                <a class="footer-post" href="/2020/10/18/Off-by-one/">Asis_ctf_2016_b00ks</a>
+            </li>
+            
+            <li>
+                <a class="footer-post" href="/2020/08/10/Xctf2/">XCTF-Pwn-Advance-2</a>
+            </li>
+            
+            <li>
+                <a class="footer-post" href="/2020/07/17/BuuCtf1/">「BuuCTF」Part I</a>
+            </li>
+            
+        </ul>
+    </div>
+
+
+
+            
+<div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 footer-categories">
+    <h2>Categories</h2>
+    <ul>
+        
+        <li>
+            <a class="footer-post" href="/categories/CTF%E8%A7%A3%E9%A2%98/">CTF解题</a>
+        </li>
+        
+        <li>
+            <a class="footer-post" href="/categories/CTF%E8%A7%A3%E9%A2%98/Web%E5%AE%89%E5%85%A8/">Web安全</a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <ul class="list-inline footer-social-icons">
+                    
+                    <li class="list-inline-item">
+                        <a target="_blank" rel="noopener" href="https://github.com/klugjo/hexo-theme-alpha-dust">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-github"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a target="_blank" rel="noopener" href="https://twitter.com/?lang=en">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-twitter"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a target="_blank" rel="noopener" href="https://www.facebook.com/">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-facebook"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a target="_blank" rel="noopener" href="https://www.instagram.com/">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-instagram"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a target="_blank" rel="noopener" href="https://dribbble.com/">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-dribbble"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a target="_blank" rel="noopener" href="https://telegram.org/">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-telegram"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a target="_blank" rel="noopener" href="https://www.behance.net/">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-behance"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a target="_blank" rel="noopener" href="https://500px.com/">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-500px"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a href="mailto:test@example.com">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-envelope-o"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a href="\#">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-rss"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="footer-copyright">
+                    @Untitled. All right reserved | Design & Hexo <a target="_blank" rel="noopener" href="http://www.codeblocq.com/">Jonathan Klughertz</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- After footer scripts -->
+
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Tween Max -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TweenMax.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Custom JavaScript -->
+
+<script src="/js/main.js"></script>
+
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

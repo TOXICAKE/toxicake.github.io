@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="专注于网络安全、CTF竞赛、技术研究的个人博客">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="N0P3">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="XCTF-Pwn新手区"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="专注于网络安全、CTF竞赛、技术研究的个人博客" />
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="N0P3&#39;s Blog"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+    
+        <meta name="twitter:card" content="summary" />
+    
+    
+    
+
+    <!-- Title -->
+    
+    <title>XCTF-Pwn新手区 - N0P3&#39;s Blog</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    <!-- Google Analytics -->
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+
+<div class="bg-gradient"></div>
+<div class="bg-pattern"></div>
+
+<!-- Menu -->
+<!--Menu Links and Overlay-->
+<div class="menu-bg">
+    <div class="menu-container">
+        <ul>
+            
+            <li class="menu-item">
+                <a href="/">
+                    Home
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/archives">
+                    Archives
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/about.html">
+                    About
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/tags">
+                    Tags
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/categories">
+                    Categories
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/contact.html">
+                    Contact
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+<!--Hamburger Icon-->
+<nav>
+    <a href="#menu"></a>
+</nav>
+
+<div class="container">
+
+    <!-- Main Content -->
+    <div class="row">
+    <div class="col-sm-12">
+
+        <!--Title and Logo-->
+        <header>
+    <div class="logo">
+        <a href="/"><i class="logo-icon fa fa-cube" aria-hidden="true"></i></a>
+        
+    </div>
+</header>
+
+        <section class="main">
+            
+<div class="post">
+
+    <div class="post-header">
+        <h1 class="title">
+            <a href="/2020/04/13/int-overflow/">
+                XCTF-Pwn新手区
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2020-04-13</span>
+            
+            
+            
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- Gallery -->
+        
+
+        <!-- Post Content -->
+        <h1 id="int-overflow"><a href="#int-overflow" class="headerlink" title="int_overflow"></a>int_overflow</h1><p>nc链接一下题目。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/%E6%89%B9%E6%B3%A8%202020-04-13%20190617.png" alt="连接"></p>
+<p>大概是先选择功能，再输入用户名，密码。一共有三次输入，这中间就可能存在漏洞。</p>
+<p>拖进ida</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/%E6%89%B9%E6%B3%A8%202020-04-13%20190414.png" alt="ida"></p>
+<p>主函数中并没有明显的漏洞，跟踪到login中</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/%E6%89%B9%E6%B3%A8%202020-04-13%20190436.png" alt="login"></p>
+<p>login函数里也没有找到可能的漏洞，输入的密码储存进了buf，并传递给了check_passwd函数</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/%E6%89%B9%E6%B3%A8%202020-04-13%20190446.png" alt="check_passwd"></p>
+<p>在check_passwd函数里，变量v3声明为无符号整型，占8bit，即一个字节，用来储存s（刚才传入的buf）的长度。但是buf的长度是0x199，远大于v3的长度。8bit储存范围是0～255，由于无符号，超过255就会“循环”，256就与0相等。</p>
+<p>line8执行了判断，要求v3的范围在3～8之间。但是我们使v3溢出，在259～264亦可。</p>
+<p>测试一下</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/%E6%89%B9%E6%B3%A8%202020-04-13%20190715.png" alt="测试"></p>
+<p>成功了，注意到在判断密码成功后，字符串会被拷贝进dest里，那么可以开始构造payload了。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/%E6%89%B9%E6%B3%A8%202020-04-13%20190327.png" alt="target"></p>
+<p>在左侧的函数列表中有一个what_is_this，执行后就能getflag。观察一下栈的情况</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/%E6%89%B9%E6%B3%A8%202020-04-13%20190520.png" alt="栈"></p>
+<p>所以payload，先’A’*0x14,填满dest和v3所占的空间，再’a’*4填满储存ebp的位置，然后就可以加上目标地址了。最后，要让payload的总长在259～264之间。</p>
+<p>exp如下</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/%E6%89%B9%E6%B3%A8%202020-04-13%20191528.png" alt="exp"></p>
+<p>运行即得flag。</p>
+<h1 id="Cgpwn2"><a href="#Cgpwn2" class="headerlink" title="Cgpwn2"></a>Cgpwn2</h1><p>nc连接一下题目</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/cgpwn2/%E6%88%AA%E5%B1%8F2020-04-15%20%E4%B8%8B%E5%8D%886.10.29.png" alt="nc"></p>
+<p>有两次输入，拖进ida看一下main函数</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/cgpwn2/%E6%88%AA%E5%B1%8F2020-04-15%20%E4%B8%8B%E5%8D%886.12.11.png" alt="main"></p>
+<p>建立了三个缓冲区，调用了hello函数，进hello函数看一下</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/cgpwn2/%E6%88%AA%E5%B1%8F2020-04-15%20%E4%B8%8B%E5%8D%886.12.22.png" alt="hello"></p>
+<p>有一段复杂的代码，暂时不知道是干什么的，下面是两次输入，第一次是对输入有限制的输入，第二次用的是危险的gets函数。</p>
+<p>变量name</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/cgpwn2/%E6%88%AA%E5%B1%8F2020-04-15%20%E4%B8%8B%E5%8D%886.13.08.png" alt="name"></p>
+<p>看函数列表</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/cgpwn2/%E6%88%AA%E5%B1%8F2020-04-15%20%E4%B8%8B%E5%8D%886.12.37.png" alt="list"></p>
+<p>还有一个pwn函数，里面调用了system函数。</p>
+<p>那么我们的思路就有了，把gets函数的返回地址覆盖为_system的地址，在输入名字的时候输入&#x2F;bin&#x2F;sh，让shellcode执行就可以了。</p>
+<p>exp如下</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/cgpwn2/%E6%88%AA%E5%B1%8F2020-04-15%20%E4%B8%8B%E5%8D%886.14.49.png" alt="exp"></p>
+<p>_shstr是shellcode的储存地址，p32(1)是调用_system时要覆盖的返回地址，随便写一个就可以。</p>
+<p>运行即可Get Shell。</p>
+<h1 id="string"><a href="#string" class="headerlink" title="string"></a>string</h1><p>连接题目看一下题</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/string/%E6%88%AA%E5%B1%8F2020-04-16%20%E4%B8%8B%E5%8D%889.25.06.png" alt="nc"></p>
+<p>文本量巨大，能看出是个rpg游戏，开头有法师说会给予你帮助，你自己打不败恶龙，然后告诉了我们两个秘密。secret是一个数组，储存了看起来像地址的数据。暂时不知道有什么用。</p>
+<p>拖进ida分析</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/string/%E6%88%AA%E5%B1%8F2020-04-16%20%E4%B8%8B%E5%8D%8811.54.09.png" alt="main"></p>
+<p>在main函数可以看到v3被赋值给了v4，v3是malloc申请的一个8bit空间的地址，再根据下面的输出，可以推断出，v3就是secret。</p>
+<p>再跟踪到sub_400D72</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/string/%E6%88%AA%E5%B1%8F2020-04-16%20%E4%B8%8B%E5%8D%8811.26.08.png" alt="1"></p>
+<p>注意到23行存在格式化字符串漏洞。暂时还不知道利用它可以干嘛。返回然后进入sub_400CA6，传入的参数a1就是secret，也就是main函数里的v3。</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/string/%E6%88%AA%E5%B1%8F2020-04-16%20%E4%B8%8B%E5%8D%8811.27.37.png" alt="2"></p>
+<p>在最后的if部分可以看到，使secret[0]和secret[1]两个地址指向的值相等就可以获得法师的帮助，v1在17行强制转换成了一个函数指针并执行指向的函数。</p>
+<p>所以我们的攻击思路就是，利用格式化字符串漏洞把secret[0]值修改为85使if成立，然后输入shellcode就可以get shell了。</p>
+<p>exp</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/string/%E6%88%AA%E5%B1%8F2020-04-16%20%E4%B8%8B%E5%8D%8811.25.17.png" alt="exp"></p>
+<p>要覆盖的值的地址在payload发送前写入栈，然后利用漏洞修改这个地址的值。paylaod中的&#39;7&#39;是试验出的结果，前一次输入的地址被保存在了步长为7的位置。</p>
+<p><em>本题要感谢<strong>不会修电脑</strong>师傅的指点</em></p>
+<h1 id="level3"><a href="#level3" class="headerlink" title="level3"></a>level3</h1><p>直接拖进IDA分析</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/level3/%E6%88%AA%E5%B1%8F2020-04-17%20%E4%B8%8A%E5%8D%8810.35.15.png" alt="main"></p>
+<p>没什么东西，去看vulnerable_function</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/level3/%E6%88%AA%E5%B1%8F2020-04-17%20%E4%B8%8A%E5%8D%8810.35.42.png" alt="vf"></p>
+<p>第6行调用了read读取了0x100byte，但是buf只有0x88byte，存在栈溢出漏洞。但是并没有system函数可以利用，而是给了libc，所以是ret2libc。我们要从libc中载入system和&#x2F;bin&#x2F;sh，就要先获得它们的got地址。</p>
+<p>**攻击思路：**先泄漏write函数（read函数亦可）的got地址，然后减去write函数在libc中的地址，就能得到offset（偏移），那么由于libc中的地址相对固定，就可以根据&#39;libc地址+offset&#x3D;got地址&#39;算出system函数和&#x2F;bin&#x2F;sh的got地址。</p>
+<p>有了这两个地址，就可以当普通的栈溢出做了。</p>
+<p>完整exp如下</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/level3/%E6%88%AA%E5%B1%8F2020-04-17%20%E4%B8%8B%E5%8D%881.40.23.png" alt="exp"></p>
+<p>需要注意的是，如果PIE保护开启，offset将是动态的，就不能通过计算一个函数的offset去推算其他函数。</p>
+<p>此外，两次payload必须在同一次程序运行过程中完成，不能分成第一次运行获得地址，第二次运行执行栈溢出攻击。因为程序的每一次运行，外部函数在got表中的实际地址都是不同的，所以我们的第一个rop链中必须使程序返回到合适的位置，在上面的exp中，第一次write执行后返回到了main函数，以便可以执行第二个payload。</p>
+<p><em>[<strong>此处是个人理解部分</strong>]</em>  在rop链中，希望调用的外部函数地址，可以是plt表中的地址，也可以是got表中的实际地址，因为plt地址指向的数据就是这个函数在got表的实际地址。</p>
+<p><em>本题要感谢<strong>Thriumph</strong>师傅的指点</em></p>
+<h1 id="CGfsb"><a href="#CGfsb" class="headerlink" title="CGfsb"></a>CGfsb</h1><p><em>这一题也是格式化字符串漏洞，但是比较简单，可以独立完成</em></p>
+<p>直接ida看题</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/CGfsb/%E6%88%AA%E5%B1%8F2020-04-17%20%E4%B8%8B%E5%8D%885.58.22.png" alt="main"></p>
+<p>很直白，在23行存在格式化字符串漏洞，再看到下面的if条件，很明显是要我们利用漏洞修改pwnme的值为8.</p>
+<p>看一下pwnme</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/CGfsb/%E6%88%AA%E5%B1%8F2020-04-17%20%E4%B8%8B%E5%8D%886.07.25.png" alt="pwnme"></p>
+<p>是全局变量，所以地址不变。</p>
+<p>题目一共输入了两次，第一次输入在了buf缓冲区，猜测可能是要在这里输入目标地址。但是read限制读取10个字符，再看栈</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/CGfsb/%E6%88%AA%E5%B1%8F2020-04-17%20%E4%B8%8B%E5%8D%886.07.10.png" alt="栈"></p>
+<p>0x7E-10&#x3D;0x75，正好在s变量前，所以不存在溢出，也无法利用格式化漏洞读取到。所以我们要在输入s中输入先输入地址，然后修改这个地址的值。</p>
+<p>exp如下</p>
+<p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF%20int_overflow/CGfsb/%E6%88%AA%E5%B1%8F2020-04-17%20%E4%B8%8B%E5%8D%886.20.14.png" alt="exp"></p>
+<p>%10$n中的10是测试出来的offset。</p>
+<p>32位的地址是32bit，也就是4个字节，经过测试，程序字符集可能是ascii或utf-8，所以4个字节就是4个字符。为了使pwnme的值为8，所以payload里多加4个a，这样最终一共输出8个字符，%10n就会把第10个位置的值赋值为8。</p>
+<h1 id="小总结"><a href="#小总结" class="headerlink" title="小总结"></a>小总结</h1><p>学Pwn七天，学到的东西没有很多，但是原理和小细节都弄清楚了，这些漏洞的高级运用方法还要在以后认真学习。</p>
+
+    </div>
+
+    
+
+    
+        <div class="post-tags">
+            <i class="fa fa-tags" aria-hidden="true"></i>
+            <a href="/tags/CTF/">#CTF</a> <a href="/tags/PWN/">#PWN</a>
+        </div>
+    
+
+    <!-- Comments -->
+    
+
+</div>
+        </section>
+
+    </div>
+</div>
+
+
+</div>
+
+<!-- Footer -->
+<div class="push"></div>
+
+<footer class="footer-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 footer-about">
+                <h2>About</h2>
+                <p>
+                    This theme was developed by <a target="_blank" rel="noopener" href="https://github.com/klugjo">Jonathan Klughertz</a>. The source code is available on Github. Create Websites. Make Magic.
+                </p>
+            </div>
+            
+    <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 recent-posts">
+        <h2>Recent Posts</h2>
+        <ul>
+            
+            <li>
+                <a class="footer-post" href="/2020/10/28/BuuWeb1/">BuuWeb1</a>
+            </li>
+            
+            <li>
+                <a class="footer-post" href="/2020/10/18/Off-by-one/">Asis_ctf_2016_b00ks</a>
+            </li>
+            
+            <li>
+                <a class="footer-post" href="/2020/08/10/Xctf2/">XCTF-Pwn-Advance-2</a>
+            </li>
+            
+            <li>
+                <a class="footer-post" href="/2020/07/17/BuuCtf1/">「BuuCTF」Part I</a>
+            </li>
+            
+        </ul>
+    </div>
+
+
+
+            
+<div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 footer-categories">
+    <h2>Categories</h2>
+    <ul>
+        
+        <li>
+            <a class="footer-post" href="/categories/CTF%E8%A7%A3%E9%A2%98/">CTF解题</a>
+        </li>
+        
+        <li>
+            <a class="footer-post" href="/categories/CTF%E8%A7%A3%E9%A2%98/Web%E5%AE%89%E5%85%A8/">Web安全</a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <ul class="list-inline footer-social-icons">
+                    
+                    <li class="list-inline-item">
+                        <a target="_blank" rel="noopener" href="https://github.com/klugjo/hexo-theme-alpha-dust">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-github"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a target="_blank" rel="noopener" href="https://twitter.com/?lang=en">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-twitter"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a target="_blank" rel="noopener" href="https://www.facebook.com/">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-facebook"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a target="_blank" rel="noopener" href="https://www.instagram.com/">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-instagram"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a target="_blank" rel="noopener" href="https://dribbble.com/">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-dribbble"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a target="_blank" rel="noopener" href="https://telegram.org/">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-telegram"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a target="_blank" rel="noopener" href="https://www.behance.net/">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-behance"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a target="_blank" rel="noopener" href="https://500px.com/">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-500px"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a href="mailto:test@example.com">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-envelope-o"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a href="\#">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-rss"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="footer-copyright">
+                    @Untitled. All right reserved | Design & Hexo <a target="_blank" rel="noopener" href="http://www.codeblocq.com/">Jonathan Klughertz</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- After footer scripts -->
+
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Tween Max -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TweenMax.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Custom JavaScript -->
+
+<script src="/js/main.js"></script>
+
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>
