@@ -5,13 +5,16 @@ cover: https://img.buuoj.cn/buugirl/img.php
 tags:
 	- CTF
 	- WEB
+categories:
+	- CTF解题
+	- Web安全
 ---
 
 
 
 # 强网杯随便注
 
-![截屏2020-10-28 上午11.24.27](/Users/xuziyi/Library/Application Support/typora-user-images/截屏2020-10-28 上午11.24.27.png)
+[截屏2020-10-28 上午11.24.27]
 
 这题显然是存在sql注入点的。主要考点是**堆叠注入**。然而堆叠注入本身的意思就只是能连续执行sql语句而已。
 
@@ -27,17 +30,17 @@ rename tables [表名1] to [表名2] 修改表名
 
 ## 爆表
 
-![截屏2020-11-09 下午5.21.37](/Users/xuziyi/Library/Application Support/typora-user-images/截屏2020-11-09 下午5.21.37.png)
+[截屏2020-11-09 下午5.21.37]
 
 ## desc查看表结构
 
 1919810931114514表结构
 
-![截屏2020-11-09 下午5.25.06](/Users/xuziyi/Library/Application Support/typora-user-images/截屏2020-11-09 下午5.25.06.png)
+[截屏2020-11-09 下午5.25.06]
 
 words表结构
 
-![截屏2020-11-09 下午5.27.35](/Users/xuziyi/Library/Application Support/typora-user-images/截屏2020-11-09 下午5.27.35.png)
+[截屏2020-11-09 下午5.27.35]
 
 由于没有select可以用，所以用个神奇的操作，把flag所在表的名字改成words，并在flag所在表中增加一个字段id。
 
@@ -53,4 +56,4 @@ payload：
 
 然后 1' or 1=1;#读flag
 
-![截屏2020-10-28 上午11.17.14](/Users/xuziyi/Library/Application Support/typora-user-images/截屏2020-10-28 上午11.17.14.png)![截屏2020-10-28 上午11.17.28](/Users/xuziyi/Library/Application Support/typora-user-images/截屏2020-10-28 上午11.17.28.png)
+[截屏2020-10-28 上午11.17.14]
