@@ -44,7 +44,7 @@ jobs:
       run: hexo clean
 
     - name: Generate static files
-      run: npm run build
+      run: hexo generate
       
     - name: Debug - Show public directory
       run: |
@@ -53,6 +53,11 @@ jobs:
         echo "CNAME file content:"
         cat public/CNAME || echo "No CNAME file found"
       
+    - name: Show index.html content
+      run: |
+        echo "index.html preview:"
+        head -20 public/index.html || echo "index.html not found"
+
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
       with:
