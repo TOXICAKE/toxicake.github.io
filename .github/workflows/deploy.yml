@@ -28,6 +28,13 @@ jobs:
     - name: Generate static files
       run: npm run build
       
+    - name: Show public directory content
+      run: |
+        echo "Listing ./public directory:"
+        ls -al ./public
+        echo "Listing ./public root files:"
+        find ./public -type f | head -n 20
+
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
