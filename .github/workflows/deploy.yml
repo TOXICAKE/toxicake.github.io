@@ -47,6 +47,9 @@ jobs:
         echo "CNAME file content:"
         cat public/CNAME || echo "No CNAME file found"
       
+    - name: Update submodules
+      run: git submodule update --init --recursive
+      
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
       with:
