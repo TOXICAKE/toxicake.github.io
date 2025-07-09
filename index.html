@@ -102,12 +102,6 @@
             </li>
             
             <li class="menu-item">
-                <a href="/about.html">
-                    About
-                </a>
-            </li>
-            
-            <li class="menu-item">
                 <a href="/tags">
                     Tags
                 </a>
@@ -116,12 +110,6 @@
             <li class="menu-item">
                 <a href="/categories">
                     Categories
-                </a>
-            </li>
-            
-            <li class="menu-item">
-                <a href="/contact.html">
-                    Contact
                 </a>
             </li>
             
@@ -714,7 +702,7 @@
 <p>我们输入的邮箱地址程序里又正好给了可以getflag的函数，所以我们的攻击思路就是，利用溢出漏洞覆盖某个函数指针指向的函数为目标函数，然后满足代码条件使它执行。</p>
 <p>我选了v12函数指针，exp如下</p>
 <p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/fogot/%E6%88%AA%E5%B1%8F2020-04-18%20%E4%B8%8B%E5%8D%888.08.53.png" alt="exp"></p>
-<p>‘<a href="mailto:&#x61;&#x40;&#x61;&#46;&#x63;&#x6f;&#x6d;&#x6d;">a@a.comm</a>’最后会调用v12，后面的部分覆盖v12指向的函数。</p>
+<p>‘<a href="mailto:&#x61;&#64;&#x61;&#x2e;&#x63;&#x6f;&#109;&#x6d;">a@a.comm</a>’最后会调用v12，后面的部分覆盖v12指向的函数。</p>
 <h1 id="Mary-Morton"><a href="#Mary-Morton" class="headerlink" title="Mary_Morton"></a>Mary_Morton</h1><p>连接题目看一下</p>
 <p><img src="https://n0p3.oss-cn-beijing.aliyuncs.com/Blog/XCTF-Pwn-Advance/Mary_Morton/%E6%88%AA%E5%B1%8F2020-04-20%20%E4%B8%8B%E5%8D%884.30.18.png" alt="nc"></p>
 <p>可以选择攻击方式，栈溢出或者格式化字符串，但是这道题真的是想考察这两个知识而已吗？</p>
