@@ -3,12 +3,8 @@ name: Deploy Hexo Blog to GitHub Pages
 on:
   push:
     branches: [ main, master ]
-  workflow_dispatch:
-
-permissions:
-  contents: write
-  pages: write
-  id-token: write
+  pull_request:
+    branches: [ main, master ]
 
 jobs:
   deploy:
@@ -16,12 +12,12 @@ jobs:
     
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v3
       with:
-        fetch-depth: 0
+        submodules: false
         
     - name: Setup Node.js
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v3
       with:
         node-version: '18'
         cache: 'npm'
@@ -29,41 +25,12 @@ jobs:
     - name: Install dependencies
       run: npm install
       
-    - name: Install Hexo CLI
-      run: npm install -g hexo-cli
-      
-    - name: Debug - Show environment
-      run: |
-        echo "Node version: $(node --version)"
-        echo "NPM version: $(npm --version)"
-        echo "Current directory: $(pwd)"
-        echo "Files in current directory:"
-        ls -la
-      
-    - name: Clean Hexo cache
-      run: hexo clean
-
     - name: Generate static files
-      run: hexo generate
+      run: npm run build
       
-    - name: Debug - Show public directory
-      run: |
-        echo "Files in public directory:"
-        ls -la public/
-        echo "CNAME file content:"
-        cat public/CNAME || echo "No CNAME file found"
-      
-    - name: Show index.html content
-      run: |
-        echo "index.html preview:"
-        head -20 public/index.html || echo "index.html not found"
-
     - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v4
+      uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./public
         publish_branch: gh-pages
-        force_orphan: true
-        cname: blog.n0p3.cn
-        commit_message: ${{ github.event.head_commit.message }}
