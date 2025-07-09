@@ -103,5 +103,5 @@ theme: alpha-dust
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
   type: git
-  repo: https://github.com/TOXICAKE/toxicake.github.io.git
+  repo: git@github-toxicake:TOXICAKE/toxicake.github.io.git
   branch: gh-pages
