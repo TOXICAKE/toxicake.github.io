@@ -14,7 +14,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
       with:
-        submodules: false
+        submodules: true
         
     - name: Setup Node.js
       uses: actions/setup-node@v3
@@ -34,6 +34,8 @@ jobs:
         ls -al ./public
         echo "Listing ./public root files:"
         find ./public -type f | head -n 20
+        echo "Preview ./public/index.html (first 20 lines):"
+        head -n 20 ./public/index.html || echo "index.html not found or empty"
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
