@@ -1,0 +1,146 @@
+/* 修复移动端横向滚动问题 */
+
+/* 确保整体页面不会横向滚动 */
+html, body {
+    overflow-x: hidden;
+    max-width: 100vw;
+}
+
+/* 修复代码块在移动端的显示 */
+@media (max-width: 768px) {
+    /* 代码高亮块的容器 */
+    figure.highlight {
+        overflow-x: auto;
+        max-width: 100%;
+        margin: 1em 0;
+        border-radius: 4px;
+    }
+    
+    /* 代码块表格 */
+    figure.highlight table {
+        width: 100%;
+        margin: 0 !important;
+        border-collapse: collapse;
+    }
+    
+    /* 代码内容单元格 */
+    figure.highlight table tbody tr td {
+        padding: 8px !important;
+        border: none !important;
+        vertical-align: top;
+    }
+    
+    /* 行号列 */
+    figure.highlight table tbody tr td.gutter {
+        width: 40px;
+        min-width: 40px;
+        max-width: 40px;
+        text-align: right;
+        border-right: 1px solid #444 !important;
+        padding-right: 8px !important;
+    }
+    
+    /* 代码内容列 */
+    figure.highlight table tbody tr td:not(.gutter) {
+        width: calc(100% - 40px);
+        overflow-x: auto;
+    }
+    
+    /* 代码文本 */
+    figure.highlight table tbody tr td pre {
+        margin: 0 !important;
+        padding: 0 !important;
+        background: transparent !important;
+        border: none !important;
+        overflow-x: auto;
+        white-space: pre;
+        font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+        font-size: 0.85em;
+        line-height: 1.4;
+    }
+    
+    /* 普通表格也需要响应式处理 */
+    section.main .post .content table:not(figure.highlight table) {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+        max-width: 100%;
+        margin: 1em 0;
+    }
+    
+    /* 长链接处理 */
+    section.main .post .content a {
+        word-wrap: break-word;
+        word-break: break-word;
+        overflow-wrap: break-word;
+    }
+    
+    /* 行内代码处理 */
+    section.main .post .content code:not(pre code) {
+        word-wrap: break-word;
+        word-break: break-all;
+        overflow-wrap: break-word;
+        padding: 2px 4px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 3px;
+    }
+    
+    /* 图片响应式 */
+    section.main .post .content img {
+        max-width: 100%;
+        height: auto;
+    }
+    
+    /* 独立的预格式化文本（非代码高亮） */
+    section.main .post .content pre:not(figure.highlight pre) {
+        overflow-x: auto;
+        white-space: pre;
+        max-width: 100%;
+        padding: 1em;
+        background: rgba(0,0,0,0.2);
+        border-radius: 4px;
+        font-size: 0.9em;
+    }
+    
+    /* 引用块 */
+    section.main .post .content blockquote {
+        margin: 1em 10px;
+        padding: 1em;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+    }
+}
+
+/* 针对更小屏幕的额外优化 */
+@media (max-width: 480px) {
+    /* 减小代码字体大小 */
+    figure.highlight table tbody tr td pre {
+        font-size: 0.75em;
+        line-height: 1.3;
+    }
+    
+    /* 减小行号宽度 */
+    figure.highlight table tbody tr td.gutter {
+        width: 30px;
+        min-width: 30px;
+        max-width: 30px;
+        padding-right: 6px !important;
+    }
+    
+    /* 调整代码内容宽度 */
+    figure.highlight table tbody tr td:not(.gutter) {
+        width: calc(100% - 30px);
+    }
+    
+    /* 减小表格内边距 */
+    section.main .post .content table:not(figure.highlight table) td,
+    section.main .post .content table:not(figure.highlight table) th {
+        padding: 0.5em 0.25em;
+        font-size: 0.9em;
+    }
+    
+    /* 文章内容边距调整 */
+    section.main .post .content {
+        padding: 0 10px;
+    }
+}
