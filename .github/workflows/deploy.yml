@@ -3,6 +3,7 @@ name: Deploy Hexo Blog to GitHub Pages
 on:
   push:
     branches: [ main, master ]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -29,14 +30,30 @@ jobs:
     - name: Install dependencies
       run: npm install
       
+    - name: Debug - Show environment
+      run: |
+        echo "Node version: $(node --version)"
+        echo "NPM version: $(npm --version)"
+        echo "Current directory: $(pwd)"
+        echo "Files in current directory:"
+        ls -la
+      
     - name: Generate static files
       run: npm run build
       
+    - name: Debug - Show public directory
+      run: |
+        echo "Files in public directory:"
+        ls -la public/
+        echo "CNAME file content:"
+        cat public/CNAME || echo "No CNAME file found"
+      
     - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
+      uses: peaceiris/actions-gh-pages@v4
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./public
         publish_branch: gh-pages
         force_orphan: true
         cname: blog.n0p3.cn
+        commit_message: ${{ github.event.head_commit.message }}
